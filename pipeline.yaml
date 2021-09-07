@@ -55,7 +55,7 @@ Resources:
         Location: 'https://github.com/Spinel-Consulting/sabi-agent-api.git'
         BuildSpec: buildspec.yaml
         Auth:
-          Type: NOAUTH
+          Type: OAUTH
           Resource: !Ref CodeBuildSourceCredential
       Artifacts:
           Type: NO_ARTIFACTS
