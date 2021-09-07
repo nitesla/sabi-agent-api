@@ -57,16 +57,16 @@ Resources:
         Auth:
           Type: PERSONAL_ACCESS_TOKEN
           Resource: !Ref CodeBuildSourceCredential
-        Artifacts:
-            Type: NO_ARTIFACTS
-        Triggers:
-          Webhook: true
-          FilterGroups:
-            - - Type: EVENT
-                Pattern: 'PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED'
-              - Type: BASE_REF
-                Pattern: !Sub ^refs/heads/master$
-        Environment:
-            Type: LINUX_CONTAINER
-            ComputeType: BUILD_GENERAL1_SMALL
-            Image: aws/codebuild/standard:5.0
+      Artifacts:
+          Type: NO_ARTIFACTS
+      Triggers:
+        Webhook: true
+        FilterGroups:
+          - - Type: EVENT
+              Pattern: 'PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED'
+            - Type: BASE_REF
+              Pattern: !Sub ^refs/heads/master$
+      Environment:
+          Type: LINUX_CONTAINER
+          ComputeType: BUILD_GENERAL1_SMALL
+          Image: aws/codebuild/standard:5.0
