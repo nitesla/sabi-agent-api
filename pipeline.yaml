@@ -1,0 +1,72 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  CodeBuildServiceRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: CloudWatchLogsAccessPolicy
+                Effect: Allow
+                Action:
+                  - 'logs:FilterLogEvents'
+                  - 'logs:CreateLogStream'
+                  - 'logs:CreateLogGroup'
+                  - 'logs:GetLogEvents'
+                  - 'logs:PutLogEvents'
+                Resource: '*'
+              - Sid: S3AccessPolicy
+                Effect: Allow
+                Action:
+                  - 's3:CreateBucket'
+                  - 's3:GetObject'
+                  - 's3:GetObjectVersion'
+                  - 's3:List*'
+                  - 's3:PutObject'
+                Resource: '*'
+              - Sid: S3BucketIdentity
+                Effect: Allow
+                Action:
+                  - 's3:GetBucketAcl'
+                  - 's3:GetBucketLocation'
+                Resource: '*'
+  CodeBuildSourceCredential:
+    Type: 'AWS::CodeBuild::SourceCredential'
+    Properties:
+      AuthType: PERSONAL_ACCESS_TOKEN
+      ServerType: GITHUB
+      Token: '{{resolve.secretsmanager:GITHUB_ACCESS:SecretString:Github_Access_Token}}'
+  CodeBuildProject:
+    Type: 'AWS::CodeBuild::Project'
+    Properties:
+      Name: !Ref 'AWS::StackName'
+      ServiceRole: !GetAtt CodeBuildServiceRole.Arn
+      Source:
+        Type: GITHUB
+        Location: 'https://github.com/Spinel-Consulting/sabi-agent-api.git'
+        BuildSpec: buildspec.yml
+        Auth:
+          Type: PERSONAL_ACCESS_TOKEN
+          Resource: !Ref CodeBuildSourceCredential
+        Artifacts:
+            Type: NO_ARTIFACTS
+        Triggers:
+          Webhook: true
+          FilterGroups:
+            - - Type: EVENT
+                Pattern: 'PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED'
+              - Type: BASE_REF
+                Pattern: !Sub ^refs/heads/master$
+        Environment:
+            Type: LINUX_CONTAINER
+            ComputeType: BUILD_GENERAL1_SMALL
+            Image: aws/codebuild/standard:5.0
