@@ -109,7 +109,6 @@ public class AgentCategoryController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
-
     /**
      * <summary>
      * Enable disenable
