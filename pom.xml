@@ -165,7 +165,7 @@
 				<executions>
 					<execution>
 						<id>install-sabi-core</id>
-						<phase>initialize</phase>
+						<phase>clean</phase>
 						<configuration>
 							<file>${basedir}/lib/sabi-agent-core.jar</file>
 							<repositoryLayout>default</repositoryLayout>
@@ -181,7 +181,7 @@
 					</execution>
 					<execution>
 						<id>install-sabi-framework</id>
-						<phase>initialize</phase>
+						<phase>clean</phase>
 						<configuration>
 							<file>${basedir}/lib/sabi-framework.jar</file>
 							<repositoryLayout>default</repositoryLayout>
@@ -197,7 +197,7 @@
 					</execution>
 					<execution>
 						<id>install-sabi-service</id>
-						<phase>initialize</phase>
+						<phase>clean</phase>
 						<configuration>
 							<file>${basedir}/lib/sabi-agent-service.jar</file>
 							<repositoryLayout>default</repositoryLayout>
