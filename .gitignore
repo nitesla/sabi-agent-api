@@ -32,8 +32,8 @@ build/
 
 ### VS Code ###
 .vscode/
-buildspec.yaml
-pipeline.yaml
-devdeployspec.yaml
-qadeployspec.yaml
-deployspec.yaml
+/buildspec.yaml
+/pipeline.yaml
+/devdeployspec.yaml
+/qadeployspec.yaml
+/deployspec.yaml
