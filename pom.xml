@@ -124,7 +124,7 @@
 			<artifactId>sabi-framework</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/sabi-framework.jar</systemPath>
+			<systemPath>${project.basedir}/lib/sabi-framework.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -132,7 +132,7 @@
 			<artifactId>sabi-agent-core</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/sabi-agent-core.jar</systemPath>
+			<systemPath>${project.basedir}/lib/sabi-agent-core.jar</systemPath>
 		</dependency>
 
 
@@ -141,7 +141,7 @@
 			<artifactId>sabi-agent-service</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/sabi-agent-service.jar</systemPath>
+			<systemPath>${project.basedir}/lib/sabi-agent-service.jar</systemPath>
 		</dependency>
 
 		<dependency>
