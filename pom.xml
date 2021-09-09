@@ -165,9 +165,9 @@
 				<executions>
 					<execution>
 						<id>install-sabi-core</id>
-						<phase>clean</phase>
+						<phase>initialize</phase>
 						<configuration>
-							<file>${project.basedir}/lib/sabi-agent-core.jar</file>
+							<file>${basedir}/lib/sabi-agent-core.jar</file>
 							<repositoryLayout>default</repositoryLayout>
 							<groupId>com.sabi.core</groupId>
 							<artifactId>sabi-agent-core</artifactId>
@@ -175,12 +175,15 @@
 							<packaging>jar</packaging>
 							<generatePom>true</generatePom>
 						</configuration>
+						<goals>
+						    <goal>install-file</goal>
+						 </goals>
 					</execution>
 					<execution>
 						<id>install-sabi-framework</id>
-						<phase>clean</phase>
+						<phase>initialize</phase>
 						<configuration>
-							<file>${project.basedir}/lib/sabi-framework.jar</file>
+							<file>${basedir}/lib/sabi-framework.jar</file>
 							<repositoryLayout>default</repositoryLayout>
 							<groupId>com.sabi.framework</groupId>
 							<artifactId>sabi-framework</artifactId>
@@ -188,12 +191,15 @@
 							<packaging>jar</packaging>
 							<generatePom>true</generatePom>
 						</configuration>
+						<goals>
+						    <goal>install-file</goal>
+						 </goals>
 					</execution>
 					<execution>
 						<id>install-sabi-service</id>
-						<phase>clean</phase>
+						<phase>initialize</phase>
 						<configuration>
-							<file>${project.basedir}/lib/sabi-agent-service.jar</file>
+							<file>${basedir}/lib/sabi-agent-service.jar</file>
 							<repositoryLayout>default</repositoryLayout>
 							<groupId>com.sabi.service</groupId>
 							<artifactId>sabi-agent-service</artifactId>
@@ -201,6 +207,9 @@
 							<packaging>jar</packaging>
 							<generatePom>true</generatePom>
 						</configuration>
+						<goals>
+						    <goal>install-file</goal>
+						 </goals>
 					</execution>
 
 				</executions>
