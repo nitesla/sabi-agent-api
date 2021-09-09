@@ -111,7 +111,7 @@ public class UserController {
     /** <summary>
      * Enable disenable
      * </summary>
-     * <remarks>this endpoint is responsible for enabling and disenabling a bank</remarks>
+     * <remarks>this endpoint is responsible for enabling and disenabling a user</remarks>
      */
 
     @PutMapping("/enabledisenable")
@@ -125,6 +125,11 @@ public class UserController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
+    /** <summary>
+     * Change password
+     * </summary>
+     * <remarks>this endpoint is responsible for changing password</remarks>
+     */
 
     @PutMapping("/changepassword")
     public ResponseEntity<Response> changePassword(@Validated @RequestBody ChangePasswordDto request){
