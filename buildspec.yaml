@@ -1,15 +1,19 @@
 version: 0.2
 
 phases:
-  
+  pre_build:
+    commands:
+      - mvn clean install
+      - echo Project cleaned successfully...
+      
   build:
     commands:
       - echo Entered the build phase...
       - echo Build started on `date`
   post_build:
     commands:
-      - echo Entered the post_build phase...
-      - echo Build completed on `date`
+      - echo Build phase Entered the post_build phase...
+      - echo Build phase completed on `date`
 
 artifacts:
    files:
