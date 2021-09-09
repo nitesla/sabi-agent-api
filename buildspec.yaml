@@ -3,8 +3,10 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - mvn clean install
+      - mvn clean
       - echo Project cleaned successfully...
+      - mvn install
+      - echo Project lib jars installed successfully...
       
   build:
     commands:
