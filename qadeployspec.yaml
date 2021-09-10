@@ -7,7 +7,9 @@ env:
 phases:
   pre_build:
     commands:
-      - mvn clean install
+      - mvn clean package
+      - echo Maven clean successfully executed...
+      - mvn package
       - echo Logging in to Amazon ECR...
       - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
