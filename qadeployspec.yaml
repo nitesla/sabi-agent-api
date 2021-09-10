@@ -38,5 +38,5 @@ artifacts:
   files:
    - qaimagedefinitions.json
    - target/sabi-agent-api-1.0.jar
-
+   - Dockerfile
 
