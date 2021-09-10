@@ -152,6 +152,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>sabi-agent-api-1.0</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -174,6 +175,9 @@
 							<packaging>jar</packaging>
 							<generatePom>true</generatePom>
 						</configuration>
+						<goals>
+						    <goal>install-file</goal>
+						 </goals>
 					</execution>
 					<execution>
 						<id>install-sabi-framework</id>
@@ -187,6 +191,9 @@
 							<packaging>jar</packaging>
 							<generatePom>true</generatePom>
 						</configuration>
+						<goals>
+						    <goal>install-file</goal>
+						 </goals>
 					</execution>
 					<execution>
 						<id>install-sabi-service</id>
@@ -200,6 +207,9 @@
 							<packaging>jar</packaging>
 							<generatePom>true</generatePom>
 						</configuration>
+						<goals>
+						    <goal>install-file</goal>
+						 </goals>
 					</execution>
 
 				</executions>
