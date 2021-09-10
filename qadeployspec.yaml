@@ -12,9 +12,11 @@ phases:
       - mvn package
       - echo Maven package successfully executed...
       - echo Logging in to Amazon ECR...
+      - pip install --upgrade awscli==1.18.17
+      - echo AWSCLI upgraded successfully...
       - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=541404431222.dkr.ecr.eu-west-2.amazonaws.com/spinel-qa
-      - $(aws ecr get-login-password)
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
