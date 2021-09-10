@@ -12,6 +12,8 @@ phases:
       - mvn package
       - echo Maven package successfully executed...
       - echo Logging in to Amazon ECR...
+      - pip install --upgrade awscli==1.18.17
+      - echo AWSCLI upgraded successfully...
       - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=541404431222.dkr.ecr.eu-west-2.amazonaws.com/spinel-sabi-api
@@ -30,9 +32,10 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"order-service","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"order-service","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > prodimagedefinitions.json
       - cat qaimagedefinitions.json
 artifacts:
   files:
    - prodimagedefinitions.json
    - target/sabi-agent-api-1.0.jar
+   - Dockerfile
