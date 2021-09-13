@@ -8,6 +8,7 @@ import com.sabi.framework.models.User;
 import com.sabi.framework.service.UserService;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -22,9 +23,11 @@ public class UserController {
 
 
     private final UserService service;
+    private final ModelMapper mapper;
 
-    public UserController(UserService service) {
+    public UserController(UserService service,ModelMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     /** <summary>
