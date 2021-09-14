@@ -9,6 +9,7 @@ import com.sabi.framework.exceptions.UnauthorizedException;
 import com.sabi.framework.loggers.LoggerUtil;
 import com.sabi.framework.models.User;
 import com.sabi.framework.security.AuthenticationWithToken;
+import com.sabi.framework.service.ExternalTokenService;
 import com.sabi.framework.service.TokenService;
 import com.sabi.framework.service.UserService;
 import com.sabi.framework.utils.Constants;
@@ -40,6 +41,9 @@ public class AuthenticationController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private ExternalTokenService externalTokenService;
 
     private final UserService userService;
 
@@ -122,4 +126,16 @@ public class AuthenticationController {
         }
         return false;
     }
+
+
+
+
+    @PostMapping("/externaltoken")
+    public void externalToken() throws Exception {
+       externalTokenService.externalTokenRequest();
+    }
+
+
+
+
 }
