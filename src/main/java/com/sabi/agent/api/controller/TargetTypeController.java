@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @SuppressWarnings("All")
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"targetType")
@@ -88,7 +90,7 @@ public class TargetTypeController {
      */
 
     @GetMapping("")
-    public ResponseEntity<Response> getTargetTypes(@RequestParam(value = "name",required = false)String name,
+    public ResponseEntity<Response> getWards(@RequestParam(value = "name",required = false)String name,
                                              @RequestParam(value = "isActive",required = false)Boolean isActive,
                                               @RequestParam(value = "page") int page,
                                               @RequestParam(value = "pageSize") int pageSize){
@@ -108,13 +110,25 @@ public class TargetTypeController {
      */
 
 
-    @PutMapping("/enabledisenable")
-    public ResponseEntity<Response> enableDisEnable(@Validated @RequestBody EnableDisEnableDto request){
+    @PutMapping("/enabledisable")
+    public ResponseEntity<Response> enableDisable(@Validated @RequestBody EnableDisEnableDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
         service.enableDisableTargetType(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        List<TargetType> response = service.getAll(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
