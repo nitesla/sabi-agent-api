@@ -9,16 +9,16 @@ import com.sabi.agent.service.services.AgentCategoryTargetService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @SuppressWarnings("All")
 @RestController
-@RequestMapping(Constants.APP_CONTENT +"agentCategoryTarget")
+@RequestMapping(Constants.APP_CONTENT +"agentcategorytarget")
 public class AgentCategoryTargetController {
 
     private final AgentCategoryTargetService service;
@@ -87,23 +87,23 @@ public class AgentCategoryTargetController {
      * <remarks>this endpoint is responsible for getting all records and its searchable</remarks>
      */
 
-    @GetMapping("")
-    public ResponseEntity<Response> getAgentCategoryTargets(@RequestParam(value = "name",required = false)String name,
-                                                            @RequestParam(value = "isActive",required = false)Boolean isActive,
-                                                            @RequestParam(value = "min",required = false) int min,
-                                                            @RequestParam(value = "max",required = false) int max,
-                                                            @RequestParam(value = "supermax",required = false) int supermax,
-                                                            @RequestParam(value = "page") int page,
-                                                            @RequestParam(value = "pageSize") int pageSize){
-        HttpStatus httpCode ;
-        Response resp = new Response();
-        Page<AgentCategoryTarget> response = service.findAll(name, isActive, min, max, supermax, PageRequest.of(page, pageSize));
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Record fetched successfully !");
-        resp.setData(response);
-        httpCode = HttpStatus.OK;
-        return new ResponseEntity<>(resp, httpCode);
-    }
+//    @GetMapping("")
+//    public ResponseEntity<Response> getAgentCategoryTargets(@RequestParam(value = "name",required = false)String name,
+//                                                            @RequestParam(value = "isActive",required = false)Boolean isActive,
+//                                                            @RequestParam(value = "min",required = false) int min,
+//                                                            @RequestParam(value = "max",required = false) int max,
+//                                                            @RequestParam(value = "supermax",required = false) int supermax,
+//                                                            @RequestParam(value = "page") int page,
+//                                                            @RequestParam(value = "pageSize") int pageSize){
+//        HttpStatus httpCode ;
+//        Response resp = new Response();
+//        Page<AgentCategoryTarget> response = service.findAll(name, isActive, min, max, supermax, PageRequest.of(page, pageSize));
+//        resp.setCode(CustomResponseCode.SUCCESS);
+//        resp.setDescription("Record fetched successfully !");
+//        resp.setData(response);
+//        httpCode = HttpStatus.OK;
+//        return new ResponseEntity<>(resp, httpCode);
+//    }
 
     /** <summary>
      * Enable disenable
@@ -111,13 +111,25 @@ public class AgentCategoryTargetController {
      * <remarks>this endpoint is responsible for enabling and disenabling a Agent Category Target</remarks>
      */
 
-    @PutMapping("/enabledisenable")
-    public ResponseEntity<Response> enableDisEnable(@Validated @RequestBody EnableDisEnableDto request){
+    @PutMapping("/enabledisable")
+    public ResponseEntity<Response> enableDisable(@Validated @RequestBody EnableDisEnableDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
         service.enableDisableAgtCatTarget(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        List<AgentCategoryTarget> response = service.getAll(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }

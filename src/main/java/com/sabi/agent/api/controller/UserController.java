@@ -219,4 +219,18 @@ public class UserController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
+
+
+//    @GetMapping("")
+//    public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
+//        HttpStatus httpCode ;
+//        Response resp = new Response();
+//        List<User> response = service.getAll(isActive);
+//        resp.setCode(CustomResponseCode.SUCCESS);
+//        resp.setDescription("Record fetched successfully !");
+//        resp.setData(response);
+//        httpCode = HttpStatus.OK;
+//        return new ResponseEntity<>(resp, httpCode);
+//    }
+
 }

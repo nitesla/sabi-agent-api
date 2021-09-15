@@ -1,11 +1,11 @@
 package com.sabi.agent.api.controller;
 
 
-import com.sabi.agent.core.dto.agentDto.requestDto.AgentCategoryTaskDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
-import com.sabi.agent.core.dto.responseDto.AgentCategoryTaskResponseDto;
-import com.sabi.agent.core.models.agentModel.AgentCategoryTask;
-import com.sabi.agent.service.services.AgentCategoryTaskService;
+import com.sabi.agent.core.dto.requestDto.UserTaskDto;
+import com.sabi.agent.core.dto.responseDto.UserTaskResponseDto;
+import com.sabi.agent.core.models.UserTask;
+import com.sabi.agent.service.services.UserTaskService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
@@ -18,26 +18,26 @@ import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
-@RequestMapping(Constants.APP_CONTENT +"agentCategoryTask")
-public class AgentCategoryTaskController {
+@RequestMapping(Constants.APP_CONTENT +"userTask")
+public class UserTaskController {
 
-    private final AgentCategoryTaskService service;
+    private final UserTaskService service;
 
-    public AgentCategoryTaskController(AgentCategoryTaskService service) {
+    public UserTaskController(UserTaskService service) {
         this.service = service;
     }
 
     /** <summary>
-     *  Agent Category Task creation endpoint
+     *  UserTask creation endpoint
      * </summary>
-     * <remarks>this endpoint is responsible for creation of new Agent Category Task</remarks>
+     * <remarks>this endpoint is responsible for creation of new UserTask</remarks>
      */
 
     @PostMapping("")
-    public ResponseEntity<Response> createAgentCategoryTask(@Validated @RequestBody AgentCategoryTaskDto request){
+    public ResponseEntity<Response> createUserTask(@Validated @RequestBody UserTaskDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        AgentCategoryTaskResponseDto response = service.createAgentCategoryTask(request);
+        UserTaskResponseDto response = service.createUserTask(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);
@@ -46,16 +46,16 @@ public class AgentCategoryTaskController {
     }
 
     /** <summary>
-     * Agent Category Task update endpoint
+     * UserTask update endpoint
      * </summary>
-     * <remarks>this endpoint is responsible for updating Agent Category Task</remarks>
+     * <remarks>this endpoint is responsible for updating UserTask</remarks>
      */
 
     @PutMapping("")
-    public ResponseEntity<Response> updateAgentCategoryTask(@Validated @RequestBody  AgentCategoryTaskDto request){
+    public ResponseEntity<Response> updateUserTask(@Validated @RequestBody  UserTaskDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        AgentCategoryTaskResponseDto response = service.updateAgentCategoryTask(request);
+        UserTaskResponseDto response = service.updateUserTask(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Update Successful");
         resp.setData(response);
@@ -70,10 +70,10 @@ public class AgentCategoryTaskController {
      */
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getAgentCategoryTask(@PathVariable Long id){
+    public ResponseEntity<Response> getUserTask(@PathVariable Long id){
         HttpStatus httpCode ;
         Response resp = new Response();
-        AgentCategoryTaskResponseDto response = service.findAgentCategoryTask(id);
+        UserTaskResponseDto response = service.findUserTask(id);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -88,13 +88,14 @@ public class AgentCategoryTaskController {
      */
 
 //    @GetMapping("")
-//    public ResponseEntity<Response> getAgentCategoryTasks(@RequestParam(value = "name",required = false)String name,
-//                                             @RequestParam(value = "isActive",required = false)Boolean isActive,
-//                                              @RequestParam(value = "page") int page,
-//                                              @RequestParam(value = "pageSize") int pageSize){
+//    public ResponseEntity<Response> getUserTasks(@RequestParam(value = "endDate",required = false) Date endDate,
+//                                                 @RequestParam(value = "dateAssigned",required = false)Date dateAssigned,
+//                                                 @RequestParam(value = "status",required = false) String status,
+//                                                 @RequestParam(value = "page") int page,
+//                                                 @RequestParam(value = "pageSize") int pageSize){
 //        HttpStatus httpCode ;
 //        Response resp = new Response();
-//        Page<AgentCategoryTask> response = service.findAll(name, isActive, PageRequest.of(page, pageSize));
+//        Page<UserTask> response = service.findAll(endDate, dateAssigned, status, PageRequest.of(page, pageSize));
 //        resp.setCode(CustomResponseCode.SUCCESS);
 //        resp.setDescription("Record fetched successfully !");
 //        resp.setData(response);
@@ -103,16 +104,16 @@ public class AgentCategoryTaskController {
 //    }
 
     /** <summary>
-     * Enable disenable
+     * Enable disable
      * </summary>
-     * <remarks>this endpoint is responsible for enabling and disenabling a Agent Category Task</remarks>
+     * <remarks>this endpoint is responsible for enabling and disenabling a UserTask</remarks>
      */
 
     @PutMapping("/enabledisable")
     public ResponseEntity<Response> enableDisable(@Validated @RequestBody EnableDisEnableDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        service.enableDisableAgtCatTask(request);
+        service.enableDisableUserTask(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         httpCode = HttpStatus.OK;
@@ -123,7 +124,7 @@ public class AgentCategoryTaskController {
     public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
-        List<AgentCategoryTask> response = service.getAll(isActive);
+        List<UserTask> response = service.getAll(isActive);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
