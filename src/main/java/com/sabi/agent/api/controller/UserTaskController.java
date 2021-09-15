@@ -1,11 +1,11 @@
 package com.sabi.agent.api.controller;
 
 
-import com.sabi.agent.core.dto.agentDto.requestDto.AgentCategoryTargetDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
-import com.sabi.agent.core.dto.responseDto.AgentCategoryTargetResponseDto;
-import com.sabi.agent.core.models.agentModel.AgentCategoryTarget;
-import com.sabi.agent.service.services.AgentCategoryTargetService;
+import com.sabi.agent.core.dto.requestDto.UserTaskDto;
+import com.sabi.agent.core.dto.responseDto.UserTaskResponseDto;
+import com.sabi.agent.core.models.UserTask;
+import com.sabi.agent.service.services.UserTaskService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
@@ -16,30 +16,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
-@RequestMapping(Constants.APP_CONTENT +"agentCategoryTarget")
-public class AgentCategoryTargetController {
+@RequestMapping(Constants.APP_CONTENT +"userTask")
+public class UserTaskController {
 
-    private final AgentCategoryTargetService service;
+    private final UserTaskService service;
 
-    public AgentCategoryTargetController(AgentCategoryTargetService service) {
+    public UserTaskController(UserTaskService service) {
         this.service = service;
     }
 
     /** <summary>
-     *  Agent Category Target creation endpoint
+     *  UserTask creation endpoint
      * </summary>
-     * <remarks>this endpoint is responsible for creation of new Agent Category Target</remarks>
+     * <remarks>this endpoint is responsible for creation of new UserTask</remarks>
      */
 
     @PostMapping("")
-    public ResponseEntity<Response> createAgentCategoryTarget(@Validated @RequestBody AgentCategoryTargetDto request){
+    public ResponseEntity<Response> createUserTask(@Validated @RequestBody UserTaskDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        AgentCategoryTargetResponseDto response = service.createAgentCategoryTarget(request);
+        UserTaskResponseDto response = service.createUserTask(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);
@@ -48,16 +49,16 @@ public class AgentCategoryTargetController {
     }
 
     /** <summary>
-     * Agent Category Target update endpoint
+     * UserTask update endpoint
      * </summary>
-     * <remarks>this endpoint is responsible for updating Agent Category Target</remarks>
+     * <remarks>this endpoint is responsible for updating UserTask</remarks>
      */
 
     @PutMapping("")
-    public ResponseEntity<Response> updateAgentCategoryTarget(@Validated @RequestBody  AgentCategoryTargetDto request){
+    public ResponseEntity<Response> updateUserTask(@Validated @RequestBody  UserTaskDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        AgentCategoryTargetResponseDto response = service.updateAgentCategoryTarget(request);
+        UserTaskResponseDto response = service.updateUserTask(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Update Successful");
         resp.setData(response);
@@ -72,10 +73,10 @@ public class AgentCategoryTargetController {
      */
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getAgentCategoryTarget(@PathVariable Long id){
+    public ResponseEntity<Response> getUserTask(@PathVariable Long id){
         HttpStatus httpCode ;
         Response resp = new Response();
-        AgentCategoryTargetResponseDto response = service.findAgentCategoryTarget(id);
+        UserTaskResponseDto response = service.findUserTask(id);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -90,16 +91,14 @@ public class AgentCategoryTargetController {
      */
 
     @GetMapping("")
-    public ResponseEntity<Response> getAgentCategoryTargets(@RequestParam(value = "name",required = false)String name,
-                                                            @RequestParam(value = "isActive",required = false)Boolean isActive,
-                                                            @RequestParam(value = "min",required = false) int min,
-                                                            @RequestParam(value = "max",required = false) int max,
-                                                            @RequestParam(value = "supermax",required = false) int supermax,
-                                                            @RequestParam(value = "page") int page,
-                                                            @RequestParam(value = "pageSize") int pageSize){
+    public ResponseEntity<Response> getUserTasks(@RequestParam(value = "endDate",required = false) Date endDate,
+                                                 @RequestParam(value = "dateAssigned",required = false)Date dateAssigned,
+                                                 @RequestParam(value = "status",required = false) String status,
+                                                 @RequestParam(value = "page") int page,
+                                                 @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<AgentCategoryTarget> response = service.findAll(name, isActive, min, max, supermax, PageRequest.of(page, pageSize));
+        Page<UserTask> response = service.findAll(endDate, dateAssigned, status, PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -108,16 +107,16 @@ public class AgentCategoryTargetController {
     }
 
     /** <summary>
-     * Enable disenable
+     * Enable disable
      * </summary>
-     * <remarks>this endpoint is responsible for enabling and disenabling a Agent Category Target</remarks>
+     * <remarks>this endpoint is responsible for enabling and disenabling a UserTask</remarks>
      */
 
     @PutMapping("/enabledisable")
     public ResponseEntity<Response> enableDisable(@Validated @RequestBody EnableDisEnableDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        service.enableDisableAgtCatTarget(request);
+        service.enableDisableUserTask(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         httpCode = HttpStatus.OK;
@@ -128,7 +127,7 @@ public class AgentCategoryTargetController {
     public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
-        List<AgentCategoryTarget> response = service.getAll(isActive);
+        List<UserTask> response = service.getAll(isActive);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);

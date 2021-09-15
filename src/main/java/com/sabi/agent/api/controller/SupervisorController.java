@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @SuppressWarnings("All")
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"supervisor")
@@ -104,8 +106,8 @@ public class SupervisorController {
      * <remarks>this endpoint is responsible for enabling and disenabling a Supervisor</remarks>
      */
 
-    @PutMapping("/enabledisenable")
-    public ResponseEntity<Response> enableDisEnable(@Validated @RequestBody EnableDisEnableDto request){
+    @PutMapping("/enabledisable")
+    public ResponseEntity<Response> enableDisable(@Validated @RequestBody EnableDisEnableDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
         service.enableDisableSupervisor(request);
@@ -115,5 +117,16 @@ public class SupervisorController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
+    @GetMapping("")
+    public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        List<Supervisor> response = service.getAll(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
 
 }

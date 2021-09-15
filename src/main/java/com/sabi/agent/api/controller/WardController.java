@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @SuppressWarnings("All")
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"ward")
@@ -90,11 +92,12 @@ public class WardController {
     @GetMapping("")
     public ResponseEntity<Response> getWards(@RequestParam(value = "name",required = false)String name,
                                              @RequestParam(value = "isActive",required = false)Boolean isActive,
+                                             @RequestParam(value = "lgaId",required = false)Long lgaId,
                                               @RequestParam(value = "page") int page,
                                               @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<Ward> response = service.findAll(name, isActive, PageRequest.of(page, pageSize));
+        Page<Ward> response = service.findAll(name, isActive, lgaId, PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -119,5 +122,16 @@ public class WardController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
+    @GetMapping("")
+    public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        List<Ward> response = service.getAll(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
 
 }
