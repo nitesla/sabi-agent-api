@@ -9,8 +9,6 @@ import com.sabi.agent.service.services.AgentCategoryTaskService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -89,20 +87,20 @@ public class AgentCategoryTaskController {
      * <remarks>this endpoint is responsible for getting all records and its searchable</remarks>
      */
 
-    @GetMapping("")
-    public ResponseEntity<Response> getAgentCategoryTasks(@RequestParam(value = "name",required = false)String name,
-                                             @RequestParam(value = "isActive",required = false)Boolean isActive,
-                                              @RequestParam(value = "page") int page,
-                                              @RequestParam(value = "pageSize") int pageSize){
-        HttpStatus httpCode ;
-        Response resp = new Response();
-        Page<AgentCategoryTask> response = service.findAll(name, isActive, PageRequest.of(page, pageSize));
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Record fetched successfully !");
-        resp.setData(response);
-        httpCode = HttpStatus.OK;
-        return new ResponseEntity<>(resp, httpCode);
-    }
+//    @GetMapping("")
+//    public ResponseEntity<Response> getAgentCategoryTasks(@RequestParam(value = "name",required = false)String name,
+//                                             @RequestParam(value = "isActive",required = false)Boolean isActive,
+//                                              @RequestParam(value = "page") int page,
+//                                              @RequestParam(value = "pageSize") int pageSize){
+//        HttpStatus httpCode ;
+//        Response resp = new Response();
+//        Page<AgentCategoryTask> response = service.findAll(name, isActive, PageRequest.of(page, pageSize));
+//        resp.setCode(CustomResponseCode.SUCCESS);
+//        resp.setDescription("Record fetched successfully !");
+//        resp.setData(response);
+//        httpCode = HttpStatus.OK;
+//        return new ResponseEntity<>(resp, httpCode);
+//    }
 
     /** <summary>
      * Enable disenable

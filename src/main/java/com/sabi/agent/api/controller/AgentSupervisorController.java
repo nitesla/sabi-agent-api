@@ -3,12 +3,10 @@ package com.sabi.agent.api.controller;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentSupervisorDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.responseDto.AgentSupervisorResponseDto;
-import com.sabi.agent.core.models.agentModel.AgentSupervisor;
 import com.sabi.agent.service.services.AgentSupervisorService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,17 +24,17 @@ public class AgentSupervisorController {
         this.service = service;
     }
 
-    @PostMapping("")
-    public ResponseEntity<Response> createAgentSupervisor(@Validated @RequestBody AgentSupervisorDto request) {
-        HttpStatus httpCode;
-        Response resp = new Response();
-        AgentSupervisorResponseDto response = service.createAgentSupervisor(request);
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Successful");
-        resp.setData(response);
-        httpCode = HttpStatus.CREATED;
-        return new ResponseEntity<>(resp, httpCode);
-    }
+//    @PostMapping("")
+//    public ResponseEntity<Response> createAgentSupervisor(@Validated @RequestBody AgentSupervisorDto request) {
+//        HttpStatus httpCode;
+//        Response resp = new Response();
+//        AgentSupervisorResponseDto response = service.createAgentSupervisor(request);
+//        resp.setCode(CustomResponseCode.SUCCESS);
+//        resp.setDescription("Successful");
+//        resp.setData(response);
+//        httpCode = HttpStatus.CREATED;
+//        return new ResponseEntity<>(resp, httpCode);
+//    }
 
     @PutMapping("")
     public ResponseEntity<Response> updateAgentSupervisor(@Validated @RequestBody AgentSupervisorDto request) {
