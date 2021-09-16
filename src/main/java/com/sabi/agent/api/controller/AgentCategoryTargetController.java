@@ -21,7 +21,7 @@ import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
-@RequestMapping(Constants.APP_CONTENT +"agentCategoryTarget")
+@RequestMapping(Constants.APP_CONTENT +"agentcategorytarget")
 public class AgentCategoryTargetController {
 
     private final AgentCategoryTargetService service;
