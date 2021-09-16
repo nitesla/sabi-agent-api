@@ -11,6 +11,7 @@ import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -124,7 +125,7 @@ public class UserTaskController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
+    public ResponseEntity<Response> getAllByStatus(@Param(value = "isActive") Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
         List<UserTask> response = service.getAll(isActive);
