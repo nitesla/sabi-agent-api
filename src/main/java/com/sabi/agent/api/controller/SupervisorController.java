@@ -118,7 +118,7 @@ public class SupervisorController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
-    @GetMapping("")
+    @GetMapping("/list")
     public ResponseEntity<Response> getAllByStatus(@Param(value = "isActive") Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();

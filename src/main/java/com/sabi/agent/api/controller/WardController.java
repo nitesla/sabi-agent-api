@@ -112,7 +112,7 @@ public class WardController {
      * <remarks>this endpoint is responsible for enabling and disenabling a Ward</remarks>
      */
 
-    @PutMapping("/enabledisenable")
+    @PutMapping("/enabledisable")
     public ResponseEntity<Response> enableDisEnable(@Validated @RequestBody EnableDisEnableDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
@@ -123,7 +123,7 @@ public class WardController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
-    @GetMapping("")
+    @GetMapping("/list")
     public ResponseEntity<Response> getAllByStatus(@Param(value = "isActive") Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
