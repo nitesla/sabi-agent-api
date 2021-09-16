@@ -2,6 +2,7 @@ package com.sabi.agent.api.controller;
 
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentTargetDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
+import com.sabi.agent.core.dto.responseDto.AgentSupervisorResponseDto;
 import com.sabi.agent.core.dto.responseDto.AgentTargetResponseDto;
 import com.sabi.agent.core.models.agentModel.AgentTarget;
 import com.sabi.agent.service.services.AgentTargetService;
@@ -15,8 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping(Constants.APP_CONTENT +"agenttarget")
+@RequestMapping(Constants.APP_CONTENT + "agenttarget")
 public class AgentTargetController {
     private final AgentTargetService service;
 
@@ -74,12 +77,15 @@ public class AgentTargetController {
      */
     @GetMapping("")
     public ResponseEntity<Response> getAgentTargets(@RequestParam(value = "name", required = false) String name,
-                                                     @RequestParam(value = "page") int page,
-                                                     @RequestParam(value = "isActive", required = false) Boolean isActive,
-                                                     @RequestParam(value = "pageSize") int pageSize) {
+                                                    @RequestParam(value = "page") int page,
+                                                    @RequestParam(value = "min") int min,
+                                                    @RequestParam(value = "max") int max,
+                                                    @RequestParam(value = "superMax") int superMax,
+                                                    @RequestParam(value = "isActive", required = false) Boolean isActive,
+                                                    @RequestParam(value = "pageSize") int pageSize) {
         HttpStatus httpCode;
         Response resp = new Response();
-        Page<AgentTarget> response = service.findAll(name, isActive, PageRequest.of(page, pageSize));
+        Page<AgentTarget> response = service.findAll(name, isActive, min, max, superMax, PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -101,6 +107,18 @@ public class AgentTargetController {
         service.enableDisEnableState(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<Response> getALlByStatus(@RequestParam("isActive") boolean isActive){
+        HttpStatus httpCode;
+        Response resp = new Response();
+        List<AgentTargetResponseDto> response = service.getAllByStatus(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }

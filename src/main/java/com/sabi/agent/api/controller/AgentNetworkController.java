@@ -4,6 +4,7 @@ package com.sabi.agent.api.controller;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentNetworkDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.responseDto.AgentNetworkResponseDto;
+import com.sabi.agent.core.dto.responseDto.MarketResponseDto;
 import com.sabi.agent.core.models.agentModel.AgentNetwork;
 import com.sabi.agent.service.services.AgentNetworkService;
 import com.sabi.framework.dto.responseDto.Response;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"agentnetwork")
@@ -103,6 +106,18 @@ public class AgentNetworkController {
         service.enableDisEnableState(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<Response> getALlByStatus(@RequestParam("isActive") boolean isActive){
+        HttpStatus httpCode;
+        Response resp = new Response();
+        List<AgentNetworkResponseDto> response = service.getAllByStatus(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }

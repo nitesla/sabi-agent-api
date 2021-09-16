@@ -24,17 +24,17 @@ public class AgentSupervisorController {
         this.service = service;
     }
 
-//    @PostMapping("")
-//    public ResponseEntity<Response> createAgentSupervisor(@Validated @RequestBody AgentSupervisorDto request) {
-//        HttpStatus httpCode;
-//        Response resp = new Response();
-//        AgentSupervisorResponseDto response = service.createAgentSupervisor(request);
-//        resp.setCode(CustomResponseCode.SUCCESS);
-//        resp.setDescription("Successful");
-//        resp.setData(response);
-//        httpCode = HttpStatus.CREATED;
-//        return new ResponseEntity<>(resp, httpCode);
-//    }
+    @PostMapping("")
+    public ResponseEntity<Response> createAgentSupervisor(@Validated @RequestBody AgentSupervisorDto request) {
+        HttpStatus httpCode;
+        Response resp = new Response();
+        AgentSupervisorResponseDto response = service.createAgentSupervisor(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Successful");
+        resp.setData(response);
+        httpCode = HttpStatus.CREATED;
+        return new ResponseEntity<>(resp, httpCode);
+    }
 
     @PutMapping("")
     public ResponseEntity<Response> updateAgentSupervisor(@Validated @RequestBody AgentSupervisorDto request) {
@@ -100,6 +100,18 @@ public class AgentSupervisorController {
         service.enableDisEnableState(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<Response> getALlByStatus(@RequestParam("isActive") boolean isActive){
+        HttpStatus httpCode;
+        Response resp = new Response();
+        List<AgentSupervisorResponseDto> response = service.getAllByStatus(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
