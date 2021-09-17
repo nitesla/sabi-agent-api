@@ -111,6 +111,7 @@ public class CreditLevelController {
     }
 
 
+
     @GetMapping("/list")
     public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive){
         HttpStatus httpCode ;
