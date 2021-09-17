@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@SuppressWarnings("ALL")
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"agenttarget")
 public class AgentTargetController {
@@ -72,14 +75,19 @@ public class AgentTargetController {
      * </summary>
      * <remarks>this endpoint is responsible for getting all records and its searchable</remarks>
      */
+
+
     @GetMapping("")
     public ResponseEntity<Response> getAgentTargets(@RequestParam(value = "name", required = false) String name,
-                                                     @RequestParam(value = "page") int page,
+                                                    @RequestParam(value = "min", required = false) Integer min,
+                                                    @RequestParam(value = "max", required = false) Integer max,
+                                                    @RequestParam(value = "superMax", required = false) Integer superMax,
+                                                    @RequestParam(value = "page") int page,
                                                      @RequestParam(value = "isActive", required = false) Boolean isActive,
                                                      @RequestParam(value = "pageSize") int pageSize) {
         HttpStatus httpCode;
         Response resp = new Response();
-        Page<AgentTarget> response = service.findAll(name, isActive, PageRequest.of(page, pageSize));
+        Page<AgentTarget> response = service.findAll(name,isActive,min,max,superMax,PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -101,6 +109,20 @@ public class AgentTargetController {
         service.enableDisEnableState(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+
+
+    @GetMapping("/list")
+    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        List<AgentTarget> response = service.getAll(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }

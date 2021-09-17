@@ -9,12 +9,14 @@ import com.sabi.agent.service.services.UserTaskService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Date;
 
 @SuppressWarnings("All")
 @RestController
@@ -87,21 +89,21 @@ public class UserTaskController {
      * <remarks>this endpoint is responsible for getting all records and its searchable</remarks>
      */
 
-//    @GetMapping("")
-//    public ResponseEntity<Response> getUserTasks(@RequestParam(value = "endDate",required = false) Date endDate,
-//                                                 @RequestParam(value = "dateAssigned",required = false)Date dateAssigned,
-//                                                 @RequestParam(value = "status",required = false) String status,
-//                                                 @RequestParam(value = "page") int page,
-//                                                 @RequestParam(value = "pageSize") int pageSize){
-//        HttpStatus httpCode ;
-//        Response resp = new Response();
-//        Page<UserTask> response = service.findAll(endDate, dateAssigned, status, PageRequest.of(page, pageSize));
-//        resp.setCode(CustomResponseCode.SUCCESS);
-//        resp.setDescription("Record fetched successfully !");
-//        resp.setData(response);
-//        httpCode = HttpStatus.OK;
-//        return new ResponseEntity<>(resp, httpCode);
-//    }
+    @GetMapping("")
+    public ResponseEntity<Response> getUserTasks(@RequestParam(value = "endDate",required = false) Date endDate,
+                                                 @RequestParam(value = "dateAssigned",required = false)Date dateAssigned,
+                                                 @RequestParam(value = "status",required = false) String status,
+                                                 @RequestParam(value = "page") int page,
+                                                 @RequestParam(value = "pageSize") int pageSize){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        Page<UserTask> response = service.findAll(endDate, dateAssigned, status, PageRequest.of(page, pageSize));
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
 
     /** <summary>
      * Enable disable
@@ -120,17 +122,17 @@ public class UserTaskController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
-    @GetMapping("")
-    public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
-        HttpStatus httpCode ;
-        Response resp = new Response();
-        List<UserTask> response = service.getAll(isActive);
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Record fetched successfully !");
-        resp.setData(response);
-        httpCode = HttpStatus.OK;
-        return new ResponseEntity<>(resp, httpCode);
-    }
+//    @GetMapping("")
+//    public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
+//        HttpStatus httpCode ;
+//        Response resp = new Response();
+//        List<UserTask> response = service.getAll(isActive);
+//        resp.setCode(CustomResponseCode.SUCCESS);
+//        resp.setDescription("Record fetched successfully !");
+//        resp.setData(response);
+//        httpCode = HttpStatus.OK;
+//        return new ResponseEntity<>(resp, httpCode);
+//    }
 
 
 }
