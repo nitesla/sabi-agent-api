@@ -9,6 +9,8 @@ import com.sabi.framework.service.UserService;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -16,11 +18,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @SuppressWarnings("All")
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"user")
 public class UserController {
 
+    private  static final Logger logger = LoggerFactory.getLogger(AgentController.class);
 
     private final UserService service;
     private final ModelMapper mapper;
@@ -221,16 +226,16 @@ public class UserController {
 
 
 
-//    @GetMapping("")
-//    public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
-//        HttpStatus httpCode ;
-//        Response resp = new Response();
-//        List<User> response = service.getAll(isActive);
-//        resp.setCode(CustomResponseCode.SUCCESS);
-//        resp.setDescription("Record fetched successfully !");
-//        resp.setData(response);
-//        httpCode = HttpStatus.OK;
-//        return new ResponseEntity<>(resp, httpCode);
-//    }
+    @GetMapping("/list")
+    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        List<User> response = service.getAll(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
 
 }

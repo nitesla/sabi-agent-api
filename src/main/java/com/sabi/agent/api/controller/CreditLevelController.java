@@ -16,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @SuppressWarnings("ALL")
 @Slf4j
 @RestController
@@ -75,13 +78,14 @@ public class CreditLevelController {
      * <remarks>this endpoint is responsible for getting all records and its searchable</remarks>
      */
     @GetMapping("")
-    public ResponseEntity<Response> getCreditLevels(@RequestParam(value = "limit")long limit,
-                                               @RequestParam(value = "repaymentPeriod") long repaymentPeriod, @RequestParam(value = "isActive",required = false)Boolean isActive,
+    public ResponseEntity<Response> getCreditLevels(@RequestParam(value = "limits",required = false)BigDecimal limits,
+//                                               @RequestParam(value = "repaymentPeriod",required = false) int repaymentPeriod,
+                                                    @RequestParam(value = "isActive",required = false)Boolean isActive,
                                                @RequestParam(value = "page") int page,
                                                @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<CreditLevel> response = service.findAll(limit, isActive,repaymentPeriod,PageRequest.of(page, pageSize));
+        Page<CreditLevel> response = service.findAll(limits,isActive,PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -102,6 +106,19 @@ public class CreditLevelController {
         service.enableDisEnableState(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+
+    @GetMapping("/list")
+    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        List<CreditLevel> response = service.getAll(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }

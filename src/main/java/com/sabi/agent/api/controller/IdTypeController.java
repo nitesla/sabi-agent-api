@@ -16,10 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @SuppressWarnings("All")
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"idtype")
 public class IdTypeController {
+
 
     private final IdTypeService service;
 
@@ -126,4 +129,17 @@ public class IdTypeController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
+
+
+    @GetMapping("/list")
+    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        List<IdType> response = service.getAll(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
 }
