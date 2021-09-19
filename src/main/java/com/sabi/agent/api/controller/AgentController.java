@@ -1,6 +1,7 @@
 package com.sabi.agent.api.controller;
 
 
+import com.sabi.agent.core.dto.agentDto.requestDto.AgentBvnVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentUpdateDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.CreateAgentRequestDto;
@@ -167,7 +168,7 @@ public class AgentController {
 
 
     @PutMapping("/agentbvnverifications")
-    public ResponseEntity<Response> agentBvnVerifications(@Validated @RequestBody AgentVerificationDto request){
+    public ResponseEntity<Response> agentBvnVerifications(@Validated @RequestBody AgentBvnVerificationDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
         service.agentBvnVerifications(request);
