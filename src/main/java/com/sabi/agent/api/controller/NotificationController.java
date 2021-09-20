@@ -2,14 +2,16 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.agent.core.dto.requestDto.NotificationRequestDto;
-import com.sabi.agent.core.models.notifications.Notification;
 import com.sabi.agent.service.services.NotificationService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @SuppressWarnings("All")
@@ -30,11 +32,10 @@ public class NotificationController {
      */
 
     @PostMapping("/email")
-    public ResponseEntity<Response> email(@RequestBody NotificationRequestDto request,
-                                            @RequestParam(value = "fingerprint",required = true)String fingerprint){
+    public ResponseEntity<Response> email(@RequestBody NotificationRequestDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        NotificationRequestDto response = service.emailNotificationRequest(request, fingerprint);
+        NotificationRequestDto response = service.emailNotificationRequest(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);
@@ -49,13 +50,10 @@ public class NotificationController {
      */
 
     @PostMapping("/sms")
-    public ResponseEntity<Response> sms(@RequestParam(value = "message",required = true)String message,
-                                          @RequestParam(value = "email",required = true)String email,
-                                          @RequestParam(value = "title",required = true)String title,
-                                          @RequestParam(value = "fingerprint",required = true)String fingerprint){
+    public ResponseEntity<Response> sms(@RequestBody NotificationRequestDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Notification response = service.smsNotificationRequest(message, email, title, fingerprint);
+        NotificationRequestDto response = service.smsNotificationRequest(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);

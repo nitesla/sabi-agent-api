@@ -9,8 +9,8 @@ import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -32,12 +32,10 @@ public class SmsController {
      */
 
     @PostMapping("")
-    public ResponseEntity<Response> testSms(@RequestParam(value = "message",required = true)String message,
-                                            @RequestParam(value = "phoneNumber",required = true)String phoneNumber,
-                                            @RequestParam(value = "fingerprint",required = true)String fingerprint){
+    public ResponseEntity<Response> testSms(@RequestBody SmsRequestDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        SmsRequestDto response = service.testSms(message, phoneNumber, fingerprint);
+        SmsRequestDto response = service.testSms(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);
