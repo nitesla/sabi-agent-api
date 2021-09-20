@@ -5,7 +5,7 @@ import com.sabi.agent.core.dto.requestDto.billPayments.AirtimeRequestDto;
 import com.sabi.agent.core.dto.requestDto.billPayments.BillCategoryRequestDTO;
 import com.sabi.agent.core.dto.responseDto.billPayments.BillCategoryResponseDTO;
 import com.sabi.agent.core.dto.responseDto.billPayments.BillerResponseDTO;
-import com.sabi.agent.service.services.billPayments.BillPaymentService;
+import com.sabi.agent.service.integrations.BillPaymentService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;

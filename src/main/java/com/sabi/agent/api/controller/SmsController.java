@@ -2,7 +2,7 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.agent.core.dto.requestDto.SmsRequestDto;
-import com.sabi.agent.service.services.SmsService;
+import com.sabi.agent.service.integrations.SmsService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;

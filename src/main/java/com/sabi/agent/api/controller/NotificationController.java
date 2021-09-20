@@ -2,7 +2,7 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.agent.core.dto.requestDto.NotificationRequestDto;
-import com.sabi.agent.service.services.NotificationService;
+import com.sabi.agent.service.integrations.NotificationService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
