@@ -3,13 +3,10 @@ package com.sabi.agent.api.controller;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentTargetDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.responseDto.AgentTargetResponseDto;
-import com.sabi.agent.core.models.agentModel.AgentTarget;
 import com.sabi.agent.service.services.AgentTargetService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -79,10 +76,10 @@ public class AgentTargetController {
                                                      @RequestParam(value = "pageSize") int pageSize) {
         HttpStatus httpCode;
         Response resp = new Response();
-        Page<AgentTarget> response = service.findAll(name, isActive, PageRequest.of(page, pageSize));
+//        Page<AgentTarget> response = service.findAll(name, isActive, PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
-        resp.setData(response);
+//        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
