@@ -1,7 +1,6 @@
 package com.sabi.agent.api.controller;
 
 
-
 import com.sabi.framework.dto.requestDto.PermissionDto;
 import com.sabi.framework.dto.responseDto.PermissionResponseDto;
 import com.sabi.framework.dto.responseDto.Response;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"permission")
 public class PermissionController {
+
+
 
     private final PermissionService service;
 

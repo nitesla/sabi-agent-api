@@ -1,6 +1,7 @@
 package com.sabi.agent.api.controller;
 
 
+import com.sabi.agent.core.dto.agentDto.requestDto.AgentBvnVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentUpdateDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.CreateAgentRequestDto;
@@ -14,6 +15,8 @@ import com.sabi.agent.service.services.AgentService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -21,9 +24,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"agent")
 public class AgentController {
+
+    private  static final Logger logger = LoggerFactory.getLogger(AgentController.class);
 
     private final AgentService service;
 
@@ -161,7 +168,7 @@ public class AgentController {
 
 
     @PutMapping("/agentbvnverifications")
-    public ResponseEntity<Response> agentBvnVerifications(@Validated @RequestBody AgentVerificationDto request){
+    public ResponseEntity<Response> agentBvnVerifications(@Validated @RequestBody AgentBvnVerificationDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
         service.agentBvnVerifications(request);
@@ -179,6 +186,20 @@ public class AgentController {
         service.agentIdCardVerifications(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+
+
+    @GetMapping("/list")
+    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        List<Agent> response = service.getAll(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
