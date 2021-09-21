@@ -1,6 +1,7 @@
 package com.sabi.agent.api.controller;
 
 
+import com.sabi.agent.core.dto.agentDto.requestDto.AgentBvnVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentUpdateDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.CreateAgentRequestDto;
@@ -11,6 +12,7 @@ import com.sabi.agent.core.dto.responseDto.CreateAgentResponseDto;
 import com.sabi.agent.core.dto.responseDto.QueryAgentResponseDto;
 import com.sabi.agent.core.models.agentModel.Agent;
 import com.sabi.agent.service.services.AgentService;
+import com.sabi.framework.dto.requestDto.ChangePasswordDto;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
@@ -65,6 +67,20 @@ public class AgentController {
         service.validateOTP(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+
+
+
+    @PutMapping("/passwordactivation")
+    public ResponseEntity<Response> agentPasswordActivation(@Validated @RequestBody ChangePasswordDto request){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        service.agentPasswordActivation(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Password changed successfully");
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
@@ -167,7 +183,7 @@ public class AgentController {
 
 
     @PutMapping("/agentbvnverifications")
-    public ResponseEntity<Response> agentBvnVerifications(@Validated @RequestBody AgentVerificationDto request){
+    public ResponseEntity<Response> agentBvnVerifications(@Validated @RequestBody AgentBvnVerificationDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
         service.agentBvnVerifications(request);

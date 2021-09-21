@@ -9,6 +9,9 @@ import com.sabi.agent.service.services.TargetTypeService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -87,22 +90,20 @@ public class TargetTypeController {
      * <remarks>this endpoint is responsible for getting all records and its searchable</remarks>
      */
 
-//    @GetMapping("")
-//    public ResponseEntity<Response> getWards(@RequestParam(value = "name",required = false)String name,
-//                                             @RequestParam(value = "isActive",required = false)Boolean isActive,
-//                                              @RequestParam(value = "page") int page,
-//                                              @RequestParam(value = "pageSize") int pageSize){
-//        HttpStatus httpCode ;
-//        Response resp = new Response();
-//        Page<TargetType> response = service.findAll(name, isActive, PageRequest.of(page, pageSize));
-//        resp.setCode(CustomResponseCode.SUCCESS);
-//        resp.setDescription("Record fetched successfully !");
-//        resp.setData(response);
-//        httpCode = HttpStatus.OK;
-//        return new ResponseEntity<>(resp, httpCode);
-//    }
-
-
+    @GetMapping("")
+    public ResponseEntity<Response> getWards(@RequestParam(value = "name",required = false)String name,
+                                             @RequestParam(value = "isActive",required = false)Boolean isActive,
+                                              @RequestParam(value = "page") int page,
+                                              @RequestParam(value = "pageSize") int pageSize){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        Page<TargetType> response = service.findAll(name, isActive, PageRequest.of(page, pageSize));
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
     /** <summary>
      * Enable disenable
      * </summary>
@@ -121,8 +122,8 @@ public class TargetTypeController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
-    @GetMapping("")
-    public ResponseEntity<Response> getAll(@PathVariable Boolean isActive){
+    @GetMapping("/list")
+    public ResponseEntity<Response> getAllByStatus(@Param(value = "isActive") Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
         List<TargetType> response = service.getAll(isActive);
