@@ -4,6 +4,7 @@ package com.sabi.agent.api.controller;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentNetworkDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.responseDto.AgentNetworkResponseDto;
+import com.sabi.agent.core.dto.responseDto.MarketResponseDto;
 import com.sabi.agent.core.models.agentModel.AgentNetwork;
 import com.sabi.agent.service.services.AgentNetworkService;
 import com.sabi.framework.dto.responseDto.Response;
