@@ -3,6 +3,7 @@ package com.sabi.agent.api.runner;
 import com.sabi.framework.models.User;
 import com.sabi.framework.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class AdminUserRunner implements ApplicationRunner {
@@ -17,6 +19,7 @@ public class AdminUserRunner implements ApplicationRunner {
 
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
+
 
 
     @Override
@@ -36,8 +39,11 @@ public class AdminUserRunner implements ApplicationRunner {
             user.setCreatedDate(LocalDateTime.now());
             user.setUpdatedDate(LocalDateTime.now());
             userRepo.save(user);
-
-
         }
     }
+
+
+
+
+
 }
