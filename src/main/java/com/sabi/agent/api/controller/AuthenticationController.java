@@ -54,7 +54,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody @Valid LoginRequest loginRequest, HttpServletRequest request)  {
 
-        log.info(":::::::::: Email Request %s:::::::::::::" + loginRequest.getEmail());
+        log.info(":::::::::: Phone Request %s:::::::::::::" + loginRequest.getPhone());
         String loginStatus;
         String ipAddress = Utility.getClientIp(request);
         User user = userService.loginUser(loginRequest);
@@ -67,15 +67,12 @@ public class AuthenticationController {
                     resp.setDescription("Change password Required, account has not been activated");
                     return new ResponseEntity<>(resp, HttpStatus.ACCEPTED);//202
                 }
-
-
                 if (user.getIsActive()==false) {
                     Response resp = new Response();
                     resp.setCode(CustomResponseCode.FAILED);
                     resp.setDescription("User Account Deactivated, please contact Administrator");
                     return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
                 }
-
 //                if (user.getLoginAttempts() >= Integer.parseInt(loginAttempts) || user.getLockedDate() != null) {
                 if ( user.getLockedDate() != null) {
                     // lock account after x failed attempts or locked date is not null
@@ -130,10 +127,10 @@ public class AuthenticationController {
 
 
 
-    @PostMapping("/externaltoken")
-    public void externalToken() throws Exception {
-       externalTokenService.externalTokenRequest();
-    }
+//    @PostMapping("/externaltoken")
+//    public void externalToken() throws Exception {
+//       externalTokenService.externalTokenRequest();
+//    }
 
 
 

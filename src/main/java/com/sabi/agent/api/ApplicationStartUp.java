@@ -1,14 +1,14 @@
-package com.kamel.fileupload;
+package com.sabi.agent.api;
 
-import com.kamel.fileupload.movefiles.MoveFiles;
+
+import com.sabi.framework.service.ExternalTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.util.Date;
 
 
@@ -17,13 +17,13 @@ import java.util.Date;
 @Component
 public class ApplicationStartUp implements ApplicationRunner {
 
-    @Value("${source.dir}")
-    private File sourceFile;
+    @Autowired
+    private ExternalTokenService externalTokenService;
 
 
     @Override
     public void run (ApplicationArguments args){
-        log.info("Directory clean up at : {}" , new Date());
-        MoveFiles.deleteFromSource(sourceFile);
+        log.info("Generate new space token at : {}" , new Date());
+        externalTokenService.externalTokenRequest();
     }
 }

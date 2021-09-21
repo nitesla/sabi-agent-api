@@ -25,12 +25,11 @@ public class AdminUserRunner implements ApplicationRunner {
         if(userRepo.count() == 0){
 
             User user = new User();
-            user.setFirstName("testuser");
-            user.setLastName("testuser2");
-//            user.setPassword("$2a$05$udhl.iGNid5O7tU/gjmMpO0.vaLdQG/QMV25Jx6dQX0AfZheIiaS2");
-            user.setPassword(passwordEncoder.encode("aminuA1@11"));
+            user.setFirstName("adminUser");
+            user.setLastName("adminUser2");
+            user.setPassword(passwordEncoder.encode("1111111"));
             user.setPhone("08136529363");
-            user.setEmail("tst@sabi.com");
+            user.setEmail("admin@sabi.com");
             user.setIsActive(true);
             user.setPasswordChangedOn(LocalDateTime.now());
             user.setCreatedBy(0L);

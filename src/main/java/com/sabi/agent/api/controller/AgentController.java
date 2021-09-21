@@ -12,6 +12,7 @@ import com.sabi.agent.core.dto.responseDto.CreateAgentResponseDto;
 import com.sabi.agent.core.dto.responseDto.QueryAgentResponseDto;
 import com.sabi.agent.core.models.agentModel.Agent;
 import com.sabi.agent.service.services.AgentService;
+import com.sabi.framework.dto.requestDto.ChangePasswordDto;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
@@ -66,6 +67,20 @@ public class AgentController {
         service.validateOTP(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+
+
+
+    @PutMapping("/passwordactivation")
+    public ResponseEntity<Response> agentPasswordActivation(@Validated @RequestBody ChangePasswordDto request){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        service.agentPasswordActivation(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Password changed successfully");
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
