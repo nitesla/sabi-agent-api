@@ -6,7 +6,7 @@ phases:
       - mvn clean
       - echo Project cleaned successfully...
       - mvn package
-      - echo Project lib jars installed successfully..
+      - echo Project lib jars installed successfully...
       
   build:
     commands:
