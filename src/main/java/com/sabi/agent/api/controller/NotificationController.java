@@ -8,14 +8,19 @@ import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 
 @SuppressWarnings("All")
 @RestController
+@Validated
+@Valid
 @RequestMapping(Constants.APP_CONTENT +"notification")
 public class NotificationController {
 
@@ -32,7 +37,7 @@ public class NotificationController {
      */
 
     @PostMapping("/email")
-    public ResponseEntity<Response> email(@RequestBody NotificationRequestDto request){
+    public ResponseEntity<Response> email(@Validated @RequestBody NotificationRequestDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
         NotificationRequestDto response = service.emailNotificationRequest(request);
@@ -50,7 +55,7 @@ public class NotificationController {
      */
 
     @PostMapping("/sms")
-    public ResponseEntity<Response> sms(@RequestBody NotificationRequestDto request){
+    public ResponseEntity<Response> sms(@Validated @RequestBody NotificationRequestDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
         NotificationRequestDto response = service.smsNotificationRequest(request);

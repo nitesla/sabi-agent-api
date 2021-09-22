@@ -11,13 +11,17 @@ import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
 @SuppressWarnings("All")
 @RestController
+@Validated
+@Valid
 @RequestMapping(Constants.APP_CONTENT +"billpayments")
 public class BillPaymentController {
 
@@ -34,7 +38,7 @@ public class BillPaymentController {
      */
 
     @PostMapping("/airtime")
-    public ResponseEntity<Response> airtimePayment(@RequestBody AirtimeRequestDto request){
+    public ResponseEntity<Response> airtimePayment(@Validated @RequestBody AirtimeRequestDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
         AirtimeRequestDto response = service.airtimePayment(request);
@@ -46,7 +50,7 @@ public class BillPaymentController {
     }
 
     @GetMapping("/billCategories")
-    public ResponseEntity<Response> getBillCategories(BillCategoryRequestDTO request){
+    public ResponseEntity<Response> getBillCategories(@Validated BillCategoryRequestDTO request){
         HttpStatus httpCode ;
         Response resp = new Response();
         List<BillCategoryResponseDTO> response = service.getBillCategories(request);
@@ -58,7 +62,7 @@ public class BillPaymentController {
     }
 
     @GetMapping("/{billCategoryId}")
-    public ResponseEntity<Response> getBillCategoryId(@PathVariable Integer billCategoryId,
+    public ResponseEntity<Response> getBillCategoryId(@Validated @PathVariable Integer billCategoryId,
                                                       @RequestParam(value = "fingerprint",required = true)String fingerprint){
         HttpStatus httpCode ;
         Response resp = new Response();

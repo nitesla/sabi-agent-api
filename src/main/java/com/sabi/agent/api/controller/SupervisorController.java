@@ -11,16 +11,18 @@ import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
+@Validated
+@Valid
 @RequestMapping(Constants.APP_CONTENT +"supervisor")
 public class SupervisorController {
 
@@ -73,7 +75,7 @@ public class SupervisorController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getSupervisor(@PathVariable Long id){
+    public ResponseEntity<Response> getSupervisor(@Validated @PathVariable Long id){
         HttpStatus httpCode ;
         Response resp = new Response();
         SupervisorResponseDto response = service.findSupervisor(id);
@@ -119,7 +121,7 @@ public class SupervisorController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getAllByStatus(@Param(value = "isActive") Boolean isActive){
+    public ResponseEntity<Response> getAllByStatus(@Validated @RequestParam(value = "isActive") Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
         List<Supervisor> response = service.getAll(isActive);

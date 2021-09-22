@@ -33,7 +33,7 @@ public class AdminUserRunner implements ApplicationRunner {
             user.setPassword(passwordEncoder.encode("1111111"));
             user.setPhone("08136529363");
             user.setEmail("admin@sabi.com");
-            user.setIsActive(true);
+            user.setActive(true);
             user.setPasswordChangedOn(LocalDateTime.now());
             user.setCreatedBy(0L);
             user.setCreatedDate(LocalDateTime.now());

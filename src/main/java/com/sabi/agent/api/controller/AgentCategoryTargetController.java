@@ -11,16 +11,18 @@ import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
+@Validated
+@Valid
 @RequestMapping(Constants.APP_CONTENT +"agentcategorytarget")
 public class AgentCategoryTargetController {
 
@@ -73,7 +75,7 @@ public class AgentCategoryTargetController {
      */
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getAgentCategoryTarget(@PathVariable Long id){
+    public ResponseEntity<Response> getAgentCategoryTarget(@Validated @PathVariable Long id){
         HttpStatus httpCode ;
         Response resp = new Response();
         AgentCategoryTargetResponseDto response = service.findAgentCategoryTarget(id);
@@ -126,7 +128,7 @@ public class AgentCategoryTargetController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getAllByStatus(@Param(value = "isActive") Boolean isActive){
+    public ResponseEntity<Response> getAllByStatus(@Validated @RequestParam(value = "isActive") Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
         List<AgentCategoryTarget> response = service.getAll(isActive);
