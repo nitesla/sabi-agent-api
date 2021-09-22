@@ -63,7 +63,7 @@ public class AuthenticationController {
         String ipAddress = Utility.getClientIp(request);
         User user = userService.loginUser(loginRequest);
         if (user != null) {
-            if (user.isLoginStatus()) {
+//            if (user.isLoginStatus()) {
                 //FIRST TIME LOGIN
                 if (user.getPasswordChangedOn() == null || user.isActive()==false) {
                     Response resp = new Response();
@@ -84,13 +84,13 @@ public class AuthenticationController {
                     throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "Your account has been locked, kindly contact System Administrator");
                 }
 
-            } else {
-                //update login failed count and failed login date
-                loginStatus = "failed";
-
-//                userService.updateFailedLogin(loginRequest.getEmail());
-                throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Invalid Login details.");
-            }
+//            } else {
+//                //update login failed count and failed login date
+//                loginStatus = "failed";
+//
+////                userService.updateFailedLogin(loginRequest.getEmail());
+//                throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Invalid Login details.");
+//            }
         } else {
             //NO NEED TO update login failed count and failed login date SINCE IT DOES NOT EXIST
             throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Login details does not exist");
