@@ -1,6 +1,8 @@
 package com.sabi.agent.api.controller;
 
 
+import com.sabi.agent.core.models.agentModel.Agent;
+import com.sabi.agent.service.repositories.agentRepo.AgentRepository;
 import com.sabi.framework.dto.requestDto.LoginRequest;
 import com.sabi.framework.dto.responseDto.AccessTokenWithUserDetails;
 import com.sabi.framework.dto.responseDto.Response;
@@ -46,9 +48,11 @@ public class AuthenticationController {
     private ExternalTokenService externalTokenService;
 
     private final UserService userService;
+    private final AgentRepository agentRepository;
 
-    public AuthenticationController(UserService userService) {
+    public AuthenticationController(UserService userService,AgentRepository agentRepository) {
         this.userService = userService;
+        this.agentRepository=agentRepository;
     }
 
     @PostMapping("/login")
@@ -100,9 +104,17 @@ public class AuthenticationController {
         tokenService.store(newToken, authWithToken);
         SecurityContextHolder.getContext().setAuthentication(authWithToken);
 //        userService.updateLogin(loginRequest.getEmail(), true);
-        String tokenTime= Utility.expiredTime();
+
+        String agentId= "";
+        if (user.getUserCategory().equals(Constants.AGENT_USER)) {
+            Agent agent = agentRepository.findByUserId(user.getId());
+            if(agent !=null){
+                log.info(":::: agent details ::::" +agent);
+                agentId = String.valueOf(agent.getId());
+            }
+        }
         AccessTokenWithUserDetails details = new AccessTokenWithUserDetails(newToken, user,
-                accessList,userService.getSessionExpiry(),tokenTime);
+                accessList,userService.getSessionExpiry(),agentId);
 
         return new ResponseEntity<>(details, HttpStatus.OK);
     }
