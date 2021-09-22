@@ -2,6 +2,7 @@ package com.sabi.agent.api.runner;
 
 import com.sabi.framework.models.User;
 import com.sabi.framework.repositories.UserRepository;
+import com.sabi.framework.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -33,6 +34,7 @@ public class AdminUserRunner implements ApplicationRunner {
             user.setPassword(passwordEncoder.encode("1111111"));
             user.setPhone("08136529363");
             user.setEmail("admin@sabi.com");
+            user.setUserCategory(Constants.ADMIN_USER);
             user.setActive(true);
             user.setPasswordChangedOn(LocalDateTime.now());
             user.setCreatedBy(0L);
