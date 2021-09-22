@@ -5,8 +5,10 @@ import com.sabi.agent.core.dto.agentDto.requestDto.AgentBvnVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentUpdateDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.CreateAgentRequestDto;
+import com.sabi.agent.core.dto.requestDto.EmailVerificationDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.requestDto.ValidateOTPRequest;
+import com.sabi.agent.core.dto.responseDto.AgentActivationResponse;
 import com.sabi.agent.core.dto.responseDto.AgentUpdateResponseDto;
 import com.sabi.agent.core.dto.responseDto.CreateAgentResponseDto;
 import com.sabi.agent.core.dto.responseDto.QueryAgentResponseDto;
@@ -78,9 +80,10 @@ public class AgentController {
     public ResponseEntity<Response> agentPasswordActivation(@Validated @RequestBody ChangePasswordDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        service.agentPasswordActivation(request);
+        AgentActivationResponse response = service.agentPasswordActivation(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Password changed successfully");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
@@ -136,11 +139,12 @@ public class AgentController {
     @GetMapping("")
     public ResponseEntity<Response> getAgents(@RequestParam(value = "userId",required = false)Long userId,
                                                @RequestParam(value = "isActive",required = false)Boolean isActive,
+                                               @RequestParam(value = "referralCode",required = false)String referralCode,
                                              @RequestParam(value = "page") int page,
                                              @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<Agent> response = service.findAll(userId,isActive, PageRequest.of(page, pageSize));
+        Page<Agent> response = service.findAll(userId,isActive,referralCode, PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -205,6 +209,18 @@ public class AgentController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
+
+
+    @PutMapping("/emailverifications")
+    public ResponseEntity<Response> emailVerifications(@Validated @RequestBody EmailVerificationDto request){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        service.agentEmailVerifications(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Email verified Successfully");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
 
 
     @GetMapping("/list")
