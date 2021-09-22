@@ -1,48 +1,46 @@
 package com.sabi.agent.api.controller;
 
 
-import com.sabi.agent.core.dto.agentDto.requestDto.AgentCategoryTaskDto;
+import com.sabi.agent.core.dto.agentDto.requestDto.AgentBankDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
-import com.sabi.agent.core.dto.responseDto.AgentCategoryTaskResponseDto;
-import com.sabi.agent.core.models.agentModel.AgentCategoryTask;
-import com.sabi.agent.service.services.AgentCategoryTaskService;
+import com.sabi.agent.core.dto.responseDto.AgentBankResponseDto;
+import com.sabi.agent.core.models.agentModel.AgentBank;
+import com.sabi.agent.service.services.AgentBankService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
-@Validated
-@Valid
-@RequestMapping(Constants.APP_CONTENT +"agentCategoryTask")
-public class AgentCategoryTaskController {
+@RequestMapping(Constants.APP_CONTENT +"agentBank")
+public class AgentBankController {
 
-    private final AgentCategoryTaskService service;
+    private final AgentBankService service;
 
-    public AgentCategoryTaskController(AgentCategoryTaskService service) {
+    public AgentBankController(AgentBankService service) {
         this.service = service;
     }
 
     /** <summary>
-     *  Agent Category Task creation endpoint
+     *  Agent Bank creation endpoint
      * </summary>
-     * <remarks>this endpoint is responsible for creation of new Agent Category Task</remarks>
+     * <remarks>this endpoint is responsible for creation of new Agent Bank</remarks>
      */
 
     @PostMapping("")
-    public ResponseEntity<Response> createAgentCategoryTask(@Validated @RequestBody AgentCategoryTaskDto request){
+    public ResponseEntity<Response> createAgentBank(@Validated @RequestBody AgentBankDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        AgentCategoryTaskResponseDto response = service.createAgentCategoryTask(request);
+        AgentBankResponseDto response = service.createAgentBank(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);
@@ -51,16 +49,16 @@ public class AgentCategoryTaskController {
     }
 
     /** <summary>
-     * Agent Category Task update endpoint
+     * Agent Bank update endpoint
      * </summary>
-     * <remarks>this endpoint is responsible for updating Agent Category Task</remarks>
+     * <remarks>this endpoint is responsible for updating Agent bank</remarks>
      */
 
     @PutMapping("")
-    public ResponseEntity<Response> updateAgentCategoryTask(@Validated @RequestBody  AgentCategoryTaskDto request){
+    public ResponseEntity<Response> updateAgentBank(@Validated @RequestBody  AgentBankDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        AgentCategoryTaskResponseDto response = service.updateAgentCategoryTask(request);
+        AgentBankResponseDto response = service.updateAgentBank(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Update Successful");
         resp.setData(response);
@@ -75,10 +73,10 @@ public class AgentCategoryTaskController {
      */
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getAgentCategoryTask(@Validated @PathVariable Long id){
+    public ResponseEntity<Response> getAgentBank(@PathVariable Long id){
         HttpStatus httpCode ;
         Response resp = new Response();
-        AgentCategoryTaskResponseDto response = service.findAgentCategoryTask(id);
+        AgentBankResponseDto response = service.findAgentBank(id);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -93,13 +91,14 @@ public class AgentCategoryTaskController {
      */
 
     @GetMapping("")
-    public ResponseEntity<Response> getAgentCategoryTasks(@RequestParam(value = "name",required = false)String name,
-                                             @RequestParam(value = "isActive",required = false)Boolean isActive,
-                                              @RequestParam(value = "page") int page,
-                                              @RequestParam(value = "pageSize") int pageSize){
+    public ResponseEntity<Response> getAgentCategoryTargets(@RequestParam(value = "agentId",required = false)Long agentId,
+                                                            @RequestParam(value = "bankId",required = false)Long bankId,
+                                                            @RequestParam(value = "accountNumber",required = false) int accountNumber,
+                                                            @RequestParam(value = "page") int page,
+                                                            @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<AgentCategoryTask> response = service.findAll(name, isActive, PageRequest.of(page, pageSize));
+        Page<AgentBank> response = service.findAll(agentId, bankId, accountNumber, PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -110,14 +109,14 @@ public class AgentCategoryTaskController {
     /** <summary>
      * Enable disenable
      * </summary>
-     * <remarks>this endpoint is responsible for enabling and disenabling a Agent Category Task</remarks>
+     * <remarks>this endpoint is responsible for enabling and disenabling a Agent Bank</remarks>
      */
 
     @PutMapping("/enabledisable")
     public ResponseEntity<Response> enableDisable(@Validated @RequestBody EnableDisEnableDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        service.enableDisableAgtCatTask(request);
+        service.enableDisableAgentBank(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         httpCode = HttpStatus.OK;
@@ -125,10 +124,10 @@ public class AgentCategoryTaskController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getAllByStatus(@Validated @RequestParam(value = "isActive") Boolean isActive){
+    public ResponseEntity<Response> getAllByStatus(@Param(value = "isActive") Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
-        List<AgentCategoryTask> response = service.getAll(isActive);
+        List<AgentBank> response = service.getAll(isActive);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);

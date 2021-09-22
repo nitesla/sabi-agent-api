@@ -35,7 +35,7 @@ public class AdminUserRunner implements ApplicationRunner {
             user.setPhone("08136529363");
             user.setEmail("admin@sabi.com");
             user.setUserCategory(Constants.ADMIN_USER);
-            user.setIsActive(true);
+            user.setActive(true);
             user.setPasswordChangedOn(LocalDateTime.now());
             user.setCreatedBy(0L);
             user.setCreatedDate(LocalDateTime.now());

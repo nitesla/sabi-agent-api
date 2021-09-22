@@ -8,14 +8,19 @@ import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 
 @SuppressWarnings("All")
 @RestController
+@Valid
+@Validated
 @RequestMapping(Constants.APP_CONTENT +"testsms")
 public class SmsController {
 
@@ -32,7 +37,7 @@ public class SmsController {
      */
 
     @PostMapping("")
-    public ResponseEntity<Response> testSms(@RequestBody SmsRequestDto request){
+    public ResponseEntity<Response> testSms(@Validated @RequestBody SmsRequestDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
         SmsRequestDto response = service.testSms(request);

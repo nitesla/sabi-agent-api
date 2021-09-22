@@ -11,16 +11,18 @@ import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
+@Valid
+@Validated
 @RequestMapping(Constants.APP_CONTENT +"targetType")
 public class TargetTypeController {
 
@@ -74,7 +76,7 @@ public class TargetTypeController {
      */
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getTargetType(@PathVariable Long id){
+    public ResponseEntity<Response> getTargetType(@Validated @PathVariable Long id){
         HttpStatus httpCode ;
         Response resp = new Response();
         TargetTypeResponseDto response = service.findTargetType(id);
@@ -123,7 +125,7 @@ public class TargetTypeController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getAllByStatus(@Param(value = "isActive") Boolean isActive){
+    public ResponseEntity<Response> getAllByStatus(@Validated @RequestParam(value = "isActive") Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
         List<TargetType> response = service.getAll(isActive);
