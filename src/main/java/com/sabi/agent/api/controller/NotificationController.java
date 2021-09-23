@@ -3,11 +3,7 @@ package com.sabi.agent.api.controller;
 
 import com.sabi.agent.core.dto.requestDto.NotificationRequestDto;
 import com.sabi.agent.service.integrations.NotificationService;
-import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
-import com.sabi.framework.utils.CustomResponseCode;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,15 +33,11 @@ public class NotificationController {
      */
 
     @PostMapping("/email")
-    public ResponseEntity<Response> email(@Validated @RequestBody NotificationRequestDto request){
-        HttpStatus httpCode ;
-        Response resp = new Response();
+    public NotificationRequestDto email(@Validated @RequestBody NotificationRequestDto request) throws Exception{
+
         NotificationRequestDto response = service.emailNotificationRequest(request);
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Successful");
-        resp.setData(response);
-        httpCode = HttpStatus.CREATED;
-        return new ResponseEntity<>(resp, httpCode);
+
+        return response;
     }
 
     /** <summary>
@@ -55,15 +47,10 @@ public class NotificationController {
      */
 
     @PostMapping("/sms")
-    public ResponseEntity<Response> sms(@Validated @RequestBody NotificationRequestDto request){
-        HttpStatus httpCode ;
-        Response resp = new Response();
+    public NotificationRequestDto sms(@Validated @RequestBody NotificationRequestDto request) throws Exception{
+
         NotificationRequestDto response = service.smsNotificationRequest(request);
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Successful");
-        resp.setData(response);
-        httpCode = HttpStatus.CREATED;
-        return new ResponseEntity<>(resp, httpCode);
+        return response;
     }
 
 
