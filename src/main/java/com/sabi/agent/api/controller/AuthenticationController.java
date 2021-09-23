@@ -88,6 +88,7 @@ public class AuthenticationController {
                 //update login failed count and failed login date
                 loginStatus = "failed";
 
+
 //                userService.updateFailedLogin(loginRequest.getEmail());
                 throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Invalid Login details.");
             }
