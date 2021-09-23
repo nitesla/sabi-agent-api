@@ -63,7 +63,7 @@ public class AuthenticationController {
         String ipAddress = Utility.getClientIp(request);
         User user = userService.loginUser(loginRequest);
         if (user != null) {
-//            if (user.isLoginStatus()) {
+            if (user.isLoginStatus()) {
                 //FIRST TIME LOGIN
                 if (user.getPasswordChangedOn() == null || user.isActive()==false) {
                     Response resp = new Response();
@@ -84,13 +84,13 @@ public class AuthenticationController {
                     throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "Your account has been locked, kindly contact System Administrator");
                 }
 
-//            } else {
-//                //update login failed count and failed login date
-//                loginStatus = "failed";
-//
-////                userService.updateFailedLogin(loginRequest.getEmail());
-//                throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Invalid Login details.");
-//            }
+            } else {
+                //update login failed count and failed login date
+                loginStatus = "failed";
+
+//                userService.updateFailedLogin(loginRequest.getEmail());
+                throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Invalid Login details.");
+            }
         } else {
             //NO NEED TO update login failed count and failed login date SINCE IT DOES NOT EXIST
             throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Login details does not exist");
@@ -107,16 +107,18 @@ public class AuthenticationController {
 
         String agentId= "";
         String referralCode="";
+        String isEmailVerified="";
         if (user.getUserCategory().equals(Constants.AGENT_USER)) {
             Agent agent = agentRepository.findByUserId(user.getId());
             if(agent !=null){
                 log.info(":::: agent details ::::" +agent);
                 agentId = String.valueOf(agent.getId());
                 referralCode=agent.getReferralCode();
+                isEmailVerified= String.valueOf(agent.getIsEmailVerified());
             }
         }
         AccessTokenWithUserDetails details = new AccessTokenWithUserDetails(newToken, user,
-                accessList,userService.getSessionExpiry(),agentId,referralCode);
+                accessList,userService.getSessionExpiry(),agentId,referralCode,isEmailVerified);
 
         return new ResponseEntity<>(details, HttpStatus.OK);
     }
