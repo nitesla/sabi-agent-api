@@ -107,16 +107,18 @@ public class AuthenticationController {
 
         String agentId= "";
         String referralCode="";
+        String isEmailVerified="";
         if (user.getUserCategory().equals(Constants.AGENT_USER)) {
             Agent agent = agentRepository.findByUserId(user.getId());
             if(agent !=null){
                 log.info(":::: agent details ::::" +agent);
                 agentId = String.valueOf(agent.getId());
                 referralCode=agent.getReferralCode();
+                isEmailVerified= String.valueOf(agent.getIsEmailVerified());
             }
         }
         AccessTokenWithUserDetails details = new AccessTokenWithUserDetails(newToken, user,
-                accessList,userService.getSessionExpiry(),agentId,referralCode);
+                accessList,userService.getSessionExpiry(),agentId,referralCode,isEmailVerified);
 
         return new ResponseEntity<>(details, HttpStatus.OK);
     }
