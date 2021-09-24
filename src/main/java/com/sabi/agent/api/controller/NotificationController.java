@@ -1,8 +1,7 @@
 package com.sabi.agent.api.controller;
 
-
-import com.sabi.agent.core.dto.requestDto.NotificationRequestDto;
-import com.sabi.agent.service.integrations.NotificationService;
+import com.sabi.framework.notification.requestDto.NotificationRequestDto;
+import com.sabi.framework.notification.service.NotificationService;
 import com.sabi.framework.utils.Constants;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
