@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 public class CustomWebMvcAutoConfig extends WebMvcConfigurerAdapter {
+//public class CustomWebMvcAutoConfig implements WebMvcConfigurer {
 
     @Value("${external-resource-location}")
     String externalResourceLocation;
