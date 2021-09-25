@@ -1,9 +1,10 @@
 package com.sabi.agent.api.controller;
 
 
-import com.sabi.agent.core.dto.requestDto.NotificationRequestDto;
-import com.sabi.agent.service.integrations.NotificationService;
+
 import com.sabi.framework.dto.responseDto.Response;
+import com.sabi.framework.notification.requestDto.NotificationRequestDto;
+import com.sabi.framework.service.NotificationService;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.http.HttpStatus;
