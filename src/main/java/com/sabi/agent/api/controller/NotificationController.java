@@ -1,16 +1,12 @@
 package com.sabi.agent.api.controller;
 
 
-import com.sabi.framework.*;
 
 
-import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.notification.requestDto.NotificationRequestDto;
-import com.sabi.framework.service.NotificationService;
+import com.sabi.framework.notification.responseDto.NotificationResponseDto;
+import com.sabi.framework.notification.service.NotificationService;
 import com.sabi.framework.utils.Constants;
-import com.sabi.framework.utils.CustomResponseCode;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,9 +36,9 @@ public class NotificationController {
      */
 
     @PostMapping("/email")
-    public NotificationRequestDto email(@Validated @RequestBody NotificationRequestDto request) throws Exception{
+    public NotificationResponseDto email(@Validated @RequestBody NotificationRequestDto request) throws Exception{
 
-        NotificationRequestDto response = service.emailNotificationRequest(request);
+        NotificationResponseDto response = service.emailNotificationRequest(request);
 
         return response;
     }
@@ -54,9 +50,9 @@ public class NotificationController {
      */
 
     @PostMapping("/sms")
-    public NotificationRequestDto sms(@Validated @RequestBody NotificationRequestDto request) throws Exception{
+    public NotificationResponseDto sms(@Validated @RequestBody NotificationRequestDto request) throws Exception{
 
-        NotificationRequestDto response = service.smsNotificationRequest(request);
+        NotificationResponseDto response = service.smsNotificationRequest(request);
         return response;
     }
 
