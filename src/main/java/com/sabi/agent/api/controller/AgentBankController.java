@@ -99,7 +99,7 @@ public class AgentBankController {
                                                             @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<AgentBank> response = service.findAll(agentId, bankId, bankName, accountNumber, PageRequest.of(page, pageSize));
+        Page<AgentBank> response = service.findAll(agentId, bankId,bankName, accountNumber, PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
