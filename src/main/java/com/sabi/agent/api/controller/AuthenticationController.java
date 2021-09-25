@@ -115,11 +115,11 @@ public class AuthenticationController {
                 log.info(":::: agent details ::::" +agent);
                 agentId = String.valueOf(agent.getId());
                 referralCode=agent.getReferralCode();
-                isEmailVerified= String.valueOf(agent.getIsEmailVerified());
+//                isEmailVerified= String.valueOf(agent.get);
             }
         }
         AccessTokenWithUserDetails details = new AccessTokenWithUserDetails(newToken, user,
-                accessList,userService.getSessionExpiry(),agentId,referralCode,isEmailVerified);
+                accessList,userService.getSessionExpiry(),agentId,referralCode);
 
         return new ResponseEntity<>(details, HttpStatus.OK);
     }

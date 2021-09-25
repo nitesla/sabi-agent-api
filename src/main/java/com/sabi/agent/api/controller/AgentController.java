@@ -7,7 +7,6 @@ import com.sabi.agent.core.dto.agentDto.requestDto.AgentVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.CreateAgentRequestDto;
 import com.sabi.agent.core.dto.requestDto.EmailVerificationDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
-import com.sabi.agent.core.dto.requestDto.ResendOTP;
 import com.sabi.agent.core.dto.requestDto.ValidateOTPRequest;
 import com.sabi.agent.core.dto.responseDto.AgentActivationResponse;
 import com.sabi.agent.core.dto.responseDto.AgentUpdateResponseDto;
@@ -63,16 +62,16 @@ public class AgentController {
 
 
 
-    @PutMapping("/resendotp")
-    public ResponseEntity<Response> reSendOtp(@Validated @RequestBody ResendOTP request){
-        HttpStatus httpCode ;
-        Response resp = new Response();
-        service.resendAgentOTP(request);
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("OTP sent successfully");
-        httpCode = HttpStatus.OK;
-        return new ResponseEntity<>(resp, httpCode);
-    }
+//    @PutMapping("/resendotp")
+//    public ResponseEntity<Response> reSendOtp(@Validated @RequestBody ResendOTP request){
+//        HttpStatus httpCode ;
+//        Response resp = new Response();
+//        service.resendAgentOTP(request);
+//        resp.setCode(CustomResponseCode.SUCCESS);
+//        resp.setDescription("OTP sent successfully");
+//        httpCode = HttpStatus.OK;
+//        return new ResponseEntity<>(resp, httpCode);
+//    }
 
 
     @PutMapping("/validateotp")
