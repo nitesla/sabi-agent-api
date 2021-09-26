@@ -1,13 +1,10 @@
 package com.sabi.agent.api.controller;
 
 
-import com.sabi.agent.core.dto.requestDto.NotificationRequestDto;
-import com.sabi.agent.service.integrations.NotificationService;
-import com.sabi.framework.dto.responseDto.Response;
+import com.sabi.framework.notification.requestDto.NotificationRequestDto;
+import com.sabi.framework.notification.responseDto.NotificationResponseDto;
+import com.sabi.framework.service.NotificationService;
 import com.sabi.framework.utils.Constants;
-import com.sabi.framework.utils.CustomResponseCode;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,16 +33,12 @@ public class NotificationController {
      * <remarks>this endpoint is responsible for email notification</remarks>
      */
 
+
     @PostMapping("/email")
-    public ResponseEntity<Response> email(@Validated @RequestBody NotificationRequestDto request){
-        HttpStatus httpCode ;
-        Response resp = new Response();
-        NotificationRequestDto response = service.emailNotificationRequest(request);
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Successful");
-        resp.setData(response);
-        httpCode = HttpStatus.CREATED;
-        return new ResponseEntity<>(resp, httpCode);
+    public NotificationResponseDto emailNotification (@RequestBody NotificationRequestDto request) throws Exception {
+        System.out.println("::::; EMAIL ::::::"+ request);
+        NotificationResponseDto response= service.emailNotificationRequest(request);
+        return response;
     }
 
     /** <summary>
@@ -54,17 +47,17 @@ public class NotificationController {
      * <remarks>this endpoint is responsible for sms notification</remarks>
      */
 
-    @PostMapping("/sms")
-    public ResponseEntity<Response> sms(@Validated @RequestBody NotificationRequestDto request){
-        HttpStatus httpCode ;
-        Response resp = new Response();
-        NotificationRequestDto response = service.smsNotificationRequest(request);
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Successful");
-        resp.setData(response);
-        httpCode = HttpStatus.CREATED;
-        return new ResponseEntity<>(resp, httpCode);
-    }
+//    @PostMapping("/sms")
+//    public ResponseEntity<Response> sms(@Validated @RequestBody NotificationRequestDto request){
+//        HttpStatus httpCode ;
+//        Response resp = new Response();
+//        NotificationRequestDto response = service.smsNotificationRequest(request);
+//        resp.setCode(CustomResponseCode.SUCCESS);
+//        resp.setDescription("Successful");
+//        resp.setData(response);
+//        httpCode = HttpStatus.CREATED;
+//        return new ResponseEntity<>(resp, httpCode);
+//    }
 
 
 
