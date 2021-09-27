@@ -46,7 +46,7 @@ public class AgentController {
      * <remarks>this endpoint is responsible for creation of new Agent</remarks>
      */
 
-    @PostMapping("")
+    @PostMapping("/signup")
     public ResponseEntity<Response> agentSignUp(@Validated @RequestBody CreateAgentRequestDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
