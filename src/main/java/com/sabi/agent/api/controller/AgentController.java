@@ -9,10 +9,7 @@ import com.sabi.agent.core.dto.requestDto.EmailVerificationDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.requestDto.ResendOTP;
 import com.sabi.agent.core.dto.requestDto.ValidateOTPRequest;
-import com.sabi.agent.core.dto.responseDto.AgentActivationResponse;
-import com.sabi.agent.core.dto.responseDto.AgentUpdateResponseDto;
-import com.sabi.agent.core.dto.responseDto.CreateAgentResponseDto;
-import com.sabi.agent.core.dto.responseDto.QueryAgentResponseDto;
+import com.sabi.agent.core.dto.responseDto.*;
 import com.sabi.agent.core.models.agentModel.Agent;
 import com.sabi.agent.service.services.AgentService;
 import com.sabi.framework.dto.requestDto.ChangePasswordDto;
@@ -228,9 +225,23 @@ public class AgentController {
     public ResponseEntity<Response> emailVerifications(@Validated @RequestBody EmailVerificationDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        service.agentEmailVerifications(request);
+        EmailVerificationResponseDto response =service.agentEmailVerifications(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Email verified Successfully");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+
+    @PutMapping("/phoneverifications")
+    public ResponseEntity<Response> phoneVerifications(@Validated @RequestBody EmailVerificationDto request){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        EmailVerificationResponseDto response =service.agentPhoneVerifications(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Phone verified Successfully");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
