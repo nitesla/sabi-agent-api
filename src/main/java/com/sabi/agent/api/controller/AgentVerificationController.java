@@ -27,13 +27,30 @@ public class AgentVerificationController {
 
 
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Response> getAgentVerification(@PathVariable Long id){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        AgentVerification response = service.findAgentVerification(id);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+
+
+
     @GetMapping("")
-    public ResponseEntity<Response> getAgentsVerification(@RequestParam(value = "agentId",required = false)Long agentId,
+    public ResponseEntity<Response> getAgentsVerification(@RequestParam(value = "name") String name,
+                                                          @RequestParam(value = "agentId",required = false)Long agentId,
                                                           @RequestParam(value = "page") int page,
                                                           @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<AgentVerification> response = service.findAll(agentId, PageRequest.of(page, pageSize));
+        Page<AgentVerification> response = service.findAll(name,agentId, PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -54,15 +71,6 @@ public class AgentVerificationController {
     }
 
 
-    @PutMapping("/verificationstatus")
-    public ResponseEntity<Response> changeVerificationStatus(@Validated @RequestBody Verification request){
-        HttpStatus httpCode ;
-        Response resp = new Response();
-        service.changeVerificationStatus(request);
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Verification status changed Successfully");
-        httpCode = HttpStatus.OK;
-        return new ResponseEntity<>(resp, httpCode);
-    }
+
 
 }
