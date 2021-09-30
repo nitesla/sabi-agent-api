@@ -188,16 +188,16 @@ public class UserController {
     }
 
 
-//    @PutMapping("/transactionpin")
-//    public ResponseEntity<Response> transactionPin(@Validated @RequestBody CreateTransactionPinDto request){
-//        HttpStatus httpCode ;
-//        Response resp = new Response();
-//        service.setPin(request);
-//        resp.setCode(CustomResponseCode.SUCCESS);
-//        resp.setDescription("Successful");
-//        httpCode = HttpStatus.OK;
-//        return new ResponseEntity<>(resp, httpCode);
-//    }
+    @PutMapping("/changepin")
+    public ResponseEntity<Response> transactionPin(@Validated @RequestBody ChangeTransactionPin request){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        service.setPin(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
 
 
 
@@ -213,7 +213,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/changepin")
+    @PutMapping("/transactionpin")
     public ResponseEntity<Response> changeTransactionPin(@Validated @RequestBody CreateTransactionPinDto request){
         HttpStatus httpCode ;
         Response resp = new Response();

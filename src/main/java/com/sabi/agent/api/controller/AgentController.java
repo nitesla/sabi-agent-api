@@ -1,6 +1,7 @@
 package com.sabi.agent.api.controller;
 
 
+import com.sabi.agent.core.dto.ValidateEmailOtpRequest;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentBvnVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentUpdateDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentVerificationDto;
@@ -9,7 +10,10 @@ import com.sabi.agent.core.dto.requestDto.EmailVerificationDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.requestDto.ResendOTP;
 import com.sabi.agent.core.dto.requestDto.ValidateOTPRequest;
-import com.sabi.agent.core.dto.responseDto.*;
+import com.sabi.agent.core.dto.responseDto.AgentActivationResponse;
+import com.sabi.agent.core.dto.responseDto.AgentUpdateResponseDto;
+import com.sabi.agent.core.dto.responseDto.CreateAgentResponseDto;
+import com.sabi.agent.core.dto.responseDto.EmailVerificationResponseDto;
 import com.sabi.agent.core.models.agentModel.Agent;
 import com.sabi.agent.service.services.AgentService;
 import com.sabi.framework.dto.requestDto.ChangePasswordDto;
@@ -133,7 +137,7 @@ public class AgentController {
     public ResponseEntity<Response> getAgent(@PathVariable Long id){
         HttpStatus httpCode ;
         Response resp = new Response();
-        QueryAgentResponseDto response = service.findAgent(id);
+        Agent response = service.findAgent(id);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -149,12 +153,14 @@ public class AgentController {
     @GetMapping("")
     public ResponseEntity<Response> getAgents(@RequestParam(value = "userId",required = false)Long userId,
                                                @RequestParam(value = "isActive",required = false)Boolean isActive,
-                                               @RequestParam(value = "referralCode",required = false)String referralCode,
+                                               @RequestParam(value = "referrer",required = false)String referrer,
                                              @RequestParam(value = "page") int page,
                                              @RequestParam(value = "pageSize") int pageSize){
+
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<Agent> response = service.findAll(userId,isActive,referralCode, PageRequest.of(page, pageSize));
+        Page<Agent> response = service.findAll(userId,isActive,referrer, PageRequest.of(page, pageSize));
+
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -242,6 +248,19 @@ public class AgentController {
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Phone verified Successfully");
         resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+
+
+    @PutMapping("/emailotpvalidation")
+    public ResponseEntity<Response> emailOtpValidation(@Validated @RequestBody ValidateEmailOtpRequest request){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        service.validateOTPForEmailVerification(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Successful");
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
