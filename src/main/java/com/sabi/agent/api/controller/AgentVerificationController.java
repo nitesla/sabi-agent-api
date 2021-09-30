@@ -63,7 +63,7 @@ public class AgentVerificationController {
     public ResponseEntity<Response> verification(@Validated @RequestBody Verification request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        service.changeVerificationStatus(request);
+        service.verification(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         httpCode = HttpStatus.OK;
