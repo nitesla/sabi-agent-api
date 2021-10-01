@@ -47,11 +47,11 @@ public class BillPaymentController {
     }
 
     @GetMapping("/billCategories")
-    public ResponseDto getBillCategories(@Validated @RequestParam(value = "direction")String direction,
+    public ResponseDto getBillCategories(@Validated @RequestParam(value = "direction", required = false)String direction,
                                                       @RequestParam(value = "fingerprint",required = true)String fingerprint,
                                                       @RequestParam(value = "page")Integer page,
                                                       @RequestParam(value = "size") Integer size,
-                                                      @RequestParam(value = "sortBy") String sortBy) throws Exception{
+                                                      @RequestParam(value = "sortBy", required = false) String sortBy) throws Exception{
 
         ResponseDto response = service.getBillCategories(direction, fingerprint, page, size, sortBy);
 
