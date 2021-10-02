@@ -9,6 +9,7 @@ import com.sabi.agent.service.services.AgentBankService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
+import lombok.var;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
@@ -94,12 +95,12 @@ public class AgentBankController {
     public ResponseEntity<Response> getAgentCategoryTargets(@RequestParam(value = "agentId",required = false)Long agentId,
                                                             @RequestParam(value = "bankId",required = false)Long bankId,
                                                             @RequestParam(value = "bankName",required = false)String bankName,
-                                                            @RequestParam(value = "accountNumber",required = false) int accountNumber,
+                                                            @RequestParam(value = "accountNumber",required = false) String accountNumber,
                                                             @RequestParam(value = "page") int page,
                                                             @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<AgentBank> response = service.findAll(agentId, bankId,bankName, accountNumber, PageRequest.of(page, pageSize));
+        List<AgentBankResponseDto> response = service.findAll(agentId, bankId,bankName, accountNumber, PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -124,11 +125,23 @@ public class AgentBankController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
+    @GetMapping("/isDefault/{id}")
+    public ResponseEntity<Response> setDefault(@PathVariable("id") long id){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        var res = service.setDefalult(id);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Successful");
+        resp.setData(res);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
     @GetMapping("/list")
     public ResponseEntity<Response> getAllByStatus(@Param(value = "isActive") Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
-        List<AgentBank> response = service.getAll(isActive);
+        List<AgentBankResponseDto> response = service.getAll(isActive);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
