@@ -39,7 +39,7 @@ public class AuthenticationController {
     private  static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
     @Value("${login.attempts}")
-    private String loginAttempts;
+    private int loginAttempts;
 
     @Autowired
     private TokenService tokenService;
@@ -58,7 +58,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody @Valid LoginRequest loginRequest, HttpServletRequest request)  {
 
-        log.info(":::::::::: Phone Request %s:::::::::::::" + loginRequest.getPhone());
+        log.info(":::::::::: login Request %s:::::::::::::" + loginRequest.getUsername());
         String loginStatus;
         String ipAddress = Utility.getClientIp(request);
         User user = userService.loginUser(loginRequest);
@@ -77,19 +77,15 @@ public class AuthenticationController {
                     resp.setDescription("User Account Deactivated, please contact Administrator");
                     return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
                 }
-//                if (user.getLoginAttempts() >= Integer.parseInt(loginAttempts) || user.getLockedDate() != null) {
-                if ( user.getLockedDate() != null) {
+                if (user.getLoginAttempts() >= loginAttempts || user.getLockedDate() != null) {
                     // lock account after x failed attempts or locked date is not null
                     userService.lockLogin(user.getId());
                     throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "Your account has been locked, kindly contact System Administrator");
                 }
-
             } else {
                 //update login failed count and failed login date
                 loginStatus = "failed";
-
-
-//                userService.updateFailedLogin(loginRequest.getEmail());
+                userService.updateFailedLogin(user.getId());
                 throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Invalid Login details.");
             }
         } else {
@@ -104,7 +100,7 @@ public class AuthenticationController {
         authWithToken.setToken(newToken);
         tokenService.store(newToken, authWithToken);
         SecurityContextHolder.getContext().setAuthentication(authWithToken);
-//        userService.updateLogin(loginRequest.getEmail(), true);
+        userService.updateLogin(user.getId());
 
         String agentId= "";
         String referralCode="";
