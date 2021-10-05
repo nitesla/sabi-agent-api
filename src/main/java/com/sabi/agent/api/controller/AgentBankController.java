@@ -92,7 +92,7 @@ public class AgentBankController {
      */
 
     @GetMapping("")
-    public ResponseEntity<Response> getAgentCategoryTargets(@RequestParam(value = "agentId",required = false)Long agentId,
+    public ResponseEntity<Response> getAgentBanks(@RequestParam(value = "agentId",required = false)Long agentId,
                                                             @RequestParam(value = "bankId",required = false)Long bankId,
                                                             @RequestParam(value = "bankName",required = false)String bankName,
                                                             @RequestParam(value = "accountNumber",required = false) String accountNumber,
