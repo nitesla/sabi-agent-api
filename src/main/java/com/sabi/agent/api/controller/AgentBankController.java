@@ -138,7 +138,7 @@ public class AgentBankController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getAllByStatus(@Param(value = "isActive") Boolean isActive){
+    public ResponseEntity<Response> getAllByStatus(@RequestParam(value = "isActive") boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
         List<AgentBankResponseDto> response = service.getAll(isActive);
