@@ -44,7 +44,7 @@ public class AgentVerificationController {
 
 
     @GetMapping("")
-    public ResponseEntity<Response> getAgentsVerification(@RequestParam(value = "name") String name,
+    public ResponseEntity<Response> getAgentsVerification(@RequestParam(value = "name",required = false) String name,
                                                           @RequestParam(value = "agentId",required = false)Long agentId,
                                                           @RequestParam(value = "page") int page,
                                                           @RequestParam(value = "pageSize") int pageSize){
