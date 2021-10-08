@@ -139,5 +139,15 @@ public class AgentCategoryTargetController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
-
+    @GetMapping("/agentCategory/{id}")
+    public ResponseEntity<Response> getAllByAgentCategory(@PathVariable(value = "id") long id){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        List<AgentCategoryTargetResponseDto> response = service.getByAgentCatID(id);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
 }

@@ -59,7 +59,7 @@ public class BillPaymentController {
     }
 
     @GetMapping("/{billCategoryId}")
-    public ResponseDto getBillCategoryId(@Validated @PathVariable Integer billCategoryId,
+    public ResponseDto getBillCategoryId( @PathVariable("billCategoryId") Integer billCategoryId,
                                                       @RequestParam(value = "fingerprint",required = true)String fingerprint) throws Exception{
         HttpStatus httpCode ;
         Response resp = new Response();

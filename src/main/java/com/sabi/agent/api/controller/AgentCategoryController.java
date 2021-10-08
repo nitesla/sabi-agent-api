@@ -4,17 +4,21 @@ package com.sabi.agent.api.controller;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentCategoryDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.responseDto.AgentCategoryResponseDto;
+import com.sabi.agent.core.dto.responseDto.MarketResponseDto;
 import com.sabi.agent.core.models.agentModel.AgentCategory;
 import com.sabi.agent.service.services.AgentCategoryService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
+import lombok.var;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
@@ -127,4 +131,39 @@ public class AgentCategoryController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
+    @GetMapping("/status")
+    public ResponseEntity<Response> getALlByStatus(@RequestParam("isActive") boolean isActive){
+        HttpStatus httpCode;
+        Response resp = new Response();
+        List<AgentCategoryResponseDto> response = service.getAllByStatus(isActive);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @GetMapping("/default")
+    public ResponseEntity<Response> getDefault(@RequestParam("isActive") boolean isActive){
+        HttpStatus httpCode;
+        Response resp = new Response();
+        List<AgentCategoryResponseDto> response = service.getDefault();
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @GetMapping("/isDefault/{id}")
+    public ResponseEntity<Response> setDefault(@PathVariable("id") long id){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        var res = service.setDefalult(id);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Successful");
+        resp.setData(res);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
 }
