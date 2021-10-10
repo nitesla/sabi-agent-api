@@ -18,7 +18,7 @@ public class PingController {
 
 
     @GetMapping("/check")
-    public ResponseEntity<Response> agentSignUp(){
+    public ResponseEntity<Response> ping(){
         HttpStatus httpCode ;
         Response resp = new Response();
         resp.setCode(CustomResponseCode.SUCCESS);

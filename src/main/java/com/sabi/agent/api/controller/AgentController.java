@@ -154,14 +154,14 @@ public class AgentController {
     public ResponseEntity<Response> getAgents(@RequestParam(value = "userId",required = false)Long userId,
                                                @RequestParam(value = "isActive",required = false)Boolean isActive,
                                                @RequestParam(value = "referrer",required = false)String referrer,
-                                               @RequestParam(value = "firstName",required = false)String firstName,
-                                               @RequestParam(value = "lastName",required = false)String lastName,
+//                                               @RequestParam(value = "firstName",required = false)String firstName,
+//                                               @RequestParam(value = "lastName",required = false)String lastName,
                                              @RequestParam(value = "page") int page,
                                              @RequestParam(value = "pageSize") int pageSize){
 
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<Agent> response = service.findAll(userId,isActive,referrer,firstName,lastName, PageRequest.of(page, pageSize));
+        Page<Agent> response = service.findAll(userId,isActive,referrer, PageRequest.of(page, pageSize));
 
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
