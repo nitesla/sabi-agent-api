@@ -166,7 +166,7 @@ public class AgentController {
         HttpStatus httpCode ;
         Response resp = new Response();
         if(firstName !=null ){
-            Page<User> response = userService.findAgentUser(firstName,lastName, PageRequest.of(page, pageSize));
+            Page<User> response = service.findAgentUser(firstName,lastName, PageRequest.of(page, pageSize));
             resp.setCode(CustomResponseCode.SUCCESS);
             resp.setDescription("Record fetched successfully !");
             resp.setData(response);

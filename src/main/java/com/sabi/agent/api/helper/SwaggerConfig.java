@@ -1,4 +1,4 @@
-package com.sabi.agent.api.helper;//package com.spinel.config;
+package com.sabi.agent.api.helper;
 
 
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,7 @@ public class SwaggerConfig {
     }
 
     private ApiInfo metaData() {
-        return new ApiInfoBuilder().title("......... Nig LTD")
+        return new ApiInfoBuilder().title("Sabi Nig LTD")
                 .description("Sabi agent application").version("1.0.0")
                 .license("Apache License Version 2.0").licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
                 .contact(new Contact("............. Nig LTD", "www.xxxxxxx.com ", "info@xxxxxx.com")).build();
