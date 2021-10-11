@@ -18,6 +18,8 @@ import com.sabi.agent.core.models.agentModel.Agent;
 import com.sabi.agent.service.services.AgentService;
 import com.sabi.framework.dto.requestDto.ChangePasswordDto;
 import com.sabi.framework.dto.responseDto.Response;
+import com.sabi.framework.models.User;
+import com.sabi.framework.service.UserService;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.slf4j.Logger;
@@ -38,9 +40,11 @@ public class AgentController {
     private  static final Logger logger = LoggerFactory.getLogger(AgentController.class);
 
     private final AgentService service;
+    private final UserService userService;
 
-    public AgentController(AgentService service) {
+    public AgentController(AgentService service,UserService userService) {
         this.service = service;
+        this.userService = userService;
     }
 
 
@@ -154,58 +158,31 @@ public class AgentController {
     public ResponseEntity<Response> getAgents(@RequestParam(value = "userId",required = false)Long userId,
                                                @RequestParam(value = "isActive",required = false)Boolean isActive,
                                                @RequestParam(value = "referrer",required = false)String referrer,
-//                                               @RequestParam(value = "firstName",required = false)String firstName,
-//                                               @RequestParam(value = "lastName",required = false)String lastName,
-                                             @RequestParam(value = "page") int page,
-                                             @RequestParam(value = "pageSize") int pageSize) throws Exception {
-
-        HttpStatus httpCode ;
-        Response resp = new Response();
-        Page<Agent> response = service.findAll(userId,isActive,referrer, PageRequest.of(page, pageSize));
-
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Record fetched successfully !");
-        resp.setData(response);
-        httpCode = HttpStatus.OK;
-        return new ResponseEntity<>(resp, httpCode);
-    }
-
-    @GetMapping("/sort/each")
-    public ResponseEntity<Response> getAgentsSort(@RequestParam(value = "userId",required = false)Long userId,
-                                              @RequestParam(value = "isActive",required = false)Boolean isActive,
-                                              @RequestParam(value = "referrer",required = false)String referrer,
-                                                  @RequestParam(value = "firstName",required = false)String firstName,
-                                                  @RequestParam(value = "lastName",required = false)String lastName,
-                                              @RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "10") int pageSize) throws Exception {
-
-        HttpStatus httpCode ;
-        Response resp = new Response();
-        Page<Agent> response = service.findAllAgentsBySort(userId,isActive,referrer,firstName,lastName, PageRequest.of(page, pageSize));
-
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Record fetched successfully !");
-        resp.setData(response);
-        httpCode = HttpStatus.OK;
-        return new ResponseEntity<>(resp, httpCode);
-    }
-
-    @GetMapping("/sort")
-    public ResponseEntity<Response> getAgentsByFirstNameOrLastName(
-                                              @RequestParam(value = "isActive",required = false)Boolean isActive,
-                                              @RequestParam(value = "referrer",required = false)String referrer,
                                                @RequestParam(value = "firstName",required = false)String firstName,
-                                              @RequestParam(value = "lastName",required = false)String lastName) throws Exception {
+                                               @RequestParam(value = "lastName",required = false)String lastName,
+                                               @RequestParam(value = "page") int page,
+                                               @RequestParam(value = "pageSize") int pageSize) throws Exception {
+
         HttpStatus httpCode ;
         Response resp = new Response();
-        Agent response = service.findByFirstNameOrLastName(isActive,referrer,firstName,lastName);
-
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Record fetched successfully !");
-        resp.setData(response);
-        httpCode = HttpStatus.OK;
-        return new ResponseEntity<>(resp, httpCode);
+        if(firstName !=null ){
+            Page<User> response = userService.findAgentUser(firstName,lastName, PageRequest.of(page, pageSize));
+            resp.setCode(CustomResponseCode.SUCCESS);
+            resp.setDescription("Record fetched successfully !");
+            resp.setData(response);
+            httpCode = HttpStatus.OK;
+            return new ResponseEntity<>(resp, httpCode);
+        }else {
+            Page<Agent> response = service.findAllAgents(userId, isActive, referrer, PageRequest.of(page, pageSize));
+            resp.setCode(CustomResponseCode.SUCCESS);
+            resp.setDescription("Record fetched successfully !");
+            resp.setData(response);
+            httpCode = HttpStatus.OK;
+            return new ResponseEntity<>(resp, httpCode);
+        }
     }
+
+
 
 
     /** <summary>
