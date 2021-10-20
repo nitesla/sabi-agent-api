@@ -3,6 +3,8 @@ package com.sabi.agent.api.controller;
 
 import com.sabi.agent.core.integrations.order.*;
 import com.sabi.agent.core.integrations.order.orderResponse.CreateOrderResponse;
+import com.sabi.agent.core.integrations.request.MerchBuyRequest;
+import com.sabi.agent.core.integrations.response.MerchBuyResponse;
 import com.sabi.agent.core.models.AgentOrder;
 import com.sabi.agent.service.integrations.OrderService;
 import com.sabi.framework.dto.responseDto.Response;
@@ -67,6 +69,11 @@ public class OrderController {
     public OrderHistoryResponse orderHistory (OrderHistoryRequest request) throws Exception {
         OrderHistoryResponse response= service.orderHistory(request);
         return response;
+    }
+
+    @PostMapping("/merchBuy")
+    public MerchBuyResponse merchBuy(@RequestBody MerchBuyRequest request){
+        return service.merchBuy(request);
     }
 
 
