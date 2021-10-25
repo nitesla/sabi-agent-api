@@ -37,7 +37,7 @@ public class AdminUserRunner implements ApplicationRunner {
             user.setUsername("08136529363");
             user.setLoginAttempts(0l);
             user.setUserCategory(Constants.ADMIN_USER);
-            user.setActive(true);
+            user.setIsActive(true);
             user.setPasswordChangedOn(LocalDateTime.now());
             user.setCreatedBy(0L);
             user.setCreatedDate(LocalDateTime.now());
