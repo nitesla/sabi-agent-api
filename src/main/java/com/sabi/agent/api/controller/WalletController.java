@@ -3,8 +3,10 @@ package com.sabi.agent.api.controller;
 import com.sabi.agent.api.helper.WalletHelper;
 import com.sabi.agent.core.wallet_integration.WalletSignUpDto;
 import com.sabi.agent.core.wallet_integration.request.InitiateTopUpRequest;
+import com.sabi.agent.core.wallet_integration.request.WalletBvnRequest;
 import com.sabi.agent.core.wallet_integration.request.WalletSignUpRequest;
 import com.sabi.agent.core.wallet_integration.response.ResponseMetaData;
+import com.sabi.agent.core.wallet_integration.response.WalletBvnResponse;
 import com.sabi.agent.service.services.WalletService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
@@ -66,6 +68,11 @@ public class WalletController {
     public ResponseEntity<Response> getUserWalletDetails(@RequestHeader("fingerprint") String fingerPrint,
                                                          @RequestHeader("userId") String userId){
         return helper.buildResponse(service.getUserWalletDetails(fingerPrint, userId), HttpStatus.OK);
+    }
+
+    @PostMapping("/bvn")
+    public ResponseEntity<Response> checkBvn(@RequestHeader("fingerprint") String fingerPrint, @Valid @RequestBody WalletBvnRequest request){
+        return helper.buildResponse(service.checkBvn(request, fingerPrint), HttpStatus.OK);
     }
 
 }
