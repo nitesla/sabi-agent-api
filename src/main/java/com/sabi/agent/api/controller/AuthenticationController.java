@@ -65,13 +65,13 @@ public class AuthenticationController {
         if (user != null) {
             if (user.isLoginStatus()) {
                 //FIRST TIME LOGIN
-                if (user.getPasswordChangedOn() == null || user.isActive()==false) {
+                if (user.getPasswordChangedOn() == null || user.getIsActive()==false) {
                     Response resp = new Response();
                     resp.setCode(CustomResponseCode.CHANGE_P_REQUIRED);
                     resp.setDescription("Change password Required, account has not been activated");
                     return new ResponseEntity<>(resp, HttpStatus.ACCEPTED);//202
                 }
-                if (user.isActive()==false) {
+                if (user.getIsActive()==false) {
                     Response resp = new Response();
                     resp.setCode(CustomResponseCode.FAILED);
                     resp.setDescription("User Account Deactivated, please contact Administrator");
