@@ -26,14 +26,14 @@ public class MerchantController {
 
     @GetMapping("/otp")
     public MerchantOtpResponse generateOtp(@RequestHeader("fingerprint") String fingerPrint,
-                                           @RequestHeader("phoneNumber") String msisdn) throws UnsupportedEncodingException {
+                                           @PathVariable("phoneNumber") String msisdn) throws UnsupportedEncodingException {
         return service.sendOtp(fingerPrint, msisdn);
     }
 
     @GetMapping("/validateOtp")
     public MerchantOtpValidationResponse validateOtp(@RequestHeader("fingerprint") String fingerPrint,
-                                                     @RequestHeader("userId") String userId,
-                                                     @RequestHeader("otp") String otp){
+                                                     @PathVariable("userId") String userId,
+                                                     @PathVariable("otp") String otp){
         return service.validateOtp(fingerPrint, userId, otp);
     }
 
