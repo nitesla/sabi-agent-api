@@ -9,6 +9,7 @@ import com.sabi.framework.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.PathParam;
 import java.io.UnsupportedEncodingException;
 
 @RestController
@@ -26,14 +27,14 @@ public class MerchantController {
 
     @GetMapping("/otp")
     public MerchantOtpResponse generateOtp(@RequestHeader("fingerprint") String fingerPrint,
-                                           @PathVariable("phoneNumber") String msisdn) throws UnsupportedEncodingException {
-        return service.sendOtp(fingerPrint, msisdn);
+                                           @RequestParam("phoneNumber") String phoneNumber) throws UnsupportedEncodingException {
+        return service.sendOtp(fingerPrint, phoneNumber);
     }
 
     @GetMapping("/validateOtp")
     public MerchantOtpValidationResponse validateOtp(@RequestHeader("fingerprint") String fingerPrint,
-                                                     @PathVariable("userId") String userId,
-                                                     @PathVariable("otp") String otp){
+                                                     @RequestParam("userId") String userId,
+                                                     @RequestParam("otp") String otp){
         return service.validateOtp(fingerPrint, userId, otp);
     }
 
