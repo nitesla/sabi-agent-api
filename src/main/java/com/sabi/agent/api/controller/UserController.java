@@ -2,6 +2,7 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.framework.dto.requestDto.*;
+import com.sabi.framework.dto.responseDto.ActivateUserResponse;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.dto.responseDto.UserResponse;
 import com.sabi.framework.models.User;
@@ -180,9 +181,10 @@ public class UserController {
     public ResponseEntity<Response> activateUser(@Validated @RequestBody ActivateUserAccountDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        service.activateUser(request);
+        ActivateUserResponse response = service.activateUser(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
