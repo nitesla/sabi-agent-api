@@ -3,8 +3,10 @@ package com.sabi.agent.api.controller;
 import com.sabi.agent.api.helper.WalletHelper;
 import com.sabi.agent.core.wallet_integration.WalletSignUpDto;
 import com.sabi.agent.core.wallet_integration.request.InitiateTopUpRequest;
+import com.sabi.agent.core.wallet_integration.request.WalletBvnRequest;
 import com.sabi.agent.core.wallet_integration.request.WalletSignUpRequest;
 import com.sabi.agent.core.wallet_integration.response.ResponseMetaData;
+import com.sabi.agent.core.wallet_integration.response.WalletBvnResponse;
 import com.sabi.agent.service.services.WalletService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
@@ -34,7 +36,7 @@ public class WalletController {
 
 
     @GetMapping("/balance")
-    public ResponseEntity<Response> getBalance(@RequestHeader("userId") String userId,
+    public ResponseEntity<Response> getBalance(@RequestParam("userId") String userId,
                                                @RequestHeader("fingerprint") String fingerPrint){
         ResponseMetaData balance = service.getBalance(userId, fingerPrint);
         return helper.buildResponse(balance, HttpStatus.OK);
@@ -58,14 +60,19 @@ public class WalletController {
 
     @PostMapping("/initiateTopUp")
     public ResponseEntity<Response> initiateTopUp(@RequestHeader("fingerprint") String fingerPrint,
-                                                  @RequestHeader("userId")String userId,@RequestBody @Valid InitiateTopUpRequest initiateTopUpRequest){
+                                                  @RequestParam("userId")String userId,@RequestBody @Valid InitiateTopUpRequest initiateTopUpRequest){
         return helper.buildResponse(service.initiateTopUp(userId, fingerPrint, initiateTopUpRequest), HttpStatus.OK);
     }
 
     @GetMapping("/walletDetails")
     public ResponseEntity<Response> getUserWalletDetails(@RequestHeader("fingerprint") String fingerPrint,
-                                                         @RequestHeader("userId") String userId){
+                                                         @RequestParam("userId") String userId){
         return helper.buildResponse(service.getUserWalletDetails(fingerPrint, userId), HttpStatus.OK);
+    }
+
+    @PostMapping("/bvn")
+    public ResponseEntity<Response> checkBvn(@RequestHeader("fingerprint") String fingerPrint, @Valid @RequestBody WalletBvnRequest request){
+        return helper.buildResponse(service.checkBvn(request, fingerPrint), HttpStatus.OK);
     }
 
 }
