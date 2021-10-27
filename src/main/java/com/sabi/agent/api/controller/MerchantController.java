@@ -9,7 +9,6 @@ import com.sabi.framework.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.PathParam;
 import java.io.UnsupportedEncodingException;
 
 @RestController

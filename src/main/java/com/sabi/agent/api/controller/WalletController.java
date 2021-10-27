@@ -36,7 +36,7 @@ public class WalletController {
 
 
     @GetMapping("/balance")
-    public ResponseEntity<Response> getBalance(@RequestHeader("userId") String userId,
+    public ResponseEntity<Response> getBalance(@RequestParam("userId") String userId,
                                                @RequestHeader("fingerprint") String fingerPrint){
         ResponseMetaData balance = service.getBalance(userId, fingerPrint);
         return helper.buildResponse(balance, HttpStatus.OK);
@@ -60,13 +60,13 @@ public class WalletController {
 
     @PostMapping("/initiateTopUp")
     public ResponseEntity<Response> initiateTopUp(@RequestHeader("fingerprint") String fingerPrint,
-                                                  @RequestHeader("userId")String userId,@RequestBody @Valid InitiateTopUpRequest initiateTopUpRequest){
+                                                  @RequestParam("userId")String userId,@RequestBody @Valid InitiateTopUpRequest initiateTopUpRequest){
         return helper.buildResponse(service.initiateTopUp(userId, fingerPrint, initiateTopUpRequest), HttpStatus.OK);
     }
 
     @GetMapping("/walletDetails")
     public ResponseEntity<Response> getUserWalletDetails(@RequestHeader("fingerprint") String fingerPrint,
-                                                         @RequestHeader("userId") String userId){
+                                                         @RequestParam("userId") String userId){
         return helper.buildResponse(service.getUserWalletDetails(fingerPrint, userId), HttpStatus.OK);
     }
 
