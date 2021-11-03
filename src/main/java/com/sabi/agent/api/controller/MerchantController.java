@@ -1,6 +1,7 @@
 package com.sabi.agent.api.controller;
 
 import com.sabi.agent.core.merchant_integration.request.MerchantSignUpRequest;
+import com.sabi.agent.core.merchant_integration.response.MerchantDetailResponse;
 import com.sabi.agent.core.merchant_integration.response.MerchantOtpResponse;
 import com.sabi.agent.core.merchant_integration.response.MerchantOtpValidationResponse;
 import com.sabi.agent.core.merchant_integration.response.MerchantSignUpResponse;
@@ -44,9 +45,15 @@ public class MerchantController {
     public Page<RegisteredMerchant> findMerchants(@RequestHeader("fingerPrint") String fingerPrint,
                                                   @RequestParam(value = "agentId", required = false) String agentId,
                                                   @RequestParam(value = "merchantId", required = false) String merchantId,
-                                                  @RequestParam("page") int page,
-                                                  @RequestParam("pageSize") int pageSize) {
+                                                  @RequestParam("page") Integer page,
+                                                  @RequestParam("pageSize") Integer pageSize) {
         return service.findMerchant(agentId, merchantId, PageRequest.of(page, pageSize));
+    }
+
+    @GetMapping("/{id}")
+    public MerchantDetailResponse getSignedUpMerchantDetail(@RequestHeader("fingerPrint") String fingerPrint,
+                                                       @PathVariable("id") String id){
+        return service.merchantDetails(id, fingerPrint);
     }
 
 }
