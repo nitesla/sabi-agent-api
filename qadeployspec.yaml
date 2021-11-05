@@ -22,6 +22,11 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      - echo logging in to docker ..
+      - aws s3 cp s3://spineldockerprofile/docker.key docker.key
+      - docker login -u spinelconsult --password-stdin < docker.key
+      - rm docker.key
+      - echo docker login successful ..
       - echo Building the Docker image...
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
