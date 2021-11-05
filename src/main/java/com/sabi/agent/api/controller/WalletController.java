@@ -44,8 +44,8 @@ public class WalletController {
 
     @GetMapping("/wallets")
     public ResponseEntity<Response> balanceSync(@RequestHeader(value = "fingerprint") String fingerPrint,
-                                                @RequestHeader("pageSize") String pageSize,
-                                                @RequestHeader("page") String page){
+                                                @RequestParam("pageSize") String pageSize,
+                                                @RequestParam("page") String page){
         ResponseMetaData walletStatusResponse = service.getAllWallets(fingerPrint, pageSize, page);
         return helper.buildResponse(walletStatusResponse, HttpStatus.OK);
     }
