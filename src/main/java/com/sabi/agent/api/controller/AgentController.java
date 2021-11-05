@@ -2,7 +2,6 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.agent.core.dto.ValidateEmailOtpRequest;
-import com.sabi.agent.core.dto.agentDto.requestDto.AgentBvnVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentUpdateDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentVerificationDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.CreateAgentRequestDto;
@@ -15,6 +14,7 @@ import com.sabi.agent.core.dto.responseDto.AgentUpdateResponseDto;
 import com.sabi.agent.core.dto.responseDto.CreateAgentResponseDto;
 import com.sabi.agent.core.dto.responseDto.EmailVerificationResponseDto;
 import com.sabi.agent.core.models.agentModel.Agent;
+import com.sabi.agent.core.wallet_integration.response.WalletBvnResponse;
 import com.sabi.agent.service.services.AgentService;
 import com.sabi.framework.dto.requestDto.ChangePasswordDto;
 import com.sabi.framework.dto.responseDto.Response;
@@ -219,10 +219,10 @@ public class AgentController {
 
 
     @PutMapping("/agentbvnverifications")
-    public ResponseEntity<Response> agentBvnVerifications(@Validated @RequestBody AgentBvnVerificationDto request){
+    public ResponseEntity<Response> agentBvnVerifications(@Validated @RequestBody WalletBvnResponse request, long agentId){
         HttpStatus httpCode ;
         Response resp = new Response();
-        service.agentBvnVerifications(request);
+        service.agentBvnVerifications(request,agentId);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         httpCode = HttpStatus.OK;
