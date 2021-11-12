@@ -218,16 +218,16 @@ public class AgentController {
     }
 
 
-    @PutMapping("/agentbvnverifications")
-    public ResponseEntity<Response> agentBvnVerifications(@Validated @RequestBody AgentBvnVerificationDto request){
-        HttpStatus httpCode ;
-        Response resp = new Response();
-        service.agentBvnVerifications(request);
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Successful");
-        httpCode = HttpStatus.OK;
-        return new ResponseEntity<>(resp, httpCode);
-    }
+//    @PutMapping("/agentbvnverifications")
+//    public ResponseEntity<Response> agentBvnVerifications(@Validated @RequestBody AgentBvnVerificationDto request){
+//        HttpStatus httpCode ;
+//        Response resp = new Response();
+//        service.agentBvnVerifications(request);
+//        resp.setCode(CustomResponseCode.SUCCESS);
+//        resp.setDescription("Successful");
+//        httpCode = HttpStatus.OK;
+//        return new ResponseEntity<>(resp, httpCode);
+//    }
 
 
     @PutMapping("/agentidcardverifications")

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 @Validated
 @RestController
@@ -73,6 +74,25 @@ public class WalletController {
     @PostMapping("/bvn")
     public ResponseEntity<Response> checkBvn(@RequestHeader("fingerprint") String fingerPrint, @Valid @RequestBody WalletBvnRequest request){
         return helper.buildResponse(service.checkBvn(request, fingerPrint), HttpStatus.OK);
+    }
+
+    @GetMapping("/transactionHistory")
+    public ResponseEntity<Response> transactionHistory(@RequestHeader("fingerPrint") String fingerPrint,
+                                                       @RequestParam(value = "endDate", required = false) String endDate,
+                                                       @RequestParam(value = "name", required = false) String name,
+                                                       @RequestParam("page") String page,
+                                                       @RequestParam("pageSize") String pageSize,
+                                                       @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
+                                                       @RequestParam(value = "startDate", required = false) String startDate,
+                                                       @RequestParam(value = "transactionClass", required = false) String transactionClass,
+                                                       @RequestParam(value = "transactionStatus", required = false) String transactionStatus,
+                                                       @RequestParam(value = "transactionType", required = false) String transactionType,
+                                                       @RequestParam("userId") String userId,
+                                                       @RequestParam(value = "walletTransactionsSearchTerm", required = false) String walletTransactionsSearchTerm,
+                                                       @RequestParam(value = "walletTransactionsSortCriteria", required = false) String walletTransactionsSortCriteria
+                                                       ){
+        return helper.buildResponse(service.walletHistory(fingerPrint,endDate,name, page, pageSize, phoneNumber, startDate, transactionClass, transactionStatus, transactionType, userId,
+                walletTransactionsSearchTerm, walletTransactionsSortCriteria), HttpStatus.OK);
     }
 
 }
