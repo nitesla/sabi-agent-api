@@ -1,10 +1,10 @@
 package com.sabi.agent.api.controller;
 
+import com.sabi.framework.integrations.payment_integration.models.request.CheckOutRequest;
+import com.sabi.framework.integrations.payment_integration.models.response.CheckOutResponse;
+import com.sabi.framework.integrations.payment_integration.models.response.PaymentStatusResponse;
 import com.sabi.framework.service.PaymentService;
 import com.sabi.framework.utils.Constants;
-import com.sabi.integrations.payment_integration.models.request.CheckOutRequest;
-import com.sabi.integrations.payment_integration.models.response.CheckOutResponse;
-import com.sabi.integrations.payment_integration.models.response.PaymentStatusResponse;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
