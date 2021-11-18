@@ -102,7 +102,7 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authWithToken);
         userService.updateLogin(user.getId());
 
-        String agentId= "";
+        String clientId= "";
         String referralCode="";
         String isEmailVerified="";
         String partnerCategory ="";
@@ -110,13 +110,13 @@ public class AuthenticationController {
             Agent agent = agentRepository.findByUserId(user.getId());
             if(agent !=null){
                 log.info(":::: agent details ::::" +agent);
-                agentId = String.valueOf(agent.getId());
+                clientId = String.valueOf(agent.getId());
                 referralCode=agent.getReferralCode();
                 isEmailVerified= String.valueOf(agent.getIsEmailVerified());
             }
         }
         AccessTokenWithUserDetails details = new AccessTokenWithUserDetails(newToken, user,
-                accessList,userService.getSessionExpiry(),agentId,referralCode,isEmailVerified,partnerCategory);
+                accessList,userService.getSessionExpiry(),clientId,referralCode,isEmailVerified,partnerCategory);
 
         return new ResponseEntity<>(details, HttpStatus.OK);
     }
