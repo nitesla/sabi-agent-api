@@ -3,8 +3,8 @@ package com.sabi.agent.api.controller;
 
 import com.sabi.agent.core.integrations.request.AllProductsRequest;
 import com.sabi.agent.core.integrations.request.SingleProductRequest;
-import com.sabi.agent.core.integrations.response.AllProductResponse;
 import com.sabi.agent.core.integrations.response.SingleProductResponse;
+import com.sabi.agent.core.integrations.response.product.AllProductResponse;
 import com.sabi.agent.service.integrations.ProductService;
 import com.sabi.framework.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
