@@ -5,6 +5,7 @@ import com.sabi.agent.core.models.agentModel.Agent;
 import com.sabi.agent.service.repositories.agentRepo.AgentRepository;
 import com.sabi.framework.dto.requestDto.LoginRequest;
 import com.sabi.framework.dto.responseDto.AccessTokenWithUserDetails;
+import com.sabi.framework.dto.responseDto.PartnersCategoryReturn;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.exceptions.LockedException;
 import com.sabi.framework.exceptions.UnauthorizedException;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @SuppressWarnings("All")
@@ -105,7 +107,7 @@ public class AuthenticationController {
         String clientId= "";
         String referralCode="";
         String isEmailVerified="";
-        String partnerCategory ="";
+        List<PartnersCategoryReturn> partnerCategory= null;
         if (user.getUserCategory().equals(Constants.OTHER_USER)) {
             Agent agent = agentRepository.findByUserId(user.getId());
             if(agent !=null){
