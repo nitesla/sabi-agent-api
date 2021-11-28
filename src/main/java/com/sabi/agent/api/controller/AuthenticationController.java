@@ -3,8 +3,10 @@ package com.sabi.agent.api.controller;
 
 import com.sabi.agent.core.models.agentModel.Agent;
 import com.sabi.agent.service.repositories.agentRepo.AgentRepository;
+import com.sabi.framework.dto.requestDto.GeneratePassword;
 import com.sabi.framework.dto.requestDto.LoginRequest;
 import com.sabi.framework.dto.responseDto.AccessTokenWithUserDetails;
+import com.sabi.framework.dto.responseDto.GeneratePasswordResponse;
 import com.sabi.framework.dto.responseDto.PartnersCategoryReturn;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.exceptions.LockedException;
@@ -27,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,6 +87,8 @@ public class AuthenticationController {
                     userService.lockLogin(user.getId());
                     throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "Your account has been locked, kindly contact System Administrator");
                 }
+
+                userService.validateGeneratedPassword(user.getId());
             } else {
                 //update login failed count and failed login date
                 loginStatus = "failed";
@@ -148,6 +153,19 @@ public class AuthenticationController {
        externalTokenService.externalTokenRequest();
     }
 
+
+
+    @PutMapping("/generatepassword")
+    public ResponseEntity<Response> generatePassword(@Validated @RequestBody GeneratePassword request){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        GeneratePasswordResponse response=userService.generatePassword(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Password generated successfully");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
 
 
 
