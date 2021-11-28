@@ -29,7 +29,7 @@ public class WishListController {
     }
 
     /** <summary>
-     *  Ward creation endpoint
+     *  wish list creation endpoint
      * </summary>
      * <remarks>this endpoint is responsible for creation of new Wish list</remarks>
      */
@@ -47,9 +47,9 @@ public class WishListController {
     }
 
     /** <summary>
-     * Ward update endpoint
+     * wish list update endpoint
      * </summary>
-     * <remarks>this endpoint is responsible for updating Ward</remarks>
+     * <remarks>this endpoint is responsible for updating wish list</remarks>
      */
 
     @PutMapping("")
@@ -106,9 +106,9 @@ public class WishListController {
     }
 
     /** <summary>
-     * Enable disenable
+     * Delete a wish list record
      * </summary>
-     * <remarks>this endpoint is responsible for enabling and disenabling a Ward</remarks>
+     * <remarks>this endpoint is responsible for deleting a wish list record</remarks>
      */
 
     @DeleteMapping("/{id}")
@@ -117,32 +117,10 @@ public class WishListController {
         Response resp = new Response();
         WishListResponseDto response = service.deleteWishList(id);
         resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Record fetched successfully !");
+        resp.setDescription("Record deleted successfully !");
         resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
-
-//    @PutMapping("/enabledisable")
-//    public ResponseEntity<Response> enableDisEnable(@Validated @RequestBody EnableDisEnableDto request){
-//        HttpStatus httpCode ;
-//        Response resp = new Response();
-//        service.enableDisableWard(request);
-//        resp.setCode(CustomResponseCode.SUCCESS);
-//        resp.setDescription("Successful");
-//        httpCode = HttpStatus.OK;
-//        return new ResponseEntity<>(resp, httpCode);
-//    }
-//
-//    @GetMapping("/list")
-//    public ResponseEntity<Response> getAllByStatus(@Validated @RequestParam(value = "isActive") Boolean isActive){
-//        HttpStatus httpCode ;
-//        Response resp = new Response();
-//        List<Ward> response = service.getAll(isActive);
-//        resp.setCode(CustomResponseCode.SUCCESS);
-//        resp.setDescription("Record fetched successfully !");
-//        resp.setData(response);
-//        httpCode = HttpStatus.OK;
-//        return new ResponseEntity<>(resp, httpCode);
-//    }
+    
 }
