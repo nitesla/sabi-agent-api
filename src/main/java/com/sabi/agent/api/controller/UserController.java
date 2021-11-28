@@ -177,6 +177,7 @@ public class UserController {
     }
 
 
+
     @PutMapping("/activateUser")
     public ResponseEntity<Response> activateUser(@Validated @RequestBody ActivateUserAccountDto request){
         HttpStatus httpCode ;
