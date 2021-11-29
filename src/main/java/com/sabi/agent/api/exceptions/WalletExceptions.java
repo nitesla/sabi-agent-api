@@ -2,6 +2,7 @@ package com.sabi.agent.api.exceptions;
 
 import com.sabi.agent.api.helper.WalletHelper;
 import com.sabi.framework.dto.responseDto.Response;
+import com.sabi.framework.exceptions.MissingFieldException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class WalletExceptions {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        return helper.buildResponse(MissingFieldException.builder()
-                .message("Missing field(s)").fields(errors).build(), HttpStatus.BAD_REQUEST);
+        return helper.buildError(MissingFieldException.builder()
+                .message("Validation error").fields(errors).build(), HttpStatus.BAD_REQUEST, "Bad Request");
     }
 }
