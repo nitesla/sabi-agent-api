@@ -88,7 +88,7 @@ public class AuthenticationController {
                     throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "Your account has been locked, kindly contact System Administrator");
                 }
 
-                userService.validateGeneratedPassword(user.getId());
+//                userService.validateGeneratedPassword(user.getId());
             } else {
                 //update login failed count and failed login date
                 loginStatus = "failed";
