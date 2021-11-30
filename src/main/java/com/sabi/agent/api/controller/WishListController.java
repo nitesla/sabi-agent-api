@@ -53,7 +53,7 @@ public class WishListController {
      */
 
     @PutMapping("")
-    public ResponseEntity<Response> updateWard(@Validated @RequestBody  WishListDto request){
+    public ResponseEntity<Response> updateWishLIst(@Validated @RequestBody  WishListDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
         WishListResponseDto response = service.updateWishList(request);
@@ -71,7 +71,7 @@ public class WishListController {
      */
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getWard(@Validated @PathVariable Long id){
+    public ResponseEntity<Response> getWishList(@Validated @PathVariable Long id){
         HttpStatus httpCode ;
         Response resp = new Response();
         WishListResponseDto response = service.findWishList(id);
@@ -89,7 +89,7 @@ public class WishListController {
      */
 
     @GetMapping("")
-    public ResponseEntity<Response> getWards(@RequestParam(value = "agentId",required = false)String agentId,
+    public ResponseEntity<Response> getWishLists(@RequestParam(value = "agentId",required = false)String agentId,
                                              @RequestParam(value = "productId",required = false)String productId,
                                              @RequestParam(value = "productName",required = false)String productName,
                                              @RequestParam(value = "picture",required = false)String picture,
@@ -112,7 +112,7 @@ public class WishListController {
      */
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> deleteWard(@Validated @PathVariable Long id){
+    public ResponseEntity<Response> deleteWishList(@Validated @PathVariable Long id){
         HttpStatus httpCode ;
         Response resp = new Response();
         WishListResponseDto response = service.deleteWishList(id);
