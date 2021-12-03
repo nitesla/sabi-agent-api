@@ -16,4 +16,12 @@ public class WalletHelper {
         resp.setData(response);
         return new ResponseEntity<>(resp, httpCode);
     }
+
+    public ResponseEntity<Response> buildError(Object response, HttpStatus httpCode, String description){
+        Response resp = new Response();
+        resp.setCode(((Integer) httpCode.value()).toString());
+        resp.setDescription(description);
+        resp.setData(response);
+        return new ResponseEntity<>(resp, httpCode);
+    }
 }
