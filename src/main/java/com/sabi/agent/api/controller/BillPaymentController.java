@@ -3,6 +3,7 @@ package com.sabi.agent.api.controller;
 
 import com.sabi.agent.core.dto.requestDto.billPayments.AirtimeRequestDto;
 import com.sabi.agent.core.dto.responseDto.ResponseDto;
+import com.sabi.agent.core.models.billPayments.Airtime;
 import com.sabi.agent.service.integrations.BillPaymentService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
@@ -38,7 +39,21 @@ public class BillPaymentController {
     public ResponseEntity<Response> airtimePayment(@Validated @RequestBody AirtimeRequestDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        AirtimeRequestDto response = service.airtimePayment(request);
+        Airtime response = service.airtimePayment(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Successful");
+        resp.setData(response);
+        httpCode = HttpStatus.CREATED;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @PutMapping("/airtimeStatus")
+    public ResponseEntity<Response> airtimeStatus(@RequestHeader("fingerPrint") String fingerPrint,
+                                                  @RequestParam("billPurchaseId") String purchaseId){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        Airtime response = service.airtimeStatus(
+                purchaseId, fingerPrint);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);
