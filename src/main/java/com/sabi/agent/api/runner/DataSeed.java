@@ -1,9 +1,11 @@
 package com.sabi.agent.api.runner;
 
+import com.sabi.agent.core.models.Bank;
 import com.sabi.agent.core.models.Country;
 import com.sabi.agent.core.models.LGA;
 import com.sabi.agent.core.models.State;
 import com.sabi.agent.core.models.agentModel.AgentCategory;
+import com.sabi.agent.service.repositories.BankRepository;
 import com.sabi.agent.service.repositories.CountryRepository;
 import com.sabi.agent.service.repositories.LGARepository;
 import com.sabi.agent.service.repositories.StateRepository;
@@ -30,6 +32,9 @@ public class DataSeed implements ApplicationListener<ContextRefreshedEvent> {
     private LGARepository localGovernmentRepository;
 
     @Autowired
+    private BankRepository bankRepository;
+
+    @Autowired
     private AgentCategoryRepository agentCategoryRepository;
 
 
@@ -43,6 +48,7 @@ public class DataSeed implements ApplicationListener<ContextRefreshedEvent> {
         seedStates();
         createAgentCategory();
         seedLocalGovernments();
+        seedBanks();
 
     }
 
@@ -365,6 +371,44 @@ public class DataSeed implements ApplicationListener<ContextRefreshedEvent> {
             LGA fetchLocalGovernment = localGovernmentRepository.findByName(localGovernment.getName());
             if (fetchLocalGovernment == null) {
                 localGovernmentRepository.saveAndFlush(localGovernment);
+            }
+        });
+    }
+
+
+
+
+
+
+    private void seedBanks() {
+        List<Bank> banks = new ArrayList<Bank>() {
+            {
+                add(new Bank("First Bank of Nigeria Plc","011"));
+                add(new Bank("Citibank Nigeria Limited","023"));
+                add(new Bank("Heritage Bank Plc","030"));
+                add(new Bank("Union Bank of Nigeria","032"));
+                add(new Bank("United Bank for Africa Plc","033"));
+                add(new Bank("Wema Bank Plc","035"));
+                add(new Bank("Access Bank Plc","044"));
+                add(new Bank("Ecobank Nigeria Plc","050"));
+                add(new Bank("Zenith International Bank Plc","057"));
+                add(new Bank("Guaranty Trust Bank Plc","058"));
+                add(new Bank("Standard Chartered Bank Plc","068"));
+                add(new Bank("Fidelity Bank Plc","070"));
+                add(new Bank("Polaris Bank Plc","076"));
+                add(new Bank("Keystone Bank Limited","082"));
+                add(new Bank("First City Monument Bank Plc","214"));
+                add(new Bank("Unity Bank Plc","215"));
+                add(new Bank("Stanbic IBTC Bank Plc","221"));
+                add(new Bank("Sterling Bank Plc","232"));
+                add(new Bank("Jaiz Bank Plc","301"));
+            }
+        };
+
+        banks.forEach(bank -> {
+            Bank fetchBank = bankRepository.findByName(bank.getName());
+            if (fetchBank == null) {
+                bankRepository.saveAndFlush(bank);
             }
         });
     }
