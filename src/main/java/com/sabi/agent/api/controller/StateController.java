@@ -133,10 +133,11 @@ public class StateController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive){
+    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive,
+                                           @RequestParam(value = "countryId")Long countryId){
         HttpStatus httpCode ;
         Response resp = new Response();
-        List<State> response = service.getAll(isActive);
+        List<State> response = service.getAll(isActive,countryId);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
