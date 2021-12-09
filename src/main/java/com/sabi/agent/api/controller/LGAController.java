@@ -128,10 +128,11 @@ public class LGAController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive){
+    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive,
+                                           @RequestParam(value = "stateId")Long stateId){
         HttpStatus httpCode ;
         Response resp = new Response();
-        List<LGA> response = service.getAll(isActive);
+        List<LGA> response = service.getAll(isActive,stateId);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
