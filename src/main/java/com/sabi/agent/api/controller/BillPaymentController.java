@@ -1,8 +1,9 @@
 package com.sabi.agent.api.controller;
 
 
-import com.sabi.agent.core.dto.requestDto.billPayments.AirtimeRequestDto;
+import  com.sabi.agent.core.dto.requestDto.billPayments.AirtimeRequestDto;
 import com.sabi.agent.core.dto.responseDto.ResponseDto;
+import com.sabi.agent.core.dto.responseDto.billPayments.AirtimeResponseDto;
 import com.sabi.agent.core.models.billPayments.Airtime;
 import com.sabi.agent.service.integrations.BillPaymentService;
 import com.sabi.framework.dto.responseDto.Response;
@@ -39,7 +40,7 @@ public class BillPaymentController {
     public ResponseEntity<Response> airtimePayment(@Validated @RequestBody AirtimeRequestDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Airtime response = service.airtimePayment(request);
+        AirtimeResponseDto response = service.airtimePayment(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);
