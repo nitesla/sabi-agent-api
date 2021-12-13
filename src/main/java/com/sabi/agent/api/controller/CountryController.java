@@ -20,7 +20,7 @@ import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
-@RequestMapping(Constants.APP_CONTENT +"country")
+@RequestMapping(Constants.APP_CONTENT +"sabi/"+"country")
 public class CountryController {
 
     private final CountryService service;
