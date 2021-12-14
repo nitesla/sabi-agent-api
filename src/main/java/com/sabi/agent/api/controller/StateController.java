@@ -21,7 +21,7 @@ import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
-@RequestMapping(Constants.APP_CONTENT +"state")
+@RequestMapping(Constants.APP_CONTENT +"sabi/" +"state")
 public class StateController {
 
 

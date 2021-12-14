@@ -20,7 +20,7 @@ import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
-@RequestMapping(Constants.APP_CONTENT +"lga")
+@RequestMapping(Constants.APP_CONTENT +"sabi/"+"lga")
 public class LGAController {
 
 
