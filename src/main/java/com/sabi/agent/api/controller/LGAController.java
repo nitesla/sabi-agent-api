@@ -128,7 +128,7 @@ public class LGAController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive,
+    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive",required = false)Boolean isActive,
                                            @RequestParam(value = "stateId")Long stateId){
         HttpStatus httpCode ;
         Response resp = new Response();
