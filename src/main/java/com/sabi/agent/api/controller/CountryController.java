@@ -129,7 +129,7 @@ public class CountryController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive){
+    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive",required = false)Boolean isActive){
         HttpStatus httpCode ;
         Response resp = new Response();
         List<Country> response = service.getAll(isActive);
