@@ -14,9 +14,11 @@ import com.sabi.framework.exceptions.UnauthorizedException;
 import com.sabi.framework.loggers.LoggerUtil;
 import com.sabi.framework.models.User;
 import com.sabi.framework.security.AuthenticationWithToken;
+import com.sabi.framework.service.AuditTrailService;
 import com.sabi.framework.service.ExternalTokenService;
 import com.sabi.framework.service.TokenService;
 import com.sabi.framework.service.UserService;
+import com.sabi.framework.utils.AuditTrailFlag;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import com.sabi.framework.utils.Utility;
@@ -54,10 +56,12 @@ public class AuthenticationController {
 
     private final UserService userService;
     private final AgentRepository agentRepository;
+    private final AuditTrailService auditTrailService;
 
-    public AuthenticationController(UserService userService,AgentRepository agentRepository) {
+    public AuthenticationController(UserService userService,AgentRepository agentRepository,AuditTrailService auditTrailService) {
         this.userService = userService;
         this.agentRepository=agentRepository;
+        this.auditTrailService=auditTrailService;
     }
 
     @PostMapping("/login")
@@ -92,6 +96,10 @@ public class AuthenticationController {
             } else {
                 //update login failed count and failed login date
                 loginStatus = "failed";
+                auditTrailService
+                        .logEvent(loginRequest.getUsername(), "Login by username :" + loginRequest.getUsername()
+                                        + " " + loginStatus,
+                                AuditTrailFlag.LOGIN, "Failed Login Request by :" + loginRequest.getUsername(),1, ipAddress);
                 userService.updateFailedLogin(user.getId());
                 throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Invalid Login details.");
             }
@@ -124,6 +132,10 @@ public class AuthenticationController {
         }
         AccessTokenWithUserDetails details = new AccessTokenWithUserDetails(newToken, user,
                 accessList,userService.getSessionExpiry(),clientId,referralCode,isEmailVerified,partnerCategory);
+
+        auditTrailService
+                .logEvent(loginRequest.getUsername(), "Login by username : " + loginRequest.getUsername(),
+                        AuditTrailFlag.LOGIN, "Successful Login Request by : " + loginRequest.getUsername() , 1, ipAddress);
 
         return new ResponseEntity<>(details, HttpStatus.OK);
     }
