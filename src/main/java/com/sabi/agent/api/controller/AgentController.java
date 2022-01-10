@@ -2,10 +2,7 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.agent.core.dto.ValidateEmailOtpRequest;
-import com.sabi.agent.core.dto.agentDto.requestDto.AgentBvnVerificationDto;
-import com.sabi.agent.core.dto.agentDto.requestDto.AgentUpdateDto;
-import com.sabi.agent.core.dto.agentDto.requestDto.AgentVerificationDto;
-import com.sabi.agent.core.dto.agentDto.requestDto.CreateAgentRequestDto;
+import com.sabi.agent.core.dto.agentDto.requestDto.*;
 import com.sabi.agent.core.dto.requestDto.EmailVerificationDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.requestDto.ResendOTP;
@@ -31,10 +28,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"agent")
+@Validated
 public class AgentController {
 
     private  static final Logger logger = LoggerFactory.getLogger(AgentController.class);
@@ -289,6 +288,18 @@ public class AgentController {
         List<Agent> response = service.getAll(isActive);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @PutMapping("/profilephoto")
+    public ResponseEntity<Response> addPhoto(@RequestBody @Valid AgentPhotoRequest request){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        Agent response = service.addAgentPhoto(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Profile Photo added successfully !");
         resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
