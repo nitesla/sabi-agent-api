@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"permission")
 public class PermissionController {
@@ -35,10 +37,10 @@ public class PermissionController {
      */
 
     @PostMapping("")
-    public ResponseEntity<Response> createPermission(@Validated @RequestBody PermissionDto request){
+    public ResponseEntity<Response> createPermission(@Validated @RequestBody PermissionDto request,HttpServletRequest request1){
         HttpStatus httpCode ;
         Response resp = new Response();
-        PermissionResponseDto response = service.createPermission(request);
+        PermissionResponseDto response = service.createPermission(request,request1);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);
@@ -54,10 +56,10 @@ public class PermissionController {
      */
 
     @PutMapping("")
-    public ResponseEntity<Response> updatePermission(@Validated @RequestBody  PermissionDto request){
+    public ResponseEntity<Response> updatePermission(@Validated @RequestBody  PermissionDto request,HttpServletRequest request1){
         HttpStatus httpCode ;
         Response resp = new Response();
-        PermissionResponseDto response = service.updatePermission(request);
+        PermissionResponseDto response = service.updatePermission(request,request1);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Update Successful");
         resp.setData(response);

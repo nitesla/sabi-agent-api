@@ -21,7 +21,7 @@ import java.util.List;
 
 @SuppressWarnings("All")
 @RestController
-@RequestMapping(Constants.APP_CONTENT +"state")
+@RequestMapping(Constants.APP_CONTENT +"sabi/" +"state")
 public class StateController {
 
 
@@ -133,10 +133,11 @@ public class StateController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive")Boolean isActive){
+    public ResponseEntity<Response> getAll(@RequestParam(value = "isActive",required = false)Boolean isActive,
+                                           @RequestParam(value = "countryId",required = false)Long countryId){
         HttpStatus httpCode ;
         Response resp = new Response();
-        List<State> response = service.getAll(isActive);
+        List<State> response = service.getAll(isActive,countryId);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);

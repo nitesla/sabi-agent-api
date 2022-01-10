@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+
 @Slf4j
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"RolePermission")
@@ -33,10 +36,10 @@ public class RolePermissionController {
      */
 
     @PostMapping("")
-    public ResponseEntity<Response> createRolePermission(@Validated @RequestBody RolePermissionDto request){
+    public ResponseEntity<Response> createRolePermission(@Validated @RequestBody RolePermissionDto request,HttpServletRequest request1){
         HttpStatus httpCode ;
         Response resp = new Response();
-        RolePermissionResponseDto response = service.createRolePermission(request);
+        RolePermissionResponseDto response = service.createRolePermission(request,request1);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);
@@ -52,10 +55,10 @@ public class RolePermissionController {
      */
 
     @PutMapping("")
-    public ResponseEntity<Response> updateRolePermission(@Validated @RequestBody  RolePermissionDto request){
+    public ResponseEntity<Response> updateRolePermission(@Validated @RequestBody  RolePermissionDto request,HttpServletRequest request1){
         HttpStatus httpCode ;
         Response resp = new Response();
-        RolePermissionResponseDto response = service.updateRolePermission(request);
+        RolePermissionResponseDto response = service.updateRolePermission(request,request1);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Update Successful");
         resp.setData(response);

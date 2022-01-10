@@ -1,6 +1,7 @@
 package com.sabi.agent.api.controller;
 
 
+import com.sabi.framework.dto.requestDto.EnableDisEnableDto;
 import com.sabi.framework.dto.requestDto.RoleDto;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.dto.responseDto.RoleResponseDto;
@@ -15,8 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@SuppressWarnings("ALL")
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"role")
 public class RoleController {
@@ -37,10 +40,10 @@ public class RoleController {
      */
 
     @PostMapping("")
-    public ResponseEntity<Response> createRole(@Validated @RequestBody RoleDto request){
+    public ResponseEntity<Response> createRole(@Validated @RequestBody RoleDto request,HttpServletRequest request1){
         HttpStatus httpCode ;
         Response resp = new Response();
-        RoleResponseDto response = service.createRole(request);
+        RoleResponseDto response = service.createRole(request,request1);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);
@@ -56,10 +59,10 @@ public class RoleController {
      */
 
     @PutMapping("")
-    public ResponseEntity<Response> updateRole(@Validated @RequestBody  RoleDto request){
+    public ResponseEntity<Response> updateRole(@Validated @RequestBody  RoleDto request,HttpServletRequest request1){
         HttpStatus httpCode ;
         Response resp = new Response();
-        RoleResponseDto response = service.updateRole(request);
+        RoleResponseDto response = service.updateRole(request,request1);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Update Successful");
         resp.setData(response);
@@ -116,6 +119,18 @@ public class RoleController {
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+
+    @PutMapping("/enabledisable")
+    public ResponseEntity<Response> enableDisEnable(@Validated @RequestBody EnableDisEnableDto request,HttpServletRequest request1){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        service.enableDisable(request,request1);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Successful");
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
