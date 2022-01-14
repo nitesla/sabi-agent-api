@@ -2,7 +2,10 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.agent.core.dto.ValidateEmailOtpRequest;
-import com.sabi.agent.core.dto.agentDto.requestDto.*;
+import com.sabi.agent.core.dto.agentDto.requestDto.AgentPhotoRequest;
+import com.sabi.agent.core.dto.agentDto.requestDto.AgentUpdateDto;
+import com.sabi.agent.core.dto.agentDto.requestDto.AgentVerificationDto;
+import com.sabi.agent.core.dto.agentDto.requestDto.CreateAgentRequestDto;
 import com.sabi.agent.core.dto.requestDto.EmailVerificationDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.requestDto.ResendOTP;
@@ -28,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -54,10 +58,10 @@ public class AgentController {
      */
 
     @PostMapping("/signup")
-    public ResponseEntity<Response> agentSignUp(@Validated @RequestBody CreateAgentRequestDto request){
+    public ResponseEntity<Response> agentSignUp(@Validated @RequestBody CreateAgentRequestDto request,HttpServletRequest request1){
         HttpStatus httpCode ;
         Response resp = new Response();
-        CreateAgentResponseDto response = service.agentSignUp(request);
+        CreateAgentResponseDto response = service.agentSignUp(request,request1);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);
@@ -114,10 +118,10 @@ public class AgentController {
      */
 
     @PutMapping("")
-    public ResponseEntity<Response> updateAgent(@Validated @RequestBody AgentUpdateDto request){
+    public ResponseEntity<Response> updateAgent(@Validated @RequestBody AgentUpdateDto request,HttpServletRequest request1){
         HttpStatus httpCode ;
         Response resp = new Response();
-        AgentUpdateResponseDto response = service.updateAgent(request);
+        AgentUpdateResponseDto response = service.updateAgent(request,request1);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Update Successful");
         resp.setData(response);
@@ -192,10 +196,10 @@ public class AgentController {
 
 
     @PutMapping("/enabledisenable")
-    public ResponseEntity<Response> enableDisEnable(@Validated @RequestBody EnableDisEnableDto request){
+    public ResponseEntity<Response> enableDisEnable(@Validated @RequestBody EnableDisEnableDto request,HttpServletRequest request1){
         HttpStatus httpCode ;
         Response resp = new Response();
-        service.enableDisEnableAgent(request);
+        service.enableDisEnableAgent(request,request1);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         httpCode = HttpStatus.OK;
