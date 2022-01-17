@@ -83,12 +83,13 @@ public class OrderController {
                                               @RequestParam(value = "status",required = false)Boolean status,
                                               @RequestParam(value = "createdDate",required = false)Date createdDate,
                                               @RequestParam(value = "agentId",required = false)Long agentId,
+                                              @RequestParam(value = "userName", required = false) String userName,
                                               @RequestParam(value = "page") int page,
                                               @RequestParam(value = "pageSize") int pageSize){
 
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<AgentOrder> response = service.findAll(orderId,status,createdDate,agentId, PageRequest.of(page, pageSize));
+        Page<AgentOrder> response = service.findAll(orderId,status,createdDate,agentId, userName,PageRequest.of(page, pageSize));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
