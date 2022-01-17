@@ -159,6 +159,7 @@ public class AgentController {
                                                @RequestParam(value = "referrer",required = false)String referrer,
                                                @RequestParam(value = "firstName",required = false)String firstName,
                                                @RequestParam(value = "lastName",required = false)String lastName,
+                                               @RequestParam(value = "referralCode", required = false) String referralCode,
                                                @RequestParam(value = "page") int page,
                                                @RequestParam(value = "pageSize") int pageSize) throws Exception {
 
@@ -172,7 +173,7 @@ public class AgentController {
             httpCode = HttpStatus.OK;
             return new ResponseEntity<>(resp, httpCode);
         }else {
-            Page<Agent> response = service.findAllAgents(userId, isActive, referrer, PageRequest.of(page, pageSize));
+            Page<Agent> response = service.findAllAgents(userId, isActive, referrer, referralCode,PageRequest.of(page, pageSize));
             resp.setCode(CustomResponseCode.SUCCESS);
             resp.setDescription("Record fetched successfully !");
             resp.setData(response);

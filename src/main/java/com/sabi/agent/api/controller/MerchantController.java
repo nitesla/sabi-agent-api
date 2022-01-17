@@ -45,9 +45,11 @@ public class MerchantController {
     public Page<RegisteredMerchant> findMerchants(@RequestHeader("fingerPrint") String fingerPrint,
                                                   @RequestParam(value = "agentId", required = false) String agentId,
                                                   @RequestParam(value = "merchantId", required = false) String merchantId,
+                                                  @RequestParam(value = "firstName", required = false) String firstName,
+                                                  @RequestParam(value = "lastName", required = false) String lastName,
                                                   @RequestParam("page") Integer page,
                                                   @RequestParam("pageSize") Integer pageSize) {
-        return service.findMerchant(agentId, merchantId, PageRequest.of(page, pageSize));
+        return service.findMerchant(agentId, merchantId, firstName, lastName,PageRequest.of(page, pageSize));
     }
 
     @GetMapping("/{id}")

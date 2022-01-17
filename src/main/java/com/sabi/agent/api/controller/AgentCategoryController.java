@@ -2,6 +2,7 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentCategoryDto;
+import com.sabi.agent.core.dto.agentDto.requestDto.AgentPhotoRequest;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.responseDto.AgentCategoryResponseDto;
 import com.sabi.agent.core.models.agentModel.AgentCategory;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @SuppressWarnings("All")
@@ -162,6 +164,17 @@ public class AgentCategoryController {
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(res);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+    public ResponseEntity<Response> setImage(@RequestBody @Valid AgentPhotoRequest request){
+        HttpStatus httpCode;
+        Response resp = new Response();
+        AgentCategoryResponseDto response = service.setCategoryPhoto(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Image Saved !");
+        resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
