@@ -10,6 +10,7 @@ import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,11 +57,13 @@ public class AuditTrailController {
                                            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
                                            @RequestParam(value = "page") int page,
+                                           @RequestParam(value = "sortBy", required = false) String sort,
                                            @RequestParam(value = "pageSize") int pageSize) {
 
         HttpStatus httpCode;
         Response resp = new Response();
-        Page<AuditTrail> response = service.findAll(username,event,flag, startDate, endDate, PageRequest.of(page, pageSize));
+        Sort sortType = sort.equalsIgnoreCase("asc") ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        Page<AuditTrail> response = service.findAll(username,event,flag, startDate, endDate, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         resp.setData(response);

@@ -11,6 +11,7 @@ import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -96,10 +97,12 @@ public class WardController {
                                              @RequestParam(value = "isActive",required = false)Boolean isActive,
                                              @RequestParam(value = "lgaId",required = false)Long lgaId,
                                               @RequestParam(value = "page") int page,
+                                             @RequestParam(value = "sortBy", required = false) String sort,
                                               @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<Ward> response = service.findAll(name, isActive, lgaId, PageRequest.of(page, pageSize));
+        Sort sortType = sort.equalsIgnoreCase("asc") ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        Page<Ward> response = service.findAll(name, isActive, lgaId, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
