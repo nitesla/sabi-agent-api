@@ -11,6 +11,7 @@ import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(Constants.APP_CONTENT +"agentnetwork")
+@RequestMapping(Constants.APP_CONTENT + "agentnetwork")
 public class AgentNetworkController {
 
     private final AgentNetworkService service;
@@ -78,12 +79,14 @@ public class AgentNetworkController {
      */
     @GetMapping("")
     public ResponseEntity<Response> getAgentNetworks(@RequestParam(value = "agentId", required = false) Long agentId,
-                                               @RequestParam(value = "page") int page,
-                                               @RequestParam(value = "isActive", required = false) Boolean isActive,
-                                               @RequestParam(value = "pageSize") int pageSize) {
+                                                     @RequestParam(value = "page") int page,
+                                                     @RequestParam(value = "isActive", required = false) Boolean isActive,
+                                                     @RequestParam(value = "sortBy", required = false) String sort,
+                                                     @RequestParam(value = "pageSize") int pageSize) {
         HttpStatus httpCode;
         Response resp = new Response();
-        Page<AgentNetwork> response = service.findAll(agentId, isActive, PageRequest.of(page, pageSize));
+        Sort sortType = sort.equalsIgnoreCase("asc") ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        Page<AgentNetwork> response = service.findAll(agentId, isActive, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
@@ -110,7 +113,7 @@ public class AgentNetworkController {
     }
 
     @GetMapping("/status")
-    public ResponseEntity<Response> getALlByStatus(@RequestParam("isActive") boolean isActive){
+    public ResponseEntity<Response> getALlByStatus(@RequestParam("isActive") boolean isActive) {
         HttpStatus httpCode;
         Response resp = new Response();
         List<AgentNetworkResponseDto> response = service.getAllByStatus(isActive);
