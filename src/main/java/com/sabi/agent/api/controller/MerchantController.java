@@ -11,6 +11,7 @@ import com.sabi.framework.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -48,8 +49,10 @@ public class MerchantController {
                                                   @RequestParam(value = "firstName", required = false) String firstName,
                                                   @RequestParam(value = "lastName", required = false) String lastName,
                                                   @RequestParam("page") Integer page,
+                                                  @RequestParam(value = "sortBy", required = false) String sort,
                                                   @RequestParam("pageSize") Integer pageSize) {
-        return service.findMerchant(agentId, merchantId, firstName, lastName,PageRequest.of(page, pageSize));
+        Sort sortType = sort.equalsIgnoreCase("asc") ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        return service.findMerchant(agentId, merchantId, firstName, lastName,PageRequest.of(page, pageSize, sortType));
     }
 
     @GetMapping("/{id}")

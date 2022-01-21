@@ -10,6 +10,7 @@ import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -95,10 +96,12 @@ public class BankController {
     public ResponseEntity<Response> getBanks(@RequestParam(value = "name",required = false)String name,
                                               @RequestParam(value = "bankCode",required = false)String bankCode,
                                               @RequestParam(value = "page") int page,
+                                             @RequestParam(value = "sortBy", required = false) String sort,
                                               @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<Bank> response = service.findAll(name,bankCode, PageRequest.of(page, pageSize));
+        Sort sortType = sort.equalsIgnoreCase("asc") ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        Page<Bank> response = service.findAll(name,bankCode, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);

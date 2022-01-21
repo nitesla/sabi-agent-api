@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -165,19 +166,21 @@ public class AgentController {
                                                @RequestParam(value = "referralCode", required = false) String referralCode,
                                               @RequestParam(value = "referrer",required = false)String referrer,
                                                @RequestParam(value = "page") int page,
+                                              @RequestParam(value = "sortBy", required = false) String sort,
                                                @RequestParam(value = "pageSize") int pageSize) throws Exception {
 
         HttpStatus httpCode ;
         Response resp = new Response();
+        Sort sortType = sort.equalsIgnoreCase("asc") ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
         if(firstName !=null ){
-            Page<User> response = service.findAgentUser(firstName,lastName, PageRequest.of(page, pageSize));
+            Page<User> response = service.findAgentUser(firstName,lastName, PageRequest.of(page, pageSize, sortType));
             resp.setCode(CustomResponseCode.SUCCESS);
             resp.setDescription("Record fetched successfully !");
             resp.setData(response);
             httpCode = HttpStatus.OK;
             return new ResponseEntity<>(resp, httpCode);
         }else {
-            Page<Agent> response = service.findAllAgents(userId, isActive,referralCode ,referrer,PageRequest.of(page, pageSize));
+            Page<Agent> response = service.findAllAgents(userId, isActive,referralCode ,referrer,PageRequest.of(page, pageSize, sortType));
             resp.setCode(CustomResponseCode.SUCCESS);
             resp.setDescription("Record fetched successfully !");
             resp.setData(response);

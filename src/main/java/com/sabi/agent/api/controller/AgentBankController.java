@@ -12,6 +12,7 @@ import com.sabi.framework.utils.CustomResponseCode;
 import lombok.var;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,10 +98,12 @@ public class AgentBankController {
                                                             @RequestParam(value = "bankName",required = false)String bankName,
                                                             @RequestParam(value = "accountNumber",required = false) String accountNumber,
                                                             @RequestParam(value = "page") int page,
+                                                            @RequestParam(value = "sortBy", required = false) String sort,
                                                             @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
-        List<AgentBankResponseDto> response = service.findAll(agentId, bankId,bankName, accountNumber, PageRequest.of(page, pageSize));
+        Sort sortType = sort.equalsIgnoreCase("asc") ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        List<AgentBankResponseDto> response = service.findAll(agentId, bankId,bankName, accountNumber, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);

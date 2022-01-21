@@ -13,6 +13,7 @@ import com.sabi.framework.utils.CustomResponseCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -85,11 +86,13 @@ public class OrderController {
                                               @RequestParam(value = "agentId",required = false)Long agentId,
                                               @RequestParam(value = "userName", required = false) String userName,
                                               @RequestParam(value = "page") int page,
+                                              @RequestParam(value = "sortBy", required = false) String sort,
                                               @RequestParam(value = "pageSize") int pageSize){
 
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<AgentOrder> response = service.findAll(orderId,status,createdDate,agentId, userName,PageRequest.of(page, pageSize));
+        Sort sortType = sort.equalsIgnoreCase("asc") ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        Page<AgentOrder> response = service.findAll(orderId,status,createdDate,agentId, userName,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
