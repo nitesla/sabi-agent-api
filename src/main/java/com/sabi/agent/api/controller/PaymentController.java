@@ -5,10 +5,12 @@ import com.sabi.agent.core.models.agentModel.AgentCard;
 import com.sabi.agent.service.services.AgentCardService;
 import com.sabi.framework.integrations.payment_integration.models.request.CardPaymentRequest;
 import com.sabi.framework.integrations.payment_integration.models.request.CheckOutRequest;
+import com.sabi.framework.integrations.payment_integration.models.request.TokenisationRequest;
 import com.sabi.framework.integrations.payment_integration.models.request.VerveOtpRequest;
 import com.sabi.framework.integrations.payment_integration.models.response.CardPaymentResponse;
 import com.sabi.framework.integrations.payment_integration.models.response.CheckOutResponse;
 import com.sabi.framework.integrations.payment_integration.models.response.PaymentStatusResponse;
+import com.sabi.framework.integrations.payment_integration.models.response.TokenisationResponse;
 import com.sabi.framework.service.PaymentService;
 import com.sabi.framework.utils.Constants;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +47,10 @@ public class PaymentController {
     @PostMapping("/validateOtp")
     public CardPaymentResponse validateOtp(@RequestBody @Valid VerveOtpRequest verveOtpRequest){
         return paymentService.confirmVerveOtp(verveOtpRequest);
+    }
+
+    @PostMapping("/tokenise")
+    public TokenisationResponse tokenise(@RequestBody @Valid TokenisationRequest request){
+        return paymentService.tokenise(request);
     }
 }

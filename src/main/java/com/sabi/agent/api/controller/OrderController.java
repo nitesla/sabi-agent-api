@@ -18,7 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("All")
 @Slf4j
@@ -42,7 +44,7 @@ public class OrderController {
      * <remarks>this endpoint is responsible for placing order</remarks>
      */
     @PostMapping("/process")
-    public CreateOrderResponse placeOrder (@RequestBody PlaceOrder request) throws Exception {
+    public CreateOrderResponse placeOrder (@RequestBody @Valid PlaceOrder request) throws Exception {
         CreateOrderResponse response= service.placeOrder(request);
         return response;
     }
@@ -98,5 +100,12 @@ public class OrderController {
         resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @GetMapping("/search/{searchTerm}")
+    public ResponseEntity<List<String>> searchItems(@PathVariable String searchTerm ){
+        List<String> strings = service.multiSearch(searchTerm);
+
+        return new ResponseEntity<>(strings, HttpStatus.OK);
     }
 }
