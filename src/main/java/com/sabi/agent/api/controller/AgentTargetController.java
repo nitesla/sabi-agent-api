@@ -89,7 +89,8 @@ public class AgentTargetController {
                                                      @RequestParam(value = "pageSize") int pageSize) {
         HttpStatus httpCode;
         Response resp = new Response();
-        Sort sortType = sort.equalsIgnoreCase("asc") ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
         Page<AgentTarget> response = service.findAll(name,isActive,min,max,superMax,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");

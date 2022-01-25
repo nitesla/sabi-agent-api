@@ -49,8 +49,4 @@ public class PaymentController {
         return paymentService.confirmVerveOtp(verveOtpRequest);
     }
 
-    @PostMapping("/tokenise")
-    public TokenisationResponse tokenise(@RequestBody @Valid TokenisationRequest request){
-        return paymentService.tokenise(request);
-    }
 }

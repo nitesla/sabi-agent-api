@@ -62,7 +62,8 @@ public class AuditTrailController {
 
         HttpStatus httpCode;
         Response resp = new Response();
-        Sort sortType = sort.equalsIgnoreCase("asc") ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
         Page<AuditTrail> response = service.findAll(username,event,flag, startDate, endDate, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");

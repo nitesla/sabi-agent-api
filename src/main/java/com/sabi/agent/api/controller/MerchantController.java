@@ -51,7 +51,8 @@ public class MerchantController {
                                                   @RequestParam("page") Integer page,
                                                   @RequestParam(value = "sortBy", required = false) String sort,
                                                   @RequestParam("pageSize") Integer pageSize) {
-        Sort sortType = sort.equalsIgnoreCase("asc") ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
         return service.findMerchant(agentId, merchantId, firstName, lastName,PageRequest.of(page, pageSize, sortType));
     }
 
