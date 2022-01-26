@@ -8,6 +8,7 @@ import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -75,10 +76,13 @@ public class AgentSupervisorController {
     @GetMapping("")
     public ResponseEntity<Response> getAgentSupervisors(
                                                      @RequestParam(value = "page") int page,
+                                                     @RequestParam(value = "sortBy", required = false) String sort,
                                                      @RequestParam(value = "pageSize") int pageSize) {
         HttpStatus httpCode;
         Response resp = new Response();
-        List<AgentSupervisorResponseDto> response = service.findAll(PageRequest.of(page, pageSize));
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        List<AgentSupervisorResponseDto> response = service.findAll(PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);

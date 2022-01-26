@@ -10,6 +10,7 @@ import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -84,10 +85,13 @@ public class AgentTargetController {
                                                     @RequestParam(value = "superMax", required = false) Integer superMax,
                                                     @RequestParam(value = "page") int page,
                                                      @RequestParam(value = "isActive", required = false) Boolean isActive,
+                                                    @RequestParam(value = "sortBy", required = false) String sort,
                                                      @RequestParam(value = "pageSize") int pageSize) {
         HttpStatus httpCode;
         Response resp = new Response();
-        Page<AgentTarget> response = service.findAll(name,isActive,min,max,superMax,PageRequest.of(page, pageSize));
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        Page<AgentTarget> response = service.findAll(name,isActive,min,max,superMax,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
