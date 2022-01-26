@@ -3,6 +3,7 @@ package com.sabi.agent.api.controller;
 
 import com.sabi.agent.core.integrations.order.*;
 import com.sabi.agent.core.integrations.order.orderResponse.CreateOrderResponse;
+import com.sabi.agent.core.integrations.request.CompleteOrderRequest;
 import com.sabi.agent.core.integrations.request.MerchBuyRequest;
 import com.sabi.agent.core.integrations.response.MerchBuyResponse;
 import com.sabi.agent.core.models.AgentOrder;
@@ -108,5 +109,10 @@ public class OrderController {
         List<String> strings = service.multiSearch(searchTerm);
 
         return new ResponseEntity<>(strings, HttpStatus.OK);
+    }
+
+    @PostMapping("/completeOrder")
+    public void completeOrder(@RequestBody CompleteOrderRequest request){
+        service.completeOrder(request);
     }
 }
