@@ -62,4 +62,14 @@ public class MerchantController {
         return service.merchantDetails(id, fingerPrint);
     }
 
+    @GetMapping("/search")
+    public Page<RegisteredMerchant> searchMerchants(@RequestParam("searchTerm") String searchTerm,
+                                                    @RequestParam("agentId") Long agentId,
+                                                    @RequestParam("page") int page,
+                                                    @RequestParam("pageSize") int pageSize,
+                                                    @RequestParam(value = "sortBy", required = false) String sort){
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        return service.searchMerchant(agentId, searchTerm, PageRequest.of(page, pageSize, sortType));
+    }
 }
