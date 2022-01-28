@@ -18,6 +18,7 @@ import com.sabi.agent.core.models.agentModel.Agent;
 import com.sabi.agent.service.services.AgentService;
 import com.sabi.framework.dto.requestDto.ChangePasswordDto;
 import com.sabi.framework.dto.responseDto.Response;
+import com.sabi.framework.exceptions.NotFoundException;
 import com.sabi.framework.models.User;
 import com.sabi.framework.service.UserService;
 import com.sabi.framework.utils.Constants;
@@ -174,12 +175,12 @@ public class AgentController {
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
         if(firstName !=null ){
-            Page<User> response = service.findAgentUser(firstName,lastName, PageRequest.of(page, pageSize, sortType));
-            resp.setCode(CustomResponseCode.SUCCESS);
-            resp.setDescription("Record fetched successfully !");
-            resp.setData(response);
-            httpCode = HttpStatus.OK;
-            return new ResponseEntity<>(resp, httpCode);
+                Page<User> response = service.findAgentUser(firstName,lastName, PageRequest.of(page, pageSize, sortType));
+                resp.setCode(CustomResponseCode.SUCCESS);
+                resp.setDescription("Record fetched successfully !");
+                resp.setData(response);
+                httpCode = HttpStatus.OK;
+                return new ResponseEntity<>(resp, httpCode);
         }else {
             Page<Agent> response = service.findAllAgents(userId, isActive,referralCode ,referrer,PageRequest.of(page, pageSize, sortType));
             resp.setCode(CustomResponseCode.SUCCESS);
@@ -309,6 +310,25 @@ public class AgentController {
         Agent response = service.addAgentPhoto(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Profile Photo added successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @GetMapping("/searchName")
+    public ResponseEntity<Response> searchByName(@RequestParam("name") String name,
+                                                 @RequestParam(value = "page") int page,
+                                                 @RequestParam(value = "sortBy", required = false) String sort,
+                                                 @RequestParam(value = "pageSize") int pageSize){
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        if(name == null || name.isEmpty()) throw new NotFoundException(CustomResponseCode.NOT_ACCEPTABLE, "A search term is required needed" );
+        logger.info("name from search term is {}", name);
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        Page<User> response = service.findAgentUser(name, PageRequest.of(page, pageSize, sortType));
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
         resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
