@@ -3,10 +3,8 @@ package com.sabi.agent.api.controller;
 
 import com.sabi.agent.core.models.agentModel.Agent;
 import com.sabi.agent.service.repositories.agentRepo.AgentRepository;
-import com.sabi.framework.dto.requestDto.GeneratePassword;
 import com.sabi.framework.dto.requestDto.LoginRequest;
 import com.sabi.framework.dto.responseDto.AccessTokenWithUserDetails;
-import com.sabi.framework.dto.responseDto.GeneratePasswordResponse;
 import com.sabi.framework.dto.responseDto.PartnersCategoryReturn;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.exceptions.LockedException;
@@ -14,10 +12,7 @@ import com.sabi.framework.exceptions.UnauthorizedException;
 import com.sabi.framework.loggers.LoggerUtil;
 import com.sabi.framework.models.User;
 import com.sabi.framework.security.AuthenticationWithToken;
-import com.sabi.framework.service.AuditTrailService;
-import com.sabi.framework.service.ExternalTokenService;
-import com.sabi.framework.service.TokenService;
-import com.sabi.framework.service.UserService;
+import com.sabi.framework.service.*;
 import com.sabi.framework.utils.AuditTrailFlag;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
@@ -31,7 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,11 +51,14 @@ public class AuthenticationController {
     private final UserService userService;
     private final AgentRepository agentRepository;
     private final AuditTrailService auditTrailService;
+    private final PermissionService permissionService;
 
-    public AuthenticationController(UserService userService,AgentRepository agentRepository,AuditTrailService auditTrailService) {
+    public AuthenticationController(UserService userService,AgentRepository agentRepository,
+                                    AuditTrailService auditTrailService,PermissionService permissionService) {
         this.userService = userService;
         this.agentRepository=agentRepository;
         this.auditTrailService=auditTrailService;
+        this.permissionService=permissionService;
     }
 
     @PostMapping("/login")
@@ -107,8 +104,8 @@ public class AuthenticationController {
             //NO NEED TO update login failed count and failed login date SINCE IT DOES NOT EXIST
             throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Login details does not exist");
         }
-        //String accessList = roleService.getPermissionsByUserId(user.getId());
-        String accessList = "";
+        String accessList = permissionService.getPermissionsByUserId(user.getId());
+//        String accessList = "";
         AuthenticationWithToken authWithToken = new AuthenticationWithToken(user, null,
                 AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER,"+accessList));
         String newToken = "Bearer" +" "+this.tokenService.generateNewToken();
@@ -167,17 +164,17 @@ public class AuthenticationController {
 
 
 
-    @PutMapping("/generatepassword")
-    public ResponseEntity<Response> generatePassword(@Validated @RequestBody GeneratePassword request){
-        HttpStatus httpCode ;
-        Response resp = new Response();
-        GeneratePasswordResponse response=userService.generatePassword(request);
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Password generated successfully");
-        resp.setData(response);
-        httpCode = HttpStatus.OK;
-        return new ResponseEntity<>(resp, httpCode);
-    }
+//    @PutMapping("/generatepassword")
+//    public ResponseEntity<Response> generatePassword(@Validated @RequestBody GeneratePassword request){
+//        HttpStatus httpCode ;
+//        Response resp = new Response();
+//        GeneratePasswordResponse response=userService.generatePassword(request);
+//        resp.setCode(CustomResponseCode.SUCCESS);
+//        resp.setDescription("Password generated successfully");
+//        resp.setData(response);
+//        httpCode = HttpStatus.OK;
+//        return new ResponseEntity<>(resp, httpCode);
+//    }
 
 
 
