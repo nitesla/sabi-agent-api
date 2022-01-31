@@ -22,7 +22,7 @@ public class CronJob {
     // @Scheduled(cron="0 0 0 * * ?")
     @Scheduled(cron="${cronExpression}")
     public void getNewToken() {
-        log.info("::Cron Job Started at :   %s", new Date());
+        log.info("::::::::::::: Cron Job Started at :::::::::::: :   %s", new Date());
         externalTokenService.externalTokenRequest();
     }
 }
