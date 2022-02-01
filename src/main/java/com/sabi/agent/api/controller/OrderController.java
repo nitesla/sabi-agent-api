@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("All")
@@ -48,6 +47,8 @@ public class OrderController {
     @PostMapping("/process")
     public CreateOrderResponse placeOrder(@RequestBody @Valid PlaceOrder request) throws Exception {
         CreateOrderResponse response = service.placeOrder(request);
+
+        log.info(":::::::  CONTROLLER RESPONSE ::::::::" +response );
         return response;
     }
 
