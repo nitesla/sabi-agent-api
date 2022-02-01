@@ -48,7 +48,6 @@ public class OrderController {
     public CreateOrderResponse placeOrder(@RequestBody @Valid PlaceOrder request) throws Exception {
         CreateOrderResponse response = service.placeOrder(request);
 
-        log.info(":::::::  CONTROLLER RESPONSE ::::::::" +response );
         return response;
     }
 
