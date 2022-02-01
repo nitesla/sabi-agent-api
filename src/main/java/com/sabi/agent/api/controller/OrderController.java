@@ -2,6 +2,7 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.agent.core.integrations.order.*;
+import com.sabi.agent.core.integrations.order.orderResponse.CompleteOrderResponse;
 import com.sabi.agent.core.integrations.order.orderResponse.CreateOrderResponse;
 import com.sabi.agent.core.integrations.request.CompleteOrderRequest;
 import com.sabi.agent.core.integrations.request.MerchBuyRequest;
@@ -13,12 +14,13 @@ import com.sabi.framework.exceptions.BadRequestException;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -125,7 +127,8 @@ public class OrderController {
     }
 
     @PostMapping("/completeOrder")
-    public void completeOrder(@RequestBody CompleteOrderRequest request) {
-        service.completeOrder(request);
+    public ResponseEntity<CompleteOrderResponse> completeOrder(@RequestBody CompleteOrderRequest request) {
+        CompleteOrderResponse order = service.completeOrder(request);
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 }
