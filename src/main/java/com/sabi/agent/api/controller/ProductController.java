@@ -3,12 +3,21 @@ package com.sabi.agent.api.controller;
 
 import com.sabi.agent.core.integrations.request.AllProductsRequest;
 import com.sabi.agent.core.integrations.request.SingleProductRequest;
+import com.sabi.agent.core.integrations.response.MerchantProductCategory;
 import com.sabi.agent.core.integrations.response.SingleProductResponse;
 import com.sabi.agent.core.integrations.response.product.AllProductResponse;
 import com.sabi.agent.service.integrations.ProductService;
+import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
+import com.sabi.framework.utils.CustomResponseCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 
 @SuppressWarnings("All")
@@ -46,4 +55,37 @@ public class ProductController {
         AllProductResponse response= service.allProductDetail(request);
         return response;
     }
+
+    @GetMapping("/merchant/category")
+    public ResponseEntity<Response> merchantProductCategory (@RequestParam(value = "page") int page,
+                                                             @RequestParam(value = "sortBy", required = false) String sort,
+                                                             @RequestParam(value = "pageSize") int pageSize) throws IOException {
+        MerchantProductCategory[] response = service.getMerchantProductCategory();
+        Response resp = new Response();
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ? Sort.by(Sort.Order.asc("id")) : Sort.by(Sort.Order.desc("id"));
+        Pageable paging = PageRequest.of(page, pageSize, sortType);
+        int start = Math.min((int)paging.getOffset(), response.length);
+        int end = Math.min((start + paging.getPageSize()), response.length);
+
+        Page<MerchantProductCategory> pagedResponse = new PageImpl<>(Arrays.asList(response).subList(start, end), paging, response.length);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(pagedResponse);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{id}")
+    public ResponseEntity<AllProductResponse> getProductByCategoryId(@PathVariable String id,
+                                       @RequestParam(value = "direction") String direction,
+                                       @RequestParam(value = "page", required = false) int page,
+                                       @RequestParam(value = "pageSize", required = false) int pageSize,
+                                       @RequestParam(value = "sortBy") String sortBy,
+                                       @RequestParam(value = "state", required = false) String state) throws IOException {
+        AllProductResponse response = service.getProductById(id, direction, page, pageSize, sortBy, state);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
 }
