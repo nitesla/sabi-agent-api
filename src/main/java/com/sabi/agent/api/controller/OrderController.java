@@ -21,9 +21,9 @@ import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -129,9 +129,5 @@ public class OrderController {
 
         return new ResponseEntity<>(strings, HttpStatus.OK);
     }
-
-    @PostMapping("/completeOrder")
-    public LocalCompleteOrderResponse completeOrder (@RequestBody @Valid LocalCompleteOrderRequest request) {
-        return service.localCompleteOrder(request);
     }
 }
