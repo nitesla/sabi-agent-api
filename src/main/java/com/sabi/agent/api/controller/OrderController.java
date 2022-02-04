@@ -113,11 +113,11 @@ public class OrderController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<Map>> searchItems(@RequestParam("searchTerm") String searchTerm,
-                                                                 @RequestParam(value = "startDate", required = false) String startDate,
-                                                                 @RequestParam(value = "endDate", required = false) String endDate,
-                                                                 @RequestParam(value = "sortBy", required = false) String sort,
-                                                                 @RequestParam("page") int page,
-                                                                 @RequestParam("pageSize") int pageSize) {
+                                                 @RequestParam(value = "startDate", required = false) String startDate,
+                                                 @RequestParam(value = "endDate", required = false) String endDate,
+                                                 @RequestParam(value = "sortBy", required = false) String sort,
+                                                 @RequestParam("page") int page,
+                                                 @RequestParam("pageSize") int pageSize) {
 
         if ((startDate != null && endDate == null) || (startDate == null && endDate != null))
             throw new BadRequestException(CustomResponseCode.BAD_REQUEST, "Date must have start and end range");
@@ -129,5 +129,11 @@ public class OrderController {
 
         return new ResponseEntity<>(strings, HttpStatus.OK);
     }
+
+
+
+    @PostMapping("/completeOrder")
+    public LocalCompleteOrderResponse completeOrder(@RequestBody @Valid LocalCompleteOrderRequest request) {
+        return service.localCompleteOrder(request);
     }
 }
