@@ -1,10 +1,13 @@
 package com.sabi.agent.api.controller;
 
 
+import com.sabi.agent.core.dto.responseDto.OrderSearchResponse;
 import com.sabi.agent.core.integrations.order.*;
 import com.sabi.agent.core.integrations.order.orderResponse.CreateOrderResponse;
 import com.sabi.agent.core.integrations.request.CompleteOrderRequest;
+import com.sabi.agent.core.integrations.request.LocalCompleteOrderRequest;
 import com.sabi.agent.core.integrations.request.MerchBuyRequest;
+import com.sabi.agent.core.integrations.response.LocalCompleteOrderResponse;
 import com.sabi.agent.core.integrations.response.MerchBuyResponse;
 import com.sabi.agent.core.models.AgentOrder;
 import com.sabi.agent.service.integrations.OrderService;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("All")
@@ -106,7 +110,7 @@ public class OrderController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<Map<String, Object>>> searchItems(@RequestParam("searchTerm") String searchTerm,
+    public ResponseEntity<Page<Map>> searchItems(@RequestParam("searchTerm") String searchTerm,
                                                                  @RequestParam(value = "startDate", required = false) String startDate,
                                                                  @RequestParam(value = "endDate", required = false) String endDate,
                                                                  @RequestParam(value = "sortBy", required = false) String sort,
@@ -118,14 +122,14 @@ public class OrderController {
 
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ? Sort.by(Sort.Order.asc("id")) : Sort.by(Sort.Order.desc("id"));
-        Page<Map<String, Object>> strings =
+        Page<Map> strings =
                 service.multiSearch(searchTerm, startDate, endDate, PageRequest.of(page, pageSize, sortType));
 
         return new ResponseEntity<>(strings, HttpStatus.OK);
     }
 
     @PostMapping("/completeOrder")
-    public void completeOrder(@RequestBody CompleteOrderRequest request) {
-        service.completeOrder(request);
+    public LocalCompleteOrderResponse completeOrder (@RequestBody @Valid LocalCompleteOrderRequest request) {
+        return service.localCompleteOrder(request);
     }
 }
