@@ -77,11 +77,11 @@ public class ProductController {
 
     @GetMapping("/category/{id}")
     public ResponseEntity<AllProductResponse> getProductByCategoryId(@PathVariable String id,
-                                       @RequestParam(value = "direction") String direction,
-                                       @RequestParam(value = "page", required = false) int page,
-                                       @RequestParam(value = "pageSize", required = false) int pageSize,
-                                       @RequestParam(value = "sortBy") String sortBy,
-                                       @RequestParam(value = "state", required = false) String state) throws IOException {
+                                                                     @RequestParam(value = "direction") String direction,
+                                                                     @RequestParam(value = "page", required = false) Integer page,
+                                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                     @RequestParam(value = "sortBy") String sortBy,
+                                                                     @RequestParam(value = "state", required = false) String state) throws IOException {
         AllProductResponse response = service.getProductById(id, direction, page, pageSize, sortBy, state);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
