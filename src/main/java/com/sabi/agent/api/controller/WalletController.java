@@ -7,7 +7,6 @@ import com.sabi.agent.core.wallet_integration.request.InitiateTopUpRequest;
 import com.sabi.agent.core.wallet_integration.request.WalletBvnRequest;
 import com.sabi.agent.core.wallet_integration.request.WalletSignUpRequest;
 import com.sabi.agent.core.wallet_integration.response.ResponseMetaData;
-import com.sabi.agent.core.wallet_integration.response.WalletBvnResponse;
 import com.sabi.agent.service.services.WalletService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 
 @Validated
 @RestController

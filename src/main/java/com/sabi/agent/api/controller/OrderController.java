@@ -1,11 +1,8 @@
 package com.sabi.agent.api.controller;
 
 
-import com.sabi.agent.core.dto.responseDto.OrderSearchResponse;
 import com.sabi.agent.core.integrations.order.*;
-import com.sabi.agent.core.integrations.order.orderResponse.CompleteOrderResponse;
 import com.sabi.agent.core.integrations.order.orderResponse.CreateOrderResponse;
-import com.sabi.agent.core.integrations.request.CompleteOrderRequest;
 import com.sabi.agent.core.integrations.request.LocalCompleteOrderRequest;
 import com.sabi.agent.core.integrations.request.MerchBuyRequest;
 import com.sabi.agent.core.integrations.response.LocalCompleteOrderResponse;
@@ -17,17 +14,15 @@ import com.sabi.framework.exceptions.BadRequestException;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("All")

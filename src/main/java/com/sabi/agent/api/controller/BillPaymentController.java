@@ -1,7 +1,7 @@
 package com.sabi.agent.api.controller;
 
 
-import  com.sabi.agent.core.dto.requestDto.billPayments.AirtimeRequestDto;
+import com.sabi.agent.core.dto.requestDto.billPayments.AirtimeRequestDto;
 import com.sabi.agent.core.dto.responseDto.ResponseDto;
 import com.sabi.agent.core.dto.responseDto.billPayments.AirtimeResponseDto;
 import com.sabi.agent.core.models.billPayments.Airtime;
