@@ -111,6 +111,7 @@ public class OrderController {
                                                  @RequestParam(value = "startDate", required = false) String startDate,
                                                  @RequestParam(value = "endDate", required = false) String endDate,
                                                  @RequestParam(value = "sortBy", required = false) String sort,
+                                                 @RequestParam(value = "agentId", required = false) Long agentId,
                                                  @RequestParam("page") int page,
                                                  @RequestParam("pageSize") int pageSize) {
 
@@ -120,15 +121,14 @@ public class OrderController {
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ? Sort.by(Sort.Order.asc("id")) : Sort.by(Sort.Order.desc("id"));
         Page<Map> strings =
-                service.multiSearch(searchTerm, startDate, endDate, PageRequest.of(page, pageSize, sortType));
+                service.multiSearch(searchTerm, agentId, startDate, endDate, PageRequest.of(page, pageSize, sortType));
 
         return new ResponseEntity<>(strings, HttpStatus.OK);
     }
-
-
-
+  
     @PostMapping("/completeOrder")
     public LocalCompleteOrderResponse completeOrder(@RequestBody @Valid LocalCompleteOrderRequest request) {
         return service.localCompleteOrder(request);
     }
+  
 }
