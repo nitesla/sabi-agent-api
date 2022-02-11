@@ -130,11 +130,10 @@ public class OrderController {
 
         return new ResponseEntity<>(strings, HttpStatus.OK);
     }
-
-
-
+  
     @PostMapping("/completeOrder")
     public LocalCompleteOrderResponse completeOrder(@RequestBody @Valid LocalCompleteOrderRequest request) {
         return service.localCompleteOrder(request);
     }
+  
 }

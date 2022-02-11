@@ -4,17 +4,21 @@ package com.sabi.agent.api.controller;
 import  com.sabi.agent.core.dto.requestDto.billPayments.AirtimeRequestDto;
 import com.sabi.agent.core.dto.responseDto.ResponseDto;
 import com.sabi.agent.core.dto.responseDto.billPayments.AirtimeResponseDto;
+import com.sabi.agent.core.dto.responseDto.billPayments.BillPaymentResponseDto;
+import com.sabi.agent.core.integrations.response.MerchantProductCategory;
 import com.sabi.agent.core.models.billPayments.Airtime;
 import com.sabi.agent.service.integrations.BillPaymentService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 
 
 @SuppressWarnings("All")
@@ -38,6 +42,7 @@ public class BillPaymentController {
 
     @PostMapping("/airtime")
     public ResponseEntity<Response> airtimePayment(@Validated @RequestBody AirtimeRequestDto request){
+        System.err.println(request);
         HttpStatus httpCode ;
         Response resp = new Response();
         AirtimeResponseDto response = service.airtimePayment(request);
@@ -62,27 +67,20 @@ public class BillPaymentController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
-    @GetMapping("/billCategories")
-    public ResponseDto getBillCategories(@Validated @RequestParam(value = "direction", required = false)String direction,
-                                                      @RequestParam(value = "fingerprint",required = true)String fingerprint,
-                                                      @RequestParam(value = "page")Integer page,
-                                                      @RequestParam(value = "size") Integer size,
-                                                      @RequestParam(value = "sortBy", required = false) String sortBy) throws Exception{
-
-        ResponseDto response = service.getBillCategories(direction, fingerprint, page, size, sortBy);
-
-        return response;
+    @GetMapping("/billersPerCategories")
+    public BillPaymentResponseDto getBillersPerCategories() throws Exception{
+        return service.getBillersPerCategories();
     }
 
-    @GetMapping("/{billCategoryId}")
-    public ResponseDto getBillCategoryId( @PathVariable("billCategoryId") Integer billCategoryId,
-                                                      @RequestParam(value = "fingerprint",required = true)String fingerprint) throws Exception{
+    @GetMapping("/billers")
+    public ResponseDto getAllBills( @RequestParam(value = "direction",required = false)String direction,
+                                    @RequestParam(value = "page",required = false)Integer page,
+                                    @RequestParam(value = "size",required = false)Integer size,
+                                    @RequestParam(value = "sortBy",required = false)String sortBy) throws Exception{
         HttpStatus httpCode ;
         Response resp = new Response();
-        ResponseDto response = service.getBillCategoryId(billCategoryId, fingerprint);
+        ResponseDto response = service.getBillers(direction, page, size, sortBy);
         return response;
     }
-
-
 
 }

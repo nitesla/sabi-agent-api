@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
 
 
 @SuppressWarnings("All")
@@ -57,31 +57,31 @@ public class ProductController {
     }
 
     @GetMapping("/merchant/category")
-    public ResponseEntity<Response> merchantProductCategory (@RequestParam(value = "page") int page,
-                                                             @RequestParam(value = "sortBy", required = false) String sort,
-                                                             @RequestParam(value = "pageSize") int pageSize) throws IOException {
-        MerchantProductCategory[] response = service.getMerchantProductCategory();
-        Response resp = new Response();
+    public ResponseEntity<Response>  merchantProductCategory (@RequestParam(value = "page") int page,
+                                                                  @RequestParam(value = "sortBy", required = false) String sort,
+                                                                  @RequestParam(value = "pageSize") int pageSize) throws IOException {
+        List<MerchantProductCategory> merchantProductCategories = service.getMerchantProductCategory();
+        Response response = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ? Sort.by(Sort.Order.asc("id")) : Sort.by(Sort.Order.desc("id"));
         Pageable paging = PageRequest.of(page, pageSize, sortType);
-        int start = Math.min((int)paging.getOffset(), response.length);
-        int end = Math.min((start + paging.getPageSize()), response.length);
+        int start = Math.min((int)paging.getOffset(), merchantProductCategories.size());
+        int end = Math.min((start + paging.getPageSize()), merchantProductCategories.size());
 
-        Page<MerchantProductCategory> pagedResponse = new PageImpl<>(Arrays.asList(response).subList(start, end), paging, response.length);
-        resp.setCode(CustomResponseCode.SUCCESS);
-        resp.setDescription("Record fetched successfully !");
-        resp.setData(pagedResponse);
-        return new ResponseEntity<>(resp, HttpStatus.OK);
+        Page<MerchantProductCategory> pagedResponse = new PageImpl<>(merchantProductCategories.subList(start, end), paging, merchantProductCategories.size());
+        response.setCode(CustomResponseCode.SUCCESS);
+        response.setDescription("Record fetched successfully !");
+        response.setData(pagedResponse);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/category/{id}")
     public ResponseEntity<AllProductResponse> getProductByCategoryId(@PathVariable String id,
-                                       @RequestParam(value = "direction") String direction,
-                                       @RequestParam(value = "page", required = false) int page,
-                                       @RequestParam(value = "pageSize", required = false) int pageSize,
-                                       @RequestParam(value = "sortBy") String sortBy,
-                                       @RequestParam(value = "state", required = false) String state) throws IOException {
+                                                                     @RequestParam(value = "direction") String direction,
+                                                                     @RequestParam(value = "page", required = false) Integer page,
+                                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                     @RequestParam(value = "sortBy") String sortBy,
+                                                                     @RequestParam(value = "state", required = false) String state) throws IOException {
         AllProductResponse response = service.getProductById(id, direction, page, pageSize, sortBy, state);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
