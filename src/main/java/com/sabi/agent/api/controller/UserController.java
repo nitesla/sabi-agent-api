@@ -28,7 +28,7 @@ import java.util.List;
 @RequestMapping(Constants.APP_CONTENT +"user")
 public class UserController {
 
-    private  static final Logger logger = LoggerFactory.getLogger(AgentController.class);
+    private  static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService service;
     private final ModelMapper mapper;
