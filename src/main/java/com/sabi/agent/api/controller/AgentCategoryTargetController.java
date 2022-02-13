@@ -96,9 +96,9 @@ public class AgentCategoryTargetController {
     @GetMapping("")
     public ResponseEntity<Response> getAgentCategoryTargets(@RequestParam(value = "name",required = false)String name,
                                                             @RequestParam(value = "isActive",required = false)Boolean isActive,
-                                                            @RequestParam(value = "min",required = false) int min,
-                                                            @RequestParam(value = "max",required = false) int max,
-                                                            @RequestParam(value = "supermax",required = false) int supermax,
+                                                            @RequestParam(value = "min",required = false) Integer min,
+                                                            @RequestParam(value = "max",required = false) Integer max,
+                                                            @RequestParam(value = "supermax",required = false) Integer supermax,
                                                             @RequestParam(value = "page") int page,
                                                             @RequestParam(value = "sortBy", required = false) String sort,
                                                             @RequestParam(value = "pageSize") int pageSize){

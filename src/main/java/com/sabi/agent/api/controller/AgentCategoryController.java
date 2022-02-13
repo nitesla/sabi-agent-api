@@ -4,6 +4,7 @@ package com.sabi.agent.api.controller;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentCategoryDto;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentPhotoRequest;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
+import com.sabi.agent.core.dto.responseDto.AgentCategoryModResponse;
 import com.sabi.agent.core.dto.responseDto.AgentCategoryResponseDto;
 import com.sabi.agent.core.models.agentModel.AgentCategory;
 import com.sabi.agent.service.services.AgentCategoryService;
@@ -172,6 +173,7 @@ public class AgentCategoryController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
+    @GetMapping("/image")
     public ResponseEntity<Response> setImage(@RequestBody @Valid AgentPhotoRequest request){
         HttpStatus httpCode;
         Response resp = new Response();
@@ -182,4 +184,17 @@ public class AgentCategoryController {
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
     }
+
+    @GetMapping("/categoryTargetList")
+    public ResponseEntity<Response> getAgentCategortWithTarget(){
+        HttpStatus httpCode;
+        Response resp = new Response();
+        List<AgentCategoryModResponse> agentCAtegoryAndTarget = service.getAgentCAtegoryAndTarget();
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Success!");
+        resp.setData(agentCAtegoryAndTarget);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
 }
