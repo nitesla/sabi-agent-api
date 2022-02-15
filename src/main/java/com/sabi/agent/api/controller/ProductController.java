@@ -23,7 +23,7 @@ import java.util.List;
 @SuppressWarnings("All")
 @Slf4j
 @RestController
-@RequestMapping(Constants.APP_CONTENT +"product")
+@RequestMapping(Constants.APP_CONTENT + "product")
 public class ProductController {
 
     private final ProductService service;
@@ -33,39 +33,54 @@ public class ProductController {
     }
 
 
-    /** <summary>
+    /**
+     * <summary>
      * Get single record endpoint
      * </summary>
      * <remarks>this endpoint is responsible for getting a single record</remarks>
      */
     @PostMapping("")
-    public SingleProductResponse productDetails (@RequestBody SingleProductRequest request) throws Exception {
-        SingleProductResponse response= service.productDetail(request);
+    public SingleProductResponse productDetails(@RequestBody SingleProductRequest request) throws Exception {
+        SingleProductResponse response = service.productDetail(request);
         return response;
     }
 
 
-    /** <summary>
+    /**
+     * <summary>
      * Get all records endpoint
      * </summary>
      * <remarks>this endpoint is responsible for getting all records and its searchable</remarks>
      */
     @GetMapping("/list")
-    public AllProductResponse allProductDetails (AllProductsRequest request) throws Exception {
-        AllProductResponse response= service.allProductDetail(request);
+    public AllProductResponse allProductDetails(@RequestParam(value = "pageNumber", required = false) Integer page,
+                                                @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                @RequestParam(value = "searchString", required = false) String searchString,
+                                                @RequestParam(value = "state", required = false) String state,
+                                                @RequestParam(value = "direction", required = false) String direction,
+                                                @RequestParam(value = "sort", required = false) String sort
+    ) throws Exception {
+        AllProductsRequest request = new AllProductsRequest();
+        request.setPage(page);
+        request.setPageSize(pageSize);
+        request.setDirection(direction);
+        request.setSearchString(searchString);
+        request.setSortBy(sort);
+        request.setState(state);
+        AllProductResponse response = service.allProductDetail(request);
         return response;
     }
 
     @GetMapping("/merchant/category")
-    public ResponseEntity<Response>  merchantProductCategory (@RequestParam(value = "page") int page,
-                                                                  @RequestParam(value = "sortBy", required = false) String sort,
-                                                                  @RequestParam(value = "pageSize") int pageSize) throws IOException {
+    public ResponseEntity<Response> merchantProductCategory(@RequestParam(value = "page") int page,
+                                                            @RequestParam(value = "sortBy", required = false) String sort,
+                                                            @RequestParam(value = "pageSize") int pageSize) throws IOException {
         List<MerchantProductCategory> merchantProductCategories = service.getMerchantProductCategory();
         Response response = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ? Sort.by(Sort.Order.asc("id")) : Sort.by(Sort.Order.desc("id"));
         Pageable paging = PageRequest.of(page, pageSize, sortType);
-        int start = Math.min((int)paging.getOffset(), merchantProductCategories.size());
+        int start = Math.min((int) paging.getOffset(), merchantProductCategories.size());
         int end = Math.min((start + paging.getPageSize()), merchantProductCategories.size());
 
         Page<MerchantProductCategory> pagedResponse = new PageImpl<>(merchantProductCategories.subList(start, end), paging, merchantProductCategories.size());
@@ -85,7 +100,6 @@ public class ProductController {
         AllProductResponse response = service.getProductById(id, direction, page, pageSize, sortBy, state);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 
 
 }
