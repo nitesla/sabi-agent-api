@@ -30,6 +30,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -317,6 +318,7 @@ public class AgentController {
 
     @GetMapping("/searchName")
     public ResponseEntity<Response> searchByName(@RequestParam("name") String name,
+                                                 @RequestParam("referralCode") String referralCode,
                                                  @RequestParam(value = "page") int page,
                                                  @RequestParam(value = "sortBy", required = false) String sort,
                                                  @RequestParam(value = "pageSize") int pageSize){
@@ -326,7 +328,7 @@ public class AgentController {
         logger.info("name from search term is {}", name);
         HttpStatus httpCode ;
         Response resp = new Response();
-        Page<User> response = service.findAgentUser(name, PageRequest.of(page, pageSize, sortType));
+        List<User> response = service.findAgentUserWithReferralCode(name, referralCode, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
