@@ -59,9 +59,9 @@ public class OrderController {
      * </summary>
      * <remarks>this endpoint is responsible for getting a single record</remarks>
      */
-    @PostMapping("")
-    public SingleOrderResponse orderDetails(@RequestBody SingleOrderRequest request) throws Exception {
-        SingleOrderResponse response = service.orderDetail(request);
+    @GetMapping("{id}")
+    public SingleOrderResponse orderDetails(@PathVariable Long id) throws Exception {
+        SingleOrderResponse response = service.orderDetail(id);
         return response;
     }
 
