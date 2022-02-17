@@ -59,9 +59,9 @@ public class OrderController {
      * </summary>
      * <remarks>this endpoint is responsible for getting a single record</remarks>
      */
-    @GetMapping("{id}")
-    public SingleOrderResponse orderDetails(@PathVariable Long id) throws Exception {
-        SingleOrderResponse response = service.orderDetail(id);
+    @GetMapping("{orderId}")
+    public SingleOrderResponse orderDetails(@PathVariable Long orderId) throws Exception {
+        SingleOrderResponse response = service.orderDetail(orderId);
         return response;
     }
 
@@ -130,5 +130,5 @@ public class OrderController {
     public LocalCompleteOrderResponse completeOrder(@RequestBody @Valid LocalCompleteOrderRequest request) {
         return service.localCompleteOrder(request);
     }
-  
+
 }
