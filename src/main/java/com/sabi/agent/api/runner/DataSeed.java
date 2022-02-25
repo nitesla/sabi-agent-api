@@ -48,7 +48,7 @@ public class DataSeed implements ApplicationListener<ContextRefreshedEvent> {
 //        seedStates();
 //        seedLocalGovernments();
         createAgentCategory();
-        seedBanks();
+//        seedBanks();
 
     }
 
