@@ -20,7 +20,6 @@ public class ApplicationStartUp implements ApplicationRunner {
     private final ExternalTokenService externalTokenService;
     private final AccessTokenService accessTokenService;
 
-
     @Override
     public void run (ApplicationArguments args){
         log.info("Generate new space token at : {}" , new Date());
