@@ -7,11 +7,15 @@ import com.sabi.agent.core.merchant_integration.response.MerchantOtpValidationRe
 import com.sabi.agent.core.merchant_integration.response.MerchantSignUpResponse;
 import com.sabi.agent.core.models.RegisteredMerchant;
 import com.sabi.agent.service.services.MerchantService;
+import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
+import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -24,9 +28,14 @@ public class MerchantController {
     MerchantService service;
 
     @PostMapping("/signUp")
-    public MerchantSignUpResponse merchantSignUp(@RequestBody MerchantSignUpRequest request,
+    public ResponseEntity<Response> merchantSignUp(@RequestBody MerchantSignUpRequest request,
                                                  @RequestHeader("fingerprint") String fingerPrint) {
-        return service.createMerchant(request, fingerPrint);
+        Response resp = new Response();
+        MerchantSignUpResponse response = service.createMerchant(request, fingerPrint);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Successful");
+        resp.setData(response);
+        return new ResponseEntity<>(resp, HttpStatus.CREATED);
     }
 
     @GetMapping("/otp")
