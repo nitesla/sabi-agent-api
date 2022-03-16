@@ -4,6 +4,7 @@ package com.sabi.agent.api.controller;
 import com.sabi.framework.dto.requestDto.PermissionDto;
 import com.sabi.framework.dto.responseDto.PermissionResponseDto;
 import com.sabi.framework.dto.responseDto.Response;
+import com.sabi.framework.globaladminintegration.GlobalService;
 import com.sabi.framework.models.Permission;
 import com.sabi.framework.service.PermissionService;
 import com.sabi.framework.utils.Constants;
@@ -25,9 +26,11 @@ public class PermissionController {
 
 
     private final PermissionService service;
+    private final GlobalService globalService;
 
-    public PermissionController(PermissionService service) {
+    public PermissionController(PermissionService service,GlobalService globalService) {
         this.service = service;
+        this.globalService=globalService;
     }
 
 
