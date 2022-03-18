@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping(Constants.APP_CONTENT + "merchant")
@@ -86,16 +88,16 @@ public class MerchantController {
      E.g: toDate=2022-03-18T12:08:06
     <Remark>
      */
-//    @GetMapping("/search")
-//    public Page<RegisteredMerchant> searchMerchants(@RequestParam("searchTerm") String searchTerm,
-//                                                    @RequestParam( value = "agentId", required = false) Long agentId ,
-//                                                    @RequestParam("page") int page,
-//                                                    @RequestParam("pageSize") int pageSize,
-//                                                    @RequestParam(value = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
-//                                                    @RequestParam(value = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
-//                                                    @RequestParam(value = "sortBy", required = false) String sort){
-//        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
-//                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-//        return service.searchMerchant(agentId, searchTerm, fromDate,toDate, PageRequest.of(page, pageSize, sortType));
-//    }
+    @GetMapping("/search")
+    public Page<RegisteredMerchant> searchMerchants(@RequestParam("searchTerm") String searchTerm,
+                                                    @RequestParam( value = "agentId", required = false) Long agentId ,
+                                                    @RequestParam("page") int page,
+                                                    @RequestParam("pageSize") int pageSize,
+                                                    @RequestParam(value = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
+                                                    @RequestParam(value = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
+                                                    @RequestParam(value = "sortBy", required = false) String sort){
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        return service.searchMerchant(agentId, searchTerm, fromDate,toDate, PageRequest.of(page, pageSize, sortType));
+    }
 }
