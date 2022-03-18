@@ -68,10 +68,15 @@ public class MerchantController {
         return service.findMerchant(agentId, merchantId, firstName, lastName,PageRequest.of(page, pageSize, sortType));
     }
 
-    @GetMapping("/{id}")
-    public MerchantDetailResponse getSignedUpMerchantDetail(@RequestHeader("fingerPrint") String fingerPrint,
+    @GetMapping("/remote/{id}")
+    public MerchantDetailResponse getRemoteSignedUpMerchantDetail(@RequestHeader("fingerPrint") String fingerPrint,
                                                        @PathVariable("id") String id){
         return service.merchantDetails(id, fingerPrint);
+    }
+
+    @GetMapping("/{id}")
+    public RegisteredMerchant getSignedUpMerchantDetail(@PathVariable("id") Long id){
+        return service.merchantDetails(id);
     }
 
     /**
