@@ -71,14 +71,26 @@ public class MerchantController {
         return service.merchantDetails(id, fingerPrint);
     }
 
-    @GetMapping("/search")
-    public Page<RegisteredMerchant> searchMerchants(@RequestParam("searchTerm") String searchTerm,
-                                                    @RequestParam("agentId") Long agentId,
-                                                    @RequestParam("page") int page,
-                                                    @RequestParam("pageSize") int pageSize,
-                                                    @RequestParam(value = "sortBy", required = false) String sort){
-        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
-                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        return service.searchMerchant(agentId, searchTerm, PageRequest.of(page, pageSize, sortType));
-    }
+    /**
+     <summary>
+     Searches for Merchants
+     </summary>
+    <Remark>
+     For  the dateRanges,  *fromDate *and *toDate* should be in this  format
+     fromDate=YYYY-MM-DDTHH:mm:ss&=2022-03-18T12:08:06
+     E.g: toDate=2022-03-18T12:08:06
+    <Remark>
+     */
+//    @GetMapping("/search")
+//    public Page<RegisteredMerchant> searchMerchants(@RequestParam("searchTerm") String searchTerm,
+//                                                    @RequestParam( value = "agentId", required = false) Long agentId ,
+//                                                    @RequestParam("page") int page,
+//                                                    @RequestParam("pageSize") int pageSize,
+//                                                    @RequestParam(value = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
+//                                                    @RequestParam(value = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
+//                                                    @RequestParam(value = "sortBy", required = false) String sort){
+//        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+//                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+//        return service.searchMerchant(agentId, searchTerm, fromDate,toDate, PageRequest.of(page, pageSize, sortType));
+//    }
 }
