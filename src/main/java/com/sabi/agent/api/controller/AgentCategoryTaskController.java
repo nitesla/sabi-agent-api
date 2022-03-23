@@ -140,5 +140,15 @@ public class AgentCategoryTaskController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
+    @GetMapping("/agentCategory/{agentCategoryId}")
+    public ResponseEntity<Response> getByAgentCategoryId(@PathVariable Long agentCategoryId){
+        Response resp = new Response();
+        List<AgentCategoryTask> response = service.getByAgentCategoryId(agentCategoryId);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
 
 }
