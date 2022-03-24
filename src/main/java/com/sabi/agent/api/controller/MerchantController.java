@@ -1,5 +1,6 @@
 package com.sabi.agent.api.controller;
 
+import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.merchant_integration.request.MerchantSignUpRequest;
 import com.sabi.agent.core.merchant_integration.response.MerchantDetailResponse;
 import com.sabi.agent.core.merchant_integration.response.MerchantOtpResponse;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -100,5 +102,14 @@ public class MerchantController {
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
         return service.searchMerchant(agentId, searchTerm,PageRequest.of(page, pageSize, sortType));
+    }
+
+    @PutMapping("/enabledisable")
+    public ResponseEntity<Response> enableDisable(@Validated @RequestBody EnableDisEnableDto request) {
+        Response response = new Response();
+        service.enableDisEnableState(request);
+        response.setCode(CustomResponseCode.SUCCESS);
+        response.setDescription("Successful");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
