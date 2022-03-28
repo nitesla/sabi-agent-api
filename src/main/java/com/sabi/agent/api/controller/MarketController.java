@@ -81,6 +81,10 @@ public class MarketController {
      */
     @GetMapping("")
     public ResponseEntity<Response> getMarkets(@RequestParam(value = "name", required = false) String name,
+                                               @RequestParam(value = "ward", required = false) String ward,
+                                               @RequestParam(value = "lga", required = false) String lga,
+                                               @RequestParam(value = "state", required = false) String state,
+                                               @RequestParam(value = "country", required = false) String country,
                                                @RequestParam(value = "page") int page,
                                                @RequestParam(value = "isActive", required = false) Boolean isActive,
                                                @RequestParam(value = "sortBy", required = false) String sort,
@@ -89,7 +93,7 @@ public class MarketController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<Market> response = service.findAll(name, isActive,PageRequest.of(page, pageSize, sortType));
+        Page<Market> response = service.findAll(name, ward,lga,state,country, isActive,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
