@@ -1,7 +1,6 @@
 package com.sabi.agent.api.controller;
 
 
-import com.sabi.agent.core.dto.responseDto.AgentAdminOrderResponseDto;
 import com.sabi.agent.core.integrations.order.*;
 import com.sabi.agent.core.integrations.order.orderResponse.CreateOrderResponse;
 import com.sabi.agent.core.integrations.request.LocalCompleteOrderRequest;
@@ -134,7 +133,7 @@ public class OrderController {
     }
 
     @GetMapping("/admin/filter")
-    public ResponseEntity<Page<Map>> filterForAdmin(@RequestParam(value = "status", required = false) String status,
+    public ResponseEntity<Page<Map>> filterForOrder(@RequestParam(value = "status", required = false) String status,
                                                     @RequestParam(value = "agentId", required = false) Long agentId,
                                                     @RequestParam(value = "agentName", required = false) String agentName,
                                                     @RequestParam(value = "merchantName", required = false) String merchantName,
