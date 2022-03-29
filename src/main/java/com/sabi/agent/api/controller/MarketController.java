@@ -124,7 +124,7 @@ public class MarketController {
     public ResponseEntity<Response> getALlByStatus(@RequestParam("isActive") boolean isActive){
         HttpStatus httpCode;
         Response resp = new Response();
-        List<MarketResponseDto> response = service.getAllByStatus(isActive);
+        List<Market> response = service.getAllByStatus(isActive);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
