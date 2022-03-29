@@ -2,6 +2,8 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.agent.core.integrations.order.*;
+import com.sabi.agent.core.integrations.order.merch.request.MerchPlaceOrderDto;
+import com.sabi.agent.core.integrations.order.merch.response.MerchResponseData;
 import com.sabi.agent.core.integrations.order.orderResponse.CreateOrderResponse;
 import com.sabi.agent.core.integrations.request.LocalCompleteOrderRequest;
 import com.sabi.agent.core.integrations.request.MerchBuyRequest;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("All")
@@ -51,6 +52,11 @@ public class OrderController {
         CreateOrderResponse response = service.placeOrder(request);
 
         return response;
+    }
+
+    @PostMapping("/merchprocess")
+    public MerchResponseData merchPlaceOrder(@RequestBody @Valid MerchPlaceOrderDto request) throws Exception {
+        return service.merchPlaceOrder(request);
     }
 
 
