@@ -1,5 +1,6 @@
 package com.sabi.agent.api.controller;
 
+import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.merchant_integration.request.MerchantSignUpRequest;
 import com.sabi.agent.core.merchant_integration.response.MerchantDetailResponse;
 import com.sabi.agent.core.merchant_integration.response.MerchantOtpResponse;
@@ -7,14 +8,21 @@ import com.sabi.agent.core.merchant_integration.response.MerchantOtpValidationRe
 import com.sabi.agent.core.merchant_integration.response.MerchantSignUpResponse;
 import com.sabi.agent.core.models.RegisteredMerchant;
 import com.sabi.agent.service.services.MerchantService;
+import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
+import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping(Constants.APP_CONTENT + "merchant")
@@ -24,9 +32,14 @@ public class MerchantController {
     MerchantService service;
 
     @PostMapping("/signUp")
-    public MerchantSignUpResponse merchantSignUp(@RequestBody MerchantSignUpRequest request,
+    public ResponseEntity<Response> merchantSignUp(@RequestBody MerchantSignUpRequest request,
                                                  @RequestHeader("fingerprint") String fingerPrint) {
-        return service.createMerchant(request, fingerPrint);
+        Response resp = new Response();
+        MerchantSignUpResponse response = service.createMerchant(request, fingerPrint);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Successful");
+        resp.setData(response);
+        return new ResponseEntity<>(resp, HttpStatus.CREATED);
     }
 
     @GetMapping("/otp")
@@ -42,78 +55,61 @@ public class MerchantController {
         return service.validateOtp(fingerPrint, userId, otp);
     }
 
+    /**
+     <summary>
+     Searches for Merchants
+     </summary>
+     <Remark>
+     For  the dateRanges,  *fromDate *and *toDate* should be in this  format
+     fromDate=YYYY-MM-DDTHH:mm:ss&=2022-03-18T12:08:06
+     E.g: toDate=2022-03-18T12:08:06
+     <Remark>
+     */
     @GetMapping("/find")
     public Page<RegisteredMerchant> findMerchants(@RequestHeader("fingerPrint") String fingerPrint,
                                                   @RequestParam(value = "agentId", required = false) String agentId,
                                                   @RequestParam(value = "merchantId", required = false) String merchantId,
                                                   @RequestParam(value = "firstName", required = false) String firstName,
                                                   @RequestParam(value = "lastName", required = false) String lastName,
+                                                  @RequestParam(value = "isActive", required = false) Boolean isActive,
+                                                  @RequestParam(value = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
+                                                  @RequestParam(value = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
                                                   @RequestParam("page") Integer page,
                                                   @RequestParam(value = "sortBy", required = false) String sort,
                                                   @RequestParam("pageSize") Integer pageSize) {
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        return service.findMerchant(agentId, merchantId, firstName, lastName,PageRequest.of(page, pageSize, sortType));
+        return service.findMerchant(agentId, merchantId, firstName, lastName,isActive,fromDate,toDate,PageRequest.of(page, pageSize, sortType));
     }
 
-//    @GetMapping("/find")
-//    public Page<RegisteredMerchant> findMerchants(@RequestHeader("fingerPrint") String fingerPrint,
-//                                                  @RequestParam(value = "agentId", required = false) String agentId,
-//                                                  @RequestParam(value = "merchantId", required = false) String merchantId,
-//                                                  @RequestParam(value = "firstName", required = false) String firstName,
-//                                                  @RequestParam(value = "lastName", required = false) String lastName,
-//                                                  @RequestParam(value = "startDate", required = false) Date startDate,
-//                                                  @RequestParam(value = "endDate", required = false)Date endDate,
-//                                                  @RequestParam("page") Integer page,
-//                                                  @RequestParam(value = "sortBy", required = false) String sort,
-//                                                  @RequestParam("pageSize") Integer pageSize) {
-//        if ((startDate != null && endDate == null) || (startDate == null && endDate != null))
-//            throw new BadRequestException(CustomResponseCode.BAD_REQUEST, "Date must have start and end range");
-//        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
-//                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-//        return service.findMerchant(agentId, merchantId, firstName, lastName, startDate, endDate,PageRequest.of(page, pageSize, sortType));
-//    }
-
-    @GetMapping("/{id}")
-    public MerchantDetailResponse getSignedUpMerchantDetail(@RequestHeader("fingerPrint") String fingerPrint,
+    @GetMapping("/remote/{id}")
+    public MerchantDetailResponse getRemoteSignedUpMerchantDetail(@RequestHeader("fingerPrint") String fingerPrint,
                                                        @PathVariable("id") String id){
         return service.merchantDetails(id, fingerPrint);
     }
 
+    @GetMapping("/{id}")
+    public RegisteredMerchant getSignedUpMerchantDetail(@PathVariable("id") Long id){
+        return service.merchantDetails(id);
+    }
+
     @GetMapping("/search")
     public Page<RegisteredMerchant> searchMerchants(@RequestParam("searchTerm") String searchTerm,
-                                                    @RequestParam("agentId") Long agentId,
+                                                    @RequestParam( value = "agentId", required = false) Long agentId ,
                                                     @RequestParam("page") int page,
                                                     @RequestParam("pageSize") int pageSize,
                                                     @RequestParam(value = "sortBy", required = false) String sort){
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        return service.searchMerchant(agentId, searchTerm, PageRequest.of(page, pageSize, sortType));
+        return service.searchMerchant(agentId, searchTerm,PageRequest.of(page, pageSize, sortType));
     }
 
-
-//    @GetMapping("/search")
-//    public Page<RegisteredMerchant> searchMerchants(@RequestParam("searchTerm") String searchTerm,
-//                                                    @RequestParam(value = "agentId", required = false) Long agentId,
-//                                                    @RequestParam(value = "startDate", required = false) Date startDate,
-//                                                    @RequestParam(value = "endDate", required = false)Date endDate,
-//                                                    @RequestParam("page") int page,
-//                                                    @RequestParam("pageSize") int pageSize,
-//                                                    @RequestParam(value = "sortBy", required = false) String sort){
-//        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
-//                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-//        return service.searchMerchant(agentId, searchTerm, startDate, endDate,PageRequest.of(page, pageSize, sortType));
-//    }
-
-
-//    @PutMapping("/enabledisable")
-//    public ResponseEntity<Response> enableDisable(@Validated @RequestBody EnableDisEnableDto request) {
-//        HttpStatus httpCode;
-//        Response resp = new Response();
-//        service.enableDisableMerchant(request);
-//        resp.setCode(CustomResponseCode.SUCCESS);
-//        resp.setDescription("Successful");
-//        httpCode = HttpStatus.OK;
-//        return new ResponseEntity<>(resp, httpCode);
-//    }
+    @PutMapping("/enabledisable")
+    public ResponseEntity<Response> enableDisable(@Validated @RequestBody EnableDisEnableDto request) {
+        Response response = new Response();
+        service.enableDisEnableState(request);
+        response.setCode(CustomResponseCode.SUCCESS);
+        response.setDescription("Successful");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
