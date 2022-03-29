@@ -56,6 +56,24 @@ public class MerchantController {
         return service.findMerchant(agentId, merchantId, firstName, lastName,PageRequest.of(page, pageSize, sortType));
     }
 
+//    @GetMapping("/find")
+//    public Page<RegisteredMerchant> findMerchants(@RequestHeader("fingerPrint") String fingerPrint,
+//                                                  @RequestParam(value = "agentId", required = false) String agentId,
+//                                                  @RequestParam(value = "merchantId", required = false) String merchantId,
+//                                                  @RequestParam(value = "firstName", required = false) String firstName,
+//                                                  @RequestParam(value = "lastName", required = false) String lastName,
+//                                                  @RequestParam(value = "startDate", required = false) Date startDate,
+//                                                  @RequestParam(value = "endDate", required = false)Date endDate,
+//                                                  @RequestParam("page") Integer page,
+//                                                  @RequestParam(value = "sortBy", required = false) String sort,
+//                                                  @RequestParam("pageSize") Integer pageSize) {
+//        if ((startDate != null && endDate == null) || (startDate == null && endDate != null))
+//            throw new BadRequestException(CustomResponseCode.BAD_REQUEST, "Date must have start and end range");
+//        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+//                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+//        return service.findMerchant(agentId, merchantId, firstName, lastName, startDate, endDate,PageRequest.of(page, pageSize, sortType));
+//    }
+
     @GetMapping("/{id}")
     public MerchantDetailResponse getSignedUpMerchantDetail(@RequestHeader("fingerPrint") String fingerPrint,
                                                        @PathVariable("id") String id){
@@ -72,4 +90,30 @@ public class MerchantController {
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
         return service.searchMerchant(agentId, searchTerm, PageRequest.of(page, pageSize, sortType));
     }
+
+
+//    @GetMapping("/search")
+//    public Page<RegisteredMerchant> searchMerchants(@RequestParam("searchTerm") String searchTerm,
+//                                                    @RequestParam(value = "agentId", required = false) Long agentId,
+//                                                    @RequestParam(value = "startDate", required = false) Date startDate,
+//                                                    @RequestParam(value = "endDate", required = false)Date endDate,
+//                                                    @RequestParam("page") int page,
+//                                                    @RequestParam("pageSize") int pageSize,
+//                                                    @RequestParam(value = "sortBy", required = false) String sort){
+//        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+//                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+//        return service.searchMerchant(agentId, searchTerm, startDate, endDate,PageRequest.of(page, pageSize, sortType));
+//    }
+
+
+//    @PutMapping("/enabledisable")
+//    public ResponseEntity<Response> enableDisable(@Validated @RequestBody EnableDisEnableDto request) {
+//        HttpStatus httpCode;
+//        Response resp = new Response();
+//        service.enableDisableMerchant(request);
+//        resp.setCode(CustomResponseCode.SUCCESS);
+//        resp.setDescription("Successful");
+//        httpCode = HttpStatus.OK;
+//        return new ResponseEntity<>(resp, httpCode);
+//    }
 }

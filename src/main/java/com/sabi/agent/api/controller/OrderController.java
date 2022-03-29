@@ -131,4 +131,20 @@ public class OrderController {
         return service.localCompleteOrder(request);
     }
 
+//    @GetMapping("/adminOrder")
+//    public ResponseEntity<List<Map>> adminOrder(@RequestParam(value = "agentName", required = false) String agentName,
+//                                                @RequestParam(value = "orderStatus", required = false)String orderStatus,
+//                                                @RequestParam(value = "totalAmount", required = false) String totalAmount,
+//                                                @RequestParam(value = "merchName", required = false) String merchName
+////                                                @RequestParam(value = "quantity", required = false) Long quantity,
+////                                                @RequestParam(value = "page", required = false) Integer page,
+////                                                @RequestParam(value = "pageSize", required = false) Integer pageSize
+//    ){
+//        log.info("Adming search");
+//        int page = 1 ;
+//        int pageSize = 1;
+//        List<Map> data = service.adminOrder(agentName, orderStatus, totalAmount, merchName, page, pageSize);
+//        return new ResponseEntity<>(data, HttpStatus.OK);
+//    }
+
 }
