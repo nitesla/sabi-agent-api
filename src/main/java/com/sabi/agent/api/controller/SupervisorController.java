@@ -12,12 +12,14 @@ import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @SuppressWarnings("All")
@@ -87,20 +89,26 @@ public class SupervisorController {
         return new ResponseEntity<>(resp, httpCode);
     }
     /** <summary>
-     * Get all records endpoint
+     * Search all records endpoint
+     * createdDate must be in this format yyyy-MM-dd
+     * E.g: 2022-03030
      * </summary>
      * <remarks>this endpoint is responsible for getting all records and its searchable</remarks>
      */
 
     @GetMapping("")
-    public ResponseEntity<Response> getSupervisors(@RequestParam(value = "page") int page,
+    public ResponseEntity<Response> getSupervisors(@RequestParam(value = "supervisorName", required = false) String supervisorName,
+                                                   @RequestParam(value = "agentName", required = false) String agentName,
+                                                   @RequestParam(value = "createdDate",required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate createdDate,
+                                                   @RequestParam(value = "isActive", required = false) Boolean isActive,
+                                                   @RequestParam(value = "page") int page,
                                                    @RequestParam(value = "sortBy", required = false) String sort,
                                                    @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<Supervisor> response = service.findAll(PageRequest.of(page, pageSize, sortType));
+        Page<Supervisor> response = service.findAll(supervisorName,agentName,createdDate,isActive,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
