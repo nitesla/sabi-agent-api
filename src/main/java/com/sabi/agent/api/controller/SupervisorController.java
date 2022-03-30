@@ -91,7 +91,7 @@ public class SupervisorController {
     /** <summary>
      * Search all records endpoint
      * createdDate must be in this format yyyy-MM-dd
-     * E.g: 2022-03030
+     * E.g: 2022-03-30
      * </summary>
      * <remarks>this endpoint is responsible for getting all records and its searchable</remarks>
      */
