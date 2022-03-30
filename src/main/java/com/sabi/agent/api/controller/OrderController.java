@@ -55,15 +55,28 @@ public class OrderController {
 
     /**
      * <summary>
-     * Get single record endpoint
+     * Deprecated api to get single record endpoint
+     * </summary>
+     * <remarks>this endpoint is responsible for getting a single record</remarks>
+     */
+    @GetMapping("/old/{orderId}")
+    public SingleOrderResponse oldOrderDetails(@PathVariable Long orderId) throws Exception {
+        SingleOrderResponse response = service.orderDetail(orderId);
+        return response;
+    }
+
+    /**
+     * <summary>
+     * New api to get single record endpoint
      * </summary>
      * <remarks>this endpoint is responsible for getting a single record</remarks>
      */
     @GetMapping("{orderId}")
-    public SingleOrderResponse orderDetails(@PathVariable Long orderId) throws Exception {
-        SingleOrderResponse response = service.orderDetail(orderId);
+    public SingleOrderResponse orderDetails(@PathVariable Long orderId)  {
+        SingleOrderResponse response = service.OrderDetail(orderId);
         return response;
     }
+
 
 
     /**
