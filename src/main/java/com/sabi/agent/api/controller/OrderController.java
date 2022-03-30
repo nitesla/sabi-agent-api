@@ -2,6 +2,8 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.agent.core.integrations.order.*;
+import com.sabi.agent.core.integrations.order.merch.request.MerchPlaceOrderDto;
+import com.sabi.agent.core.integrations.order.merch.response.MerchResponseData;
 import com.sabi.agent.core.integrations.order.orderResponse.CreateOrderResponse;
 import com.sabi.agent.core.integrations.request.LocalCompleteOrderRequest;
 import com.sabi.agent.core.integrations.request.MerchBuyRequest;
@@ -50,6 +52,11 @@ public class OrderController {
         CreateOrderResponse response = service.placeOrder(request);
 
         return response;
+    }
+
+    @PostMapping("/merchprocess")
+    public MerchResponseData merchPlaceOrder(@RequestBody @Valid MerchPlaceOrderDto request) throws Exception {
+        return service.merchPlaceOrder(request);
     }
 
 
@@ -131,4 +138,19 @@ public class OrderController {
         return service.localCompleteOrder(request);
     }
 
+    @GetMapping("/admin/filter")
+    public ResponseEntity<Page<Map>> filterForOrder(@RequestParam(value = "status", required = false) String status,
+                                                    @RequestParam(value = "agentId", required = false) Long agentId,
+                                                    @RequestParam(value = "agentName", required = false) String agentName,
+                                                    @RequestParam(value = "merchantName", required = false) String merchantName,
+                                                    @RequestParam(value = "startDate", required = false) String startDate,
+                                                    @RequestParam(value = "endDate", required = false) String endDate,
+                                                    @RequestParam(value = "sortBy", required = false) String sort,
+                                                    @RequestParam("page") int page,
+                                                    @RequestParam("pageSize") int pageSize) {
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ? Sort.by(Sort.Order.asc("id")) : Sort.by(Sort.Order.desc("id"));
+        Page<Map> strings = service.getAgentAdminOrderDetails(status, agentId, agentName, merchantName, startDate, endDate, PageRequest.of(page, pageSize, sortType));
+        return new ResponseEntity<>(strings, HttpStatus.OK);
+    }
 }
