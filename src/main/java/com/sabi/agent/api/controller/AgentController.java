@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"agent")
@@ -334,6 +335,25 @@ public class AgentController {
         resp.setData(response);
         httpCode = HttpStatus.OK;
         return new ResponseEntity<>(resp, httpCode);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Response> filterAdmin(@RequestParam(value = "agentName", required = false) String agentName,
+                                                @RequestParam(value = "agentCategory", required = false) String agentCategory,
+                                                @RequestParam(value = "verificationStatus", required = false) String verificationStatus,
+                                                @RequestParam(value = "startDate", required = false) String startDate,
+                                                @RequestParam(value = "endDate", required = false) String endDate,
+                                                @RequestParam(value = "page") int page,
+                                                @RequestParam(value = "sortBy", required = false) String sort,
+                                                @RequestParam(value = "pageSize") int pageSize) {
+        Response resp = new Response();
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
+        Page<Map> response = service.filterAgent(agentName, agentCategory, verificationStatus, startDate, endDate, PageRequest.of(page, pageSize, sortType));
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
 }
