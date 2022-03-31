@@ -82,6 +82,7 @@ public class AgentTargetController {
     public ResponseEntity<Response> getAgentTargets(@RequestParam(value = "name", required = false) String name,
                                                     @RequestParam(value = "min", required = false) Integer min,
                                                     @RequestParam(value = "max", required = false) Integer max,
+                                                    @RequestParam(value = "agentId", required = false) Integer agentId,
                                                     @RequestParam(value = "superMax", required = false) Integer superMax,
                                                     @RequestParam(value = "page") int page,
                                                      @RequestParam(value = "isActive", required = false) Boolean isActive,
@@ -91,7 +92,7 @@ public class AgentTargetController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<AgentTarget> response = service.findAll(name,isActive,min,max,superMax,PageRequest.of(page, pageSize, sortType));
+        Page<AgentTarget> response = service.findAll(name,isActive,min,max,superMax,agentId,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
