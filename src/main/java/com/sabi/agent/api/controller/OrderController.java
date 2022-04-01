@@ -92,7 +92,7 @@ public class OrderController {
 
 
     @GetMapping("")
-    public ResponseEntity<Response> getOrders(@RequestParam(value = "orderId", required = false) Long orderId,
+    public ResponseEntity<Response> getOrders(@RequestParam(value = "searchTerm", required = false) Long searchTerm,
                                               @RequestParam(value = "status", required = false) Boolean status,
                                               @RequestParam(value = "createdDate", required = false) Date createdDate,
                                               @RequestParam(value = "agentId", required = false) Long agentId,
@@ -105,7 +105,7 @@ public class OrderController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ? Sort.by(Sort.Order.asc("id")) : Sort.by(Sort.Order.desc("id"));
-        Page<AgentOrder> response = service.findAll(orderId, status, createdDate, agentId, userName, PageRequest.of(page, pageSize, sortType));
+        Page<AgentOrder> response = service.findAll(searchTerm, status, createdDate, agentId, userName, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
