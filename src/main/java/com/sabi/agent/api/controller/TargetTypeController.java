@@ -94,8 +94,8 @@ public class TargetTypeController {
      */
 
     @GetMapping("")
-    public ResponseEntity<Response> getWards(@RequestParam(value = "name",required = false)String name,
-                                             @RequestParam(value = "isActive",required = false)Boolean isActive,
+    public ResponseEntity<Response> getTargetTypes(@RequestParam(value = "name",required = false)String name,
+                                              @RequestParam(value = "isActive",required = false)Boolean isActive,
                                               @RequestParam(value = "page") int page,
                                               @RequestParam(value = "sortBy", required = false) String sort,
                                               @RequestParam(value = "pageSize") int pageSize){

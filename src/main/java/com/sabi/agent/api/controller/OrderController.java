@@ -2,6 +2,8 @@ package com.sabi.agent.api.controller;
 
 
 import com.sabi.agent.core.integrations.order.*;
+import com.sabi.agent.core.integrations.order.merch.request.MerchPlaceOrderDto;
+import com.sabi.agent.core.integrations.order.merch.response.MerchResponseData;
 import com.sabi.agent.core.integrations.order.orderResponse.CreateOrderResponse;
 import com.sabi.agent.core.integrations.request.LocalCompleteOrderRequest;
 import com.sabi.agent.core.integrations.request.MerchBuyRequest;
@@ -52,31 +54,23 @@ public class OrderController {
         return response;
     }
 
-
-    /**
-     * <summary>
-     * Deprecated api to get single record endpoint
-     * </summary>
-     * <remarks>this endpoint is responsible for getting a single record</remarks>
-     */
-    @GetMapping("/old/{orderId}")
-    public SingleOrderResponse oldOrderDetails(@PathVariable Long orderId) throws Exception {
-        SingleOrderResponse response = service.orderDetail(orderId);
-        return response;
+    @PostMapping("/merchprocess")
+    public MerchResponseData merchPlaceOrder(@RequestBody @Valid MerchPlaceOrderDto request) throws Exception {
+        return service.merchPlaceOrder(request);
     }
 
+
     /**
      * <summary>
-     * New api to get single record endpoint
+     * Get single record endpoint
      * </summary>
      * <remarks>this endpoint is responsible for getting a single record</remarks>
      */
     @GetMapping("{orderId}")
-    public SingleOrderResponse orderDetails(@PathVariable Long orderId)  {
-        SingleOrderResponse response = service.OrderDetail(orderId);
+    public SingleOrderResponse orderDetails(@PathVariable Long orderId) throws Exception {
+        SingleOrderResponse response = service.orderDetail(orderId);
         return response;
     }
-
 
 
     /**
@@ -144,20 +138,19 @@ public class OrderController {
         return service.localCompleteOrder(request);
     }
 
-//    @GetMapping("/adminOrder")
-//    public ResponseEntity<List<Map>> adminOrder(@RequestParam(value = "agentName", required = false) String agentName,
-//                                                @RequestParam(value = "orderStatus", required = false)String orderStatus,
-//                                                @RequestParam(value = "totalAmount", required = false) String totalAmount,
-//                                                @RequestParam(value = "merchName", required = false) String merchName
-////                                                @RequestParam(value = "quantity", required = false) Long quantity,
-////                                                @RequestParam(value = "page", required = false) Integer page,
-////                                                @RequestParam(value = "pageSize", required = false) Integer pageSize
-//    ){
-//        log.info("Adming search");
-//        int page = 1 ;
-//        int pageSize = 1;
-//        List<Map> data = service.adminOrder(agentName, orderStatus, totalAmount, merchName, page, pageSize);
-//        return new ResponseEntity<>(data, HttpStatus.OK);
-//    }
-
+    @GetMapping("/admin/filter")
+    public ResponseEntity<Page<Map>> filterForOrder(@RequestParam(value = "status", required = false) String status,
+                                                    @RequestParam(value = "agentId", required = false) Long agentId,
+                                                    @RequestParam(value = "agentName", required = false) String agentName,
+                                                    @RequestParam(value = "merchantName", required = false) String merchantName,
+                                                    @RequestParam(value = "startDate", required = false) String startDate,
+                                                    @RequestParam(value = "endDate", required = false) String endDate,
+                                                    @RequestParam(value = "sortBy", required = false) String sort,
+                                                    @RequestParam("page") int page,
+                                                    @RequestParam("pageSize") int pageSize) {
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ? Sort.by(Sort.Order.asc("id")) : Sort.by(Sort.Order.desc("id"));
+        Page<Map> strings = service.getAgentAdminOrderDetails(status, agentId, agentName, merchantName, startDate, endDate, PageRequest.of(page, pageSize, sortType));
+        return new ResponseEntity<>(strings, HttpStatus.OK);
+    }
 }
