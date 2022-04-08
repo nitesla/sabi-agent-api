@@ -153,4 +153,18 @@ public class OrderController {
         Page<Map> strings = service.getAgentAdminOrderDetails(status, agentId, agentName, merchantName, startDate, endDate, PageRequest.of(page, pageSize, sortType));
         return new ResponseEntity<>(strings, HttpStatus.OK);
     }
+
+    @GetMapping("/merchant/{id}")
+    public ResponseEntity<Response> getOrdersByMerchantId(@RequestParam(value = "merchantId") Long merchantId,
+                                                          @RequestParam(value = "page") int page,
+                                                          @RequestParam(value = "sortBy", required = false) String sort,
+                                                          @RequestParam(value = "pageSize") int pageSize) {
+        Response response = new Response();
+        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
+                ? Sort.by(Sort.Order.asc("id")) : Sort.by(Sort.Order.desc("id"));
+        response.setDescription("Record fetched successfully !");
+        response.setCode(CustomResponseCode.SUCCESS);
+        response.setData(service.getOrdersByMerchantId(merchantId, PageRequest.of(page, pageSize, sortType)));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
