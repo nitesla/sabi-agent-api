@@ -97,7 +97,7 @@ public class UserTaskController {
     public ResponseEntity<Response> getUserTasks(@RequestParam(value = "endDate",required = false) Date endDate,
                                                  @RequestParam(value = "dateAssigned",required = false)Date dateAssigned,
                                                  @RequestParam(value = "status",required = false) String status,
-                                                 @RequestParam(value = "agentId",required = false) Integer agentId,
+                                                 @RequestParam(value = "userId",required = false) Long userId,
                                                  @RequestParam(value = "page") int page,
                                                  @RequestParam(value = "sortBy", required = false) String sort,
                                                  @RequestParam(value = "pageSize") int pageSize){
@@ -105,7 +105,7 @@ public class UserTaskController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<UserTask> response = service.findAll(endDate, dateAssigned, status, agentId, PageRequest.of(page, pageSize, sortType));
+        Page<UserTask> response = service.findAll(endDate, dateAssigned, status, userId, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
