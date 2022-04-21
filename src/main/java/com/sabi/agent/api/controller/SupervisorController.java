@@ -98,7 +98,6 @@ public class SupervisorController {
 
     @GetMapping("")
     public ResponseEntity<Response> getSupervisors(@RequestParam(value = "supervisorName", required = false) String supervisorName,
-                                                   @RequestParam(value = "agentName", required = false) String agentName,
                                                    @RequestParam(value = "createdDate",required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate createdDate,
                                                    @RequestParam(value = "isActive", required = false) Boolean isActive,
                                                    @RequestParam(value = "page") int page,
@@ -108,7 +107,7 @@ public class SupervisorController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<Supervisor> response = service.findAll(supervisorName,agentName,createdDate,isActive,PageRequest.of(page, pageSize, sortType));
+        Page<Supervisor> response = service.findAll(supervisorName,createdDate,isActive,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
