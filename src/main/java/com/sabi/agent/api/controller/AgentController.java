@@ -343,6 +343,7 @@ public class AgentController {
                                                 @RequestParam(value = "agentCategory", required = false) String agentCategory,
                                                 @RequestParam(value = "verificationStatus", required = false) String verificationStatus,
                                                 @RequestParam(value = "status", required = false) Integer status,
+                                                @RequestParam(value = "isActive", required = false) Boolean isActive,
                                                 @RequestParam(value = "startDate", required = false) String startDate,
                                                 @RequestParam(value = "endDate", required = false) String endDate,
                                                 @RequestParam(value = "page") int page,
@@ -351,7 +352,7 @@ public class AgentController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<Map> response = service.filterAgent(agentName, agentCategory, verificationStatus, status, startDate, endDate, PageRequest.of(page, pageSize, sortType));
+        Page<Map> response = service.filterAgent(agentName, agentCategory, verificationStatus, status, isActive, startDate, endDate, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
