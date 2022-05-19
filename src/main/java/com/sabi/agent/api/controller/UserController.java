@@ -196,8 +196,8 @@ public class UserController {
     }
 
 
-    @PutMapping("/changepin")
-    public ResponseEntity<Response> transactionPin(@Validated @RequestBody ChangeTransactionPin request){
+    @PutMapping("/setpin")
+    public ResponseEntity<Response> transactionPin(@Validated @RequestBody SetTransactionPin request){
         HttpStatus httpCode ;
         Response resp = new Response();
         service.setPin(request);
@@ -221,7 +221,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/transactionpin")
+    @PutMapping("/changepin")
     public ResponseEntity<Response> changeTransactionPin(@Validated @RequestBody CreateTransactionPinDto request){
         HttpStatus httpCode ;
         Response resp = new Response();

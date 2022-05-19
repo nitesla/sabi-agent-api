@@ -3,17 +3,21 @@ package com.sabi.agent.api.controller;
 import com.sabi.agent.core.dto.agentDto.requestDto.AgentSupervisorDto;
 import com.sabi.agent.core.dto.requestDto.EnableDisEnableDto;
 import com.sabi.agent.core.dto.responseDto.AgentSupervisorResponseDto;
+import com.sabi.agent.core.models.agentModel.AgentSupervisor;
 import com.sabi.agent.service.services.AgentSupervisorService;
 import com.sabi.framework.dto.responseDto.Response;
 import com.sabi.framework.utils.Constants;
 import com.sabi.framework.utils.CustomResponseCode;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -75,14 +79,19 @@ public class AgentSupervisorController {
      */
     @GetMapping("")
     public ResponseEntity<Response> getAgentSupervisors(
-                                                     @RequestParam(value = "page") int page,
-                                                     @RequestParam(value = "sortBy", required = false) String sort,
-                                                     @RequestParam(value = "pageSize") int pageSize) {
+            @RequestParam(value = "supervisorName", required = false) String supervisorName,
+            @RequestParam(value = "agentName", required = false) String agentName,
+            @RequestParam(value = "createdDate",required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate createdDate,
+            @RequestParam(value = "isActive", required = false) Boolean isActive,
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "sortBy", required = false) String sort,
+            @RequestParam(value = "pageSize") int pageSize) {
+
         HttpStatus httpCode;
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        List<AgentSupervisorResponseDto> response = service.findAll(PageRequest.of(page, pageSize, sortType));
+        Page<AgentSupervisor> response = service.findAll(supervisorName, agentName, isActive, createdDate,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);

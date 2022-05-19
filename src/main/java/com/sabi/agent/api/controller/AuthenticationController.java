@@ -11,6 +11,7 @@ import com.sabi.framework.exceptions.LockedException;
 import com.sabi.framework.exceptions.UnauthorizedException;
 import com.sabi.framework.loggers.LoggerUtil;
 import com.sabi.framework.models.User;
+import com.sabi.framework.repositories.UserRepository;
 import com.sabi.framework.security.AuthenticationWithToken;
 import com.sabi.framework.service.*;
 import com.sabi.framework.utils.AuditTrailFlag;
@@ -42,6 +43,8 @@ public class AuthenticationController {
     @Value("${login.attempts}")
     private int loginAttempts;
 
+
+
     @Autowired
     private TokenService tokenService;
 
@@ -52,13 +55,15 @@ public class AuthenticationController {
     private final AgentRepository agentRepository;
     private final AuditTrailService auditTrailService;
     private final PermissionService permissionService;
+    private final UserRepository userRepository;
 
     public AuthenticationController(UserService userService,AgentRepository agentRepository,
-                                    AuditTrailService auditTrailService,PermissionService permissionService) {
+                                    AuditTrailService auditTrailService,PermissionService permissionService,UserRepository userRepository) {
         this.userService = userService;
         this.agentRepository=agentRepository;
         this.auditTrailService=auditTrailService;
         this.permissionService=permissionService;
+        this.userRepository=userRepository;
     }
 
     @PostMapping("/login")
@@ -68,6 +73,14 @@ public class AuthenticationController {
         String loginStatus;
         String ipAddress = Utility.getClientIp(request);
         User user = userService.loginUser(loginRequest);
+
+        User userLock = userRepository.findByUsername(loginRequest.getUsername());
+        if(userLock.getLoginAttempts()== loginAttempts || userLock.getLockedDate() != null){
+            userService.lockLogin(userLock.getId());
+            throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "You have exceed your login attempts and Your account has been locked," +
+                    "kindly contact System Administrator");
+        }
+
         if (user != null) {
             if (user.isLoginStatus()) {
                 //FIRST TIME LOGIN
@@ -83,11 +96,13 @@ public class AuthenticationController {
                     resp.setDescription("User Account Deactivated, please contact Administrator");
                     return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
                 }
-                if (user.getLoginAttempts() >= loginAttempts || user.getLockedDate() != null) {
-                    // lock account after x failed attempts or locked date is not null
-                    userService.lockLogin(user.getId());
-                    throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "Your account has been locked, kindly contact System Administrator");
-                }
+
+
+//                if (user.getLoginAttempts() >= loginAttempts || user.getLockedDate() != null) {
+//                    // lock account after x failed attempts or locked date is not null
+//                    userService.lockLogin(user.getId());
+//                    throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "Your account has been locked, kindly contact System Administrator");
+//                }
 
 //                userService.validateGeneratedPassword(user.getId());
             } else {
@@ -104,6 +119,9 @@ public class AuthenticationController {
             //NO NEED TO update login failed count and failed login date SINCE IT DOES NOT EXIST
             throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Login details does not exist");
         }
+
+
+
         String accessList = permissionService.getPermissionsByUserId(user.getId());
 //        String accessList = "";
         AuthenticationWithToken authWithToken = new AuthenticationWithToken(user, null,
