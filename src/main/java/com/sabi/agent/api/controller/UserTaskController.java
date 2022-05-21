@@ -149,13 +149,15 @@ public class UserTaskController {
                                                    @RequestParam(value = "taskType", required = false) String taskType,
                                                    @RequestParam(value = "startDate", required = false) String startDate,
                                                    @RequestParam(value = "endDate", required = false) String endDate,
+                                                   @RequestParam(value = "userId", required = false) Long userId,
+                                                   @RequestParam(value = "taskId", required = false) Long taskId,
                                                    @RequestParam(value = "page") int page,
                                                    @RequestParam(value = "sortBy", required = false) String sort,
                                                    @RequestParam(value = "pageSize") int pageSize) {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<Map> response = service.filterUserTask(taskName, userType, taskType, startDate, endDate, PageRequest.of(page, pageSize, sortType));
+        Page<Map> response = service.filterUserTask(taskName, userType, taskType, startDate, endDate, userId, taskId, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
