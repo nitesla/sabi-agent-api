@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(Constants.APP_CONTENT +"task")
@@ -94,9 +95,11 @@ public class TaskController {
      * <remarks>this endpoint is responsible for getting all records and its searchable</remarks>
      */
     @GetMapping("")
-    public ResponseEntity<Response> getStates(@RequestParam(value = "name",required = false)String name,
+    public ResponseEntity<Response> getTask(@RequestParam(value = "name",required = false)String name,
                                               @RequestParam(value = "taskType",required = false)String taskType,
                                               @RequestParam(value = "priority",required = false)String priority,
+                                              @RequestParam(value = "startDate",required = false) String startDate,
+                                              @RequestParam(value = "endDate" ,required = false) String endDate,
                                               @RequestParam(value = "page") int page,
                                               @RequestParam(value = "sortBy", required = false) String sort,
                                               @RequestParam(value = "pageSize") int pageSize){
@@ -104,7 +107,7 @@ public class TaskController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<Task> response = service.findAll(name,taskType,priority,PageRequest.of(page, pageSize, sortType));
+        Page<Map> response = service.findAll(name,taskType,priority, startDate, endDate, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
