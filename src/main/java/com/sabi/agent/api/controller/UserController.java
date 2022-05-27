@@ -246,4 +246,18 @@ public class UserController {
         return new ResponseEntity<>(resp, httpCode);
     }
 
+    @GetMapping("/namesearch")
+    public ResponseEntity<Response> searchName(@RequestParam(value = "searchTerm")String searchTerm,
+                                               @RequestParam(value = "page") int page,
+                                               @RequestParam(value = "pageSize") int pageSize){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+         Page<User> response = service.findPartName(searchTerm, page, pageSize);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Record fetched successfully !");
+        resp.setData(response);
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
 }
