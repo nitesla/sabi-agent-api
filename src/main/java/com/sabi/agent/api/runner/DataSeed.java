@@ -10,6 +10,8 @@ import com.sabi.agent.service.repositories.CountryRepository;
 import com.sabi.agent.service.repositories.LGARepository;
 import com.sabi.agent.service.repositories.StateRepository;
 import com.sabi.agent.service.repositories.agentRepo.AgentCategoryRepository;
+import com.sabi.framework.models.Role;
+import com.sabi.framework.repositories.RoleRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,9 @@ public class DataSeed implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private AgentCategoryRepository agentCategoryRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
 
     private Logger log = LogManager.getLogger(DataSeed.class);
 
@@ -48,6 +53,7 @@ public class DataSeed implements ApplicationListener<ContextRefreshedEvent> {
 //        seedStates();
 //        seedLocalGovernments();
         createAgentCategory();
+        createAgentRole();
 //        seedBanks();
 
     }
@@ -186,6 +192,24 @@ public class DataSeed implements ApplicationListener<ContextRefreshedEvent> {
             AgentCategory fetchCat = agentCategoryRepository.findByName(category.getName());
             if (fetchCat == null) {
                 agentCategoryRepository.saveAndFlush(category);
+            }
+        });
+
+    }
+
+
+
+    private void createAgentRole()  {
+        List<Role> role = new ArrayList<Role>() {
+            {
+
+                add(new Role("AGENT_ROLE", "Agent role"));
+            }
+        };
+        role.forEach(category -> {
+            Role fetchCat = roleRepository.findByName(category.getName());
+            if (fetchCat == null) {
+                roleRepository.saveAndFlush(category);
             }
         });
 
