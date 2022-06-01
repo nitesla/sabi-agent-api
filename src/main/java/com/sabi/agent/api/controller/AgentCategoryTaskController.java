@@ -12,12 +12,17 @@ import com.sabi.framework.utils.CustomResponseCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("All")
@@ -101,13 +106,19 @@ public class AgentCategoryTaskController {
                                                @RequestParam(value = "agentCategoryId", required = false) Long agentCategoryId,
 //                                              @RequestParam(value = "agentCategoryName", required = false) String agentCategoryName,
                                               @RequestParam(value = "sortBy", required = false) String sort,
+                                                          @RequestParam(value = "fromDate", required = false) String fromDate,
+                                                          @RequestParam(value = "toDate", required = false) String toDate,
                                               @RequestParam(value = "pageSize") int pageSize){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        LocalDate fromLocalDate = LocalDate.parse(fromDate, formatter);
+        LocalDate toLocalDate = LocalDate.parse(toDate, formatter);
         HttpStatus httpCode ;
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
         Page<AgentCategoryTask> response = service.findAll(name, agentCategoryId,
-                taskId, isActive, PageRequest.of(page, pageSize, sortType));
+                taskId, isActive, fromLocalDate, toLocalDate, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
