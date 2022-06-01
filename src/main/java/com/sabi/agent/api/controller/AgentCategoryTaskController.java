@@ -97,13 +97,17 @@ public class AgentCategoryTaskController {
     public ResponseEntity<Response> getAgentCategoryTasks(@RequestParam(value = "name",required = false)String name,
                                              @RequestParam(value = "isActive",required = false)Boolean isActive,
                                               @RequestParam(value = "page") int page,
+                                               @RequestParam(value = "taskId", required = false) Long taskId,
+                                               @RequestParam(value = "agentCategoryId", required = false) Long agentCategoryId,
+//                                              @RequestParam(value = "agentCategoryName", required = false) String agentCategoryName,
                                               @RequestParam(value = "sortBy", required = false) String sort,
                                               @RequestParam(value = "pageSize") int pageSize){
         HttpStatus httpCode ;
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<AgentCategoryTask> response = service.findAll(name, isActive, PageRequest.of(page, pageSize, sortType));
+        Page<AgentCategoryTask> response = service.findAll(name, agentCategoryId,
+                taskId, isActive, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
