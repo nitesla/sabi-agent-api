@@ -139,7 +139,7 @@ public class OrderController {
     }
 
     @GetMapping("/admin/filter")
-    public ResponseEntity<Page<Map>> filterForOrder(@RequestParam(value = "status", required = false) String status,
+    public ResponseEntity<Page<Map>> filterForOrder(@RequestParam(value = "status", required = false) Integer status,
                                                     @RequestParam(value = "agentId", required = false) Long agentId,
                                                     @RequestParam(value = "agentName", required = false) String agentName,
                                                     @RequestParam(value = "merchantName", required = false) String merchantName,
