@@ -139,10 +139,11 @@ public class OrderController {
     }
 
     @GetMapping("/admin/filter")
-    public ResponseEntity<Page<Map>> filterForOrder(@RequestParam(value = "status", required = false) String status,
+    public ResponseEntity<Page<Map>> filterForOrder(@RequestParam(value = "status", required = false) Integer status,
                                                     @RequestParam(value = "agentId", required = false) Long agentId,
                                                     @RequestParam(value = "agentName", required = false) String agentName,
                                                     @RequestParam(value = "merchantName", required = false) String merchantName,
+                                                    @RequestParam(value = "orderId", required = false)Long orderId,
                                                     @RequestParam(value = "startDate", required = false) String startDate,
                                                     @RequestParam(value = "endDate", required = false) String endDate,
                                                     @RequestParam(value = "sortBy", required = false) String sort,
@@ -150,7 +151,7 @@ public class OrderController {
                                                     @RequestParam("pageSize") int pageSize) {
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ? Sort.by(Sort.Order.asc("id")) : Sort.by(Sort.Order.desc("id"));
-        Page<Map> strings = service.getAgentAdminOrderDetails(status, agentId, agentName, merchantName, startDate, endDate, PageRequest.of(page, pageSize, sortType));
+        Page<Map> strings = service.getAgentAdminOrderDetails(status, agentId, agentName, merchantName, startDate, orderId,endDate, PageRequest.of(page, pageSize, sortType));
         return new ResponseEntity<>(strings, HttpStatus.OK);
     }
 

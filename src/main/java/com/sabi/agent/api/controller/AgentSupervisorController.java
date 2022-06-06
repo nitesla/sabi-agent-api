@@ -86,7 +86,8 @@ public class AgentSupervisorController {
             @RequestParam(value = "createdDate",required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate createdDate,
             @RequestParam(value = "isActive", required = false) Boolean isActive,
             @RequestParam(value = "page") int page,
-            @RequestParam(value = "agentId") Long agentId,
+            @RequestParam(value = "agentSupervisorId", required = false) Long id,
+            @RequestParam(value = "agentId", required = false) Long agentId,
             @RequestParam(value = "sortBy", required = false) String sort,
             @RequestParam(value = "pageSize") int pageSize) {
 
@@ -94,7 +95,7 @@ public class AgentSupervisorController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<AgentSupervisor> response = service.findAll(supervisorName, agentName, agentId,isActive, createdDate,PageRequest.of(page, pageSize, sortType));
+        Page<AgentSupervisor> response = service.findAll(supervisorName, agentName, agentId,isActive,createdDate,id,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
