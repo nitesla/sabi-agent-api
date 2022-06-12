@@ -209,11 +209,11 @@ public class UserController {
 
 
 
-    @PutMapping("/pinotp")
-    public ResponseEntity<Response> transactionPinOtp(@Validated @RequestBody CreateTransactionPinDto request){
+    @PutMapping("/changepin")
+    public ResponseEntity<Response> changeTransactionPin(@Validated @RequestBody ChangePinRequest request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        service.changePinOTP(request);
+        service.changeTransactionPin(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         httpCode = HttpStatus.OK;
@@ -221,11 +221,24 @@ public class UserController {
     }
 
 
-    @PutMapping("/changepin")
-    public ResponseEntity<Response> changeTransactionPin(@Validated @RequestBody CreateTransactionPinDto request){
+
+    @PutMapping("/pinotp")
+    public ResponseEntity<Response> transactionPinOtp(@Validated @RequestBody CreateTransactionPinDto request){
         HttpStatus httpCode ;
         Response resp = new Response();
-        service.changePin(request);
+        service.resetPinOTP(request);
+        resp.setCode(CustomResponseCode.SUCCESS);
+        resp.setDescription("Successful");
+        httpCode = HttpStatus.OK;
+        return new ResponseEntity<>(resp, httpCode);
+    }
+
+
+    @PutMapping("/resetpin")
+    public ResponseEntity<Response> resetTransactionPin(@Validated @RequestBody CreateTransactionPinDto request){
+        HttpStatus httpCode ;
+        Response resp = new Response();
+        service.resetPin(request);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Successful");
         httpCode = HttpStatus.OK;
