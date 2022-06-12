@@ -19,6 +19,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 @RestController
@@ -84,6 +86,8 @@ public class AgentSupervisorController {
             @RequestParam(value = "supervisorName", required = false) String supervisorName,
             @RequestParam(value = "agentName", required = false) String agentName,
             @RequestParam(value = "createdDate",required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate createdDate,
+            @RequestParam(value = "fromDate",  required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(value = "toDate",  required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
             @RequestParam(value = "isActive", required = false) Boolean isActive,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "agentSupervisorId", required = false) Long id,
@@ -95,7 +99,8 @@ public class AgentSupervisorController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<AgentSupervisor> response = service.findAll(supervisorName, agentName, agentId,isActive,createdDate,id,PageRequest.of(page, pageSize, sortType));
+        Page<AgentSupervisor> response = service.findAll(supervisorName, agentName, agentId,isActive, fromDate.atStartOfDay()
+                , toDate.atStartOfDay(), createdDate,id,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
