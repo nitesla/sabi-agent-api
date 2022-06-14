@@ -68,57 +68,56 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody @Valid LoginRequest loginRequest, HttpServletRequest request)  {
-
         log.info(":::::::::: login Request %s:::::::::::::" + loginRequest.getUsername());
         String loginStatus;
         String ipAddress = Utility.getClientIp(request);
+//        User userLock = userRepository.findByUsername(loginRequest.getUsername());
         User user = userService.loginUser(loginRequest);
-
-        User userLock = userRepository.findByUsername(loginRequest.getUsername());
-        if(userLock.getLoginAttempts()== loginAttempts || userLock.getLockedDate() != null){
-            userService.lockLogin(userLock.getId());
-            throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "You have exceed your login attempts and Your account has been locked," +
-                    "kindly contact System Administrator");
-        }
-
         if (user != null) {
-            if (user.isLoginStatus()) {
-                //FIRST TIME LOGIN
-                if (user.getPasswordChangedOn() == null || user.getIsActive()==false) {
-                    Response resp = new Response();
-                    resp.setCode(CustomResponseCode.CHANGE_P_REQUIRED);
-                    resp.setDescription("Change password Required, account has not been activated");
-                    return new ResponseEntity<>(resp, HttpStatus.ACCEPTED);//202
-                }
-                if (user.getIsActive()==false) {
-                    Response resp = new Response();
-                    resp.setCode(CustomResponseCode.FAILED);
-                    resp.setDescription("User Account Deactivated, please contact Administrator");
-                    return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
-                }
+                if (user.isLoginStatus()) {
+                    //FIRST TIME LOGIN
+                    if (user.getPasswordChangedOn() == null || user.getIsActive() == false) {
+                        Response resp = new Response();
+                        resp.setCode(CustomResponseCode.CHANGE_P_REQUIRED);
+                        resp.setDescription("Change password Required, account has not been activated");
+                        return new ResponseEntity<>(resp, HttpStatus.ACCEPTED);//202
+                    }
+                    if (user.getIsActive() == false) {
+                        Response resp = new Response();
+                        resp.setCode(CustomResponseCode.FAILED);
+                        resp.setDescription("User Account Deactivated, please contact Administrator");
+                        return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
 
 
-//                if (user.getLoginAttempts() >= loginAttempts || user.getLockedDate() != null) {
-//                    // lock account after x failed attempts or locked date is not null
-//                    userService.lockLogin(user.getId());
-//                    throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "Your account has been locked, kindly contact System Administrator");
-//                }
+                    if (user.getLoginAttempts() >= loginAttempts || user.getLockedDate() != null) {
+                        // lock account after x failed attempts or locked date is not null
+                        userService.lockLogin(user.getId());
+                        throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "Your account has been locked, kindly contact System Administrator");
+                    }
+
 
 //                userService.validateGeneratedPassword(user.getId());
-            } else {
-                //update login failed count and failed login date
-                loginStatus = "failed";
-                auditTrailService
-                        .logEvent(loginRequest.getUsername(), "Login by username :" + loginRequest.getUsername()
-                                        + " " + loginStatus,
-                                AuditTrailFlag.LOGIN, "Failed Login Request by :" + loginRequest.getUsername(),1, ipAddress);
-                userService.updateFailedLogin(user.getId());
-                throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Invalid Login details. " +" Login attempt : " +user.getLoginAttempts());
-            }
+                } else {
+                    //update login failed count and failed login date
+                    loginStatus = "failed";
+                    User userLock = userRepository.findByUsername(loginRequest.getUsername());
+                    if(userLock.getLoginAttempts()==loginAttempts)
+                        throw new LockedException(CustomResponseCode.LOCKED_EXCEPTION, "You have exceeded your login attempts");
+                    auditTrailService
+                            .logEvent(loginRequest.getUsername(), "Login by username :" + loginRequest.getUsername()
+                                            + " " + loginStatus,
+                                    AuditTrailFlag.LOGIN, "Failed Login Request by :" + loginRequest.getUsername(), 1, ipAddress);
+                    userService.updateFailedLogin(user.getId());
+                    throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Invalid Login details. " + " Login attempt : " + user.getLoginAttempts());
+                }
+
         } else {
             //NO NEED TO update login failed count and failed login date SINCE IT DOES NOT EXIST
             throw new UnauthorizedException(CustomResponseCode.UNAUTHORIZED, "Login details does not exist");
         }
+
+
 
 
 
