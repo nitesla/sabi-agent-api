@@ -19,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.TemporalAmount;
 import java.time.temporal.TemporalUnit;
 import java.util.List;
@@ -99,8 +100,10 @@ public class AgentSupervisorController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<AgentSupervisor> response = service.findAll(supervisorName, agentName, agentId,isActive, fromDate.atStartOfDay()
-                , toDate.atStartOfDay(), createdDate,id,PageRequest.of(page, pageSize, sortType));
+        LocalDateTime fromLocalDate = fromDate != null ? fromDate.atStartOfDay() : null;
+        LocalDateTime toLocalDate = toDate !=null ? toDate.atStartOfDay() : null;
+        Page<AgentSupervisor> response = service.findAll(supervisorName, agentName, agentId,isActive, fromLocalDate
+                , toLocalDate, createdDate,id,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
