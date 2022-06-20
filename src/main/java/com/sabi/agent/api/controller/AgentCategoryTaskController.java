@@ -111,8 +111,8 @@ public class AgentCategoryTaskController {
                                               @RequestParam(value = "pageSize") int pageSize){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        LocalDate fromLocalDate = LocalDate.parse(fromDate, formatter);
-        LocalDate toLocalDate = LocalDate.parse(toDate, formatter);
+            LocalDate fromLocalDate = fromDate != null ? LocalDate.parse(fromDate, formatter) : null;
+            LocalDate toLocalDate = toDate !=null ? LocalDate.parse(toDate, formatter): null;
         HttpStatus httpCode ;
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SuppressWarnings("All")
@@ -99,6 +100,8 @@ public class SupervisorController {
     @GetMapping("")
     public ResponseEntity<Response> getSupervisors(@RequestParam(value = "supervisorName", required = false) String supervisorName,
                                                    @RequestParam(value = "createdDate",required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate createdDate,
+                                                   @RequestParam(value = "fromDate",  required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                                   @RequestParam(value = "toDate",  required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
                                                    @RequestParam(value = "isActive", required = false) Boolean isActive,
                                                    @RequestParam(value = "page") int page,
                                                    @RequestParam(value = "sortBy", required = false) String sort,
@@ -107,7 +110,9 @@ public class SupervisorController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<Supervisor> response = service.findAll(supervisorName,createdDate,isActive,PageRequest.of(page, pageSize, sortType));
+        LocalDateTime fromLocalDate = fromDate != null ? fromDate.atStartOfDay() : null;
+        LocalDateTime toLocalDate = toDate !=null ? toDate.atStartOfDay() : null;
+        Page<Supervisor> response = service.findAll(supervisorName,createdDate,fromLocalDate, toLocalDate, isActive,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
