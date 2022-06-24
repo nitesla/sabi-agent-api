@@ -101,7 +101,7 @@ public class AgentSupervisorController {
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
         LocalDateTime fromLocalDate = fromDate != null ? fromDate.atStartOfDay() : null;
-        LocalDateTime toLocalDate = toDate !=null ? toDate.atStartOfDay() : null;
+        LocalDateTime toLocalDate = toDate !=null ? toDate.plusDays(1).atStartOfDay() : null;
         Page<AgentSupervisor> response = service.findAll(supervisorName, agentName, agentId,isActive, fromLocalDate
                 , toLocalDate, createdDate,id,PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
