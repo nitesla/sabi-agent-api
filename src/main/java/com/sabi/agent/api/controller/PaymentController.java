@@ -1,5 +1,6 @@
 package com.sabi.agent.api.controller;
 
+import com.sabi.agent.core.dto.responseDto.PaymentHistoryResponse;
 import com.sabi.agent.service.integrations.OrderService;
 import com.sabi.agent.service.services.AgentCardService;
 import com.sabi.framework.dto.responseDto.Response;
@@ -65,7 +66,7 @@ public class PaymentController {
         Response resp = new Response();
 //        Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
 //                ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Object response = orderService.paymentHistory(orderId, page, pageSize);
+        Page<Map> response = orderService.paymentHistory(orderId, page, pageSize);
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
