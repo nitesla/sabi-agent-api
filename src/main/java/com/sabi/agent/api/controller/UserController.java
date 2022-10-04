@@ -113,7 +113,7 @@ public class UserController {
         Response resp = new Response();
         Sort sortType = (sort != null && sort.equalsIgnoreCase("asc"))
                 ?  Sort.by(Sort.Order.asc("id")) :   Sort.by(Sort.Order.desc("id"));
-        Page<User> response = service.findAll(firstName,lastName,phone,isActive,email, PageRequest.of(page, pageSize, sortType));
+        Page<User> response = service.findAll(firstName, lastName, phone, role, roleId, isActive, startDate, endDate, PageRequest.of(page, pageSize, sortType));
         resp.setCode(CustomResponseCode.SUCCESS);
         resp.setDescription("Record fetched successfully !");
         resp.setData(response);
